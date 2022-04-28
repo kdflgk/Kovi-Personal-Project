@@ -192,7 +192,7 @@ void CMFCApplication1View::OnColorselect()
 			str.Format(L"Matrix[%d][%d] = %.2f", i, j, Matrix[i][j]);
 			AfxMessageBox(str);
 		}
-	}
+	} 
 	//////////////////////////////////////////////////////////////////////
 }
 
