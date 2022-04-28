@@ -17,6 +17,8 @@
 #endif
 
 
+#include <cmath>
+
 // CMFCApplication1View
 
 IMPLEMENT_DYNCREATE(CMFCApplication1View, CView)
@@ -174,16 +176,17 @@ void CMFCApplication1View::OnColorselect()
 	//////////////////////////////////////////////////////////////////////
 	//배열 함수 테스트용
 	CString str;
+	int num = 0;
 	for (int i = 0; i < ROW; i++)
 	{
 		for (int j = 0; j < COL; j++)
 		{
-			Matrix[i][j] = i * 10 + j;
+			Matrix[i][j] = num++;
 		}
 	}
-	Matrix = MatrixAdd(Matrix, Matrix);
+	//Matrix = MatrixAdd(Matrix, Matrix);
 	//Matrix = MatrixSub(Matrix, Matrix);
-	//Matrix = MatrixMul(Matrix, Matrix);
+	Matrix = MatrixMul(Matrix, Matrix);
 
 	for (int i = 0; i < ROW; i++)
 	{
@@ -253,7 +256,7 @@ float **CMFCApplication1View::MatrixMul(float** mat1, float** mat2)
 	{
 		for (int j = 0; j < COL; j++)
 		{
-			Resultmat[i][j] = mat1[i][j] * mat2[i][j];
+			Resultmat[i][j] = (mat1[i][0] * mat2[0][j]) + (mat1[i][1] * mat2[1][j]) + (mat1[i][2] * mat2[2][j]) + (mat1[i][3] * mat2[3][j]);
 		}
 	}
 
@@ -261,18 +264,36 @@ float **CMFCApplication1View::MatrixMul(float** mat1, float** mat2)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//더블버퍼링 테스트
 void CMFCApplication1View::Mydraw(CDC* pDC)
 {
 	CBrush cbrush(RGB(0, 0, 0));
 	pDC->SelectObject(cbrush);
-	//pDC->Rectangle(0, 0, 200, 200);
+
 	if (m_bDrag)
 	{
 		CPen myPen(PS_SOLID, 5, RGB(0, 0, 0));
 		pDC->SelectObject(myPen);
 
-		pDC->Rectangle(start.x, start.y, end.x, end.y);
+		//pDC->Rectangle(start.x - 100, start.y - 100, start.x + 100, start.y + 100);
+
+		//더블버퍼링 테스트
+		//pDC->Rectangle(start.x, start.y, end.x, end.y);
+
+		//변환행렬 테스트
+		float resultmat1[4][1] = { { 500},{ 50 },{ 0 },{ 1 } };
+		float resultmat2[4][1] = { { 600 },{ 250 },{ 0 },{ 1 } };
+		float resultmat3[4][1] = { { 400 },{ 250 },{ 0 },{ 1 } };
+
+		pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
+		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
+		pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+		pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+
+		Scale(pDC, resultmat1, resultmat2, resultmat3);
+				
+		Transform(pDC, resultmat1, resultmat2, resultmat3);
+
+		Rotation(pDC, resultmat1, resultmat2, resultmat3);
 	}
 }
 
@@ -290,7 +311,9 @@ void CMFCApplication1View::OnMouseMove(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if (m_bDrag)
 	{
+		//start = point;
 		end = point;
+
 		RedrawWindow();
 	}
 
@@ -302,10 +325,67 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if (m_bDrag)
 	{
+		//start = point;
 		end = point;
+
 		m_bDrag = FALSE;
 		//RedrawWindow();
 	}
 
 	CView::OnLButtonUp(nFlags, point);
+}
+
+
+
+void CMFCApplication1View::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
+{
+	float x = 1.5;
+	float y = 1.5;
+
+	float smat[4][4] = { { x,0,0,0 },{ 0,y,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
+
+	for (int i = 0; i < COL; i++)
+	{
+		resultmat1[i][0] = (smat[i][0] * resultmat1[0][0]) + (smat[i][1] * resultmat1[1][0]) + (smat[i][2] * resultmat1[2][0]) + (smat[i][3] * resultmat1[3][0]);
+		resultmat2[i][0] = (smat[i][0] * resultmat2[0][0]) + (smat[i][1] * resultmat2[1][0]) + (smat[i][2] * resultmat2[2][0]) + (smat[i][3] * resultmat2[3][0]);
+		resultmat3[i][0] = (smat[i][0] * resultmat3[0][0]) + (smat[i][1] * resultmat3[1][0]) + (smat[i][2] * resultmat3[2][0]) + (smat[i][3] * resultmat3[3][0]);
+	}
+
+	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
+	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
+	pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+	pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+}
+
+void CMFCApplication1View::Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
+{
+	float x = 1.5;
+	float y = 1.5;
+
+	float tmat[4][4] = { { 1,0,0,100 * x },{ 0,1,0,100 * y },{ 0,0,1,0 },{ 0,0,0,1 } };
+
+	for (int i = 0; i < COL; i++)
+	{
+		resultmat1[i][0] = (tmat[i][0] * resultmat1[0][0]) + (tmat[i][1] * resultmat1[1][0]) + (tmat[i][2] * resultmat1[2][0]) + (tmat[i][3] * resultmat1[3][0]);
+		resultmat2[i][0] = (tmat[i][0] * resultmat2[0][0]) + (tmat[i][1] * resultmat2[1][0]) + (tmat[i][2] * resultmat2[2][0]) + (tmat[i][3] * resultmat2[3][0]);
+		resultmat3[i][0] = (tmat[i][0] * resultmat3[0][0]) + (tmat[i][1] * resultmat3[1][0]) + (tmat[i][2] * resultmat3[2][0]) + (tmat[i][3] * resultmat3[3][0]);
+	}
+
+	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
+	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
+	pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+	pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+}
+
+void CMFCApplication1View::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
+{
+	int radian = 30;
+	double sinresult, cosresult;
+
+	sinresult = sin(radian);
+	cosresult = cos(radian);
+
+	//X축
+	float rmat[4][4] = { { 1,0,0,0 },{ 0,cosresult,-sinresult,0 },{ 0,sinresult,cosresult,0 },{ 0,0,0,1 } };
+
 }
