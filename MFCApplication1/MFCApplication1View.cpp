@@ -181,9 +181,9 @@ void CMFCApplication1View::OnColorselect()
 			Matrix[i][j] = i * 10 + j;
 		}
 	}
-	//Matrix = MatrixAdd(Matrix, Matrix);
+	Matrix = MatrixAdd(Matrix, Matrix);
 	//Matrix = MatrixSub(Matrix, Matrix);
-	Matrix = MatrixMul(Matrix, Matrix);
+	//Matrix = MatrixMul(Matrix, Matrix);
 
 	for (int i = 0; i < ROW; i++)
 	{
