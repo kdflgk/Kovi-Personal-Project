@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#define ROW 4
-#define COL 4
+//#define ROW 4
+//#define COL 4
 
 class CMFCApplication1View : public CView
 {
@@ -25,6 +25,7 @@ public:
 	float **resultmat1;
 	float **resultmat2;
 	float **resultmat3;
+
 
 	// 재정의입니다.
 public:
@@ -59,13 +60,6 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void Mydraw(CDC* pDC);
 
-	float **MatrixAdd(float** mat1, float** mat2);
-	float **MatrixSub(float** mat1, float** mat2);
-	float **MatrixMul(float** mat1, float** mat2);
-
-	void Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
-	void Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
-	void Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
 };
 
 #ifndef _DEBUG  // MFCApplication1View.cpp의 디버그 버전
