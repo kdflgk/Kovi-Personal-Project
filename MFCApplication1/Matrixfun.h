@@ -3,6 +3,7 @@
 
 #define ROW 4
 #define COL 4
+#define PI 3.141592 
 
 class Matrixfun
 {
@@ -15,6 +16,7 @@ public:
 	float **resultmat2;
 	float **resultmat3;
 
+	
 
 	float **MatrixAdd(float** mat1, float** mat2);
 	float **MatrixSub(float** mat1, float** mat2);
