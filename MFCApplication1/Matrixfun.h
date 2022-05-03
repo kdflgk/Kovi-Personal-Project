@@ -7,16 +7,17 @@
 
 class Matrixfun
 {
+	//생성자, 소멸자
 public:
 	Matrixfun();
 	~Matrixfun(){};
+
+	//기능함수
 public:
 	float **Matrix; //2차원 배열
 	float **resultmat1;
 	float **resultmat2;
 	float **resultmat3;
-
-	
 
 	float **MatrixAdd(float** mat1, float** mat2);
 	float **MatrixSub(float** mat1, float** mat2);

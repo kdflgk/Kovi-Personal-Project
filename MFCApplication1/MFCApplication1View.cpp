@@ -12,6 +12,7 @@
 #include "MFCApplication1Doc.h"
 #include "MFCApplication1View.h"
 #include "Matrixfun.h"
+#include "Vectorfun.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -105,6 +106,8 @@ void CMFCApplication1View::OnPaint()
 	// 실제 그리는부분
 	Mydraw(&mDC);
 
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	//더블버퍼링
 	dc.BitBlt(0, 0, m_rtCtrlSize.Width(), m_rtCtrlSize.Height(), &mDC, 0, 0, SRCCOPY);
@@ -179,7 +182,7 @@ void CMFCApplication1View::OnColorselect()
 	//////////////////////////////////////////////////////////////////////
 	//배열 함수 테스트용
 	CString str;
-	int num = 0;
+	float num = 0;
 	for (int i = 0; i < ROW; i++)
 	{
 		for (int j = 0; j < COL; j++)
@@ -187,7 +190,6 @@ void CMFCApplication1View::OnColorselect()
 			Matrix[i][j] = num++;
 		}
 	}
-	
 
 	Matrix = matfun.MatrixAdd(Matrix, Matrix);
 	//Matrix = matfun.MatrixSub(Matrix, Matrix);
@@ -200,7 +202,7 @@ void CMFCApplication1View::OnColorselect()
 			str.Format(L"Matrix[%d][%d] = %.2f", i, j, Matrix[i][j]);
 			AfxMessageBox(str);
 		}
-	} 
+	}
 	//////////////////////////////////////////////////////////////////////
 }
 
@@ -271,11 +273,12 @@ BOOL CMFCApplication1View::OnEraseBkgnd(CDC* pDC)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
 void CMFCApplication1View::Mydraw(CDC* pDC)
 {
 	CBrush cbrush(RGB(0, 0, 0));
 	pDC->SelectObject(cbrush);
-	
+
 	if (m_bDrag)
 	{
 		CPen myPen(PS_SOLID, 5, RGB(0, 0, 0));
@@ -313,12 +316,51 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
 		pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
 		pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+
 		//pDC->LineTo(resultmat4[0][0], resultmat4[1][0]);
 		//pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
 
-		matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3);
+		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3);
 		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3);
 		//matfun.Scale(pDC, resultmat1, resultmat2, resultmat3);
+
+		///////////////////////////////////////////////////////////////////////////		
+
+		CPoint p1 = { 100, 100 };
+		CPoint p2 = { 100, 200 };
+		CPoint p3 = { 200, 200 };
+		CPoint p4 = { 200, 100 };
+
+		float radian = 30;
+		double sinresult = sin(radian* PI / 180);
+		double cosresult = cos(radian* PI / 180);
+
+		pDC->MoveTo(p1.x, p1.y);
+		pDC->LineTo(p2.x, p2.y);
+		//pDC->LineTo(p3.x, p3.y);
+		//pDC->LineTo(p4.x, p4.y);
+		//pDC->LineTo(p1.x, p1.y);
+		
+		p1.x = p1.x - 100; p1.y = p1.y - 100;
+		p2.x = p2.x - 100; p2.y = p2.y - 100;
+		p3.x = p3.x - 100; p3.y = p3.y - 100;
+		p4.x = p4.x - 100; p4.y = p4.y - 100;
+		
+		p1.x = cosresult*p1.x - sinresult*p1.y; p1.y = sinresult*p1.x + cosresult*p1.y;
+		p2.x = cosresult*p2.x - sinresult*p2.y; p2.y = sinresult*p2.x + cosresult*p2.y;
+		//p3.x = cosresult*p3.x - sinresult*p3.y; p3.y = sinresult*p3.x + cosresult*p3.y;
+		//p4.x = cosresult*p4.x - sinresult*p4.y; p4.y = sinresult*p4.x + cosresult*p4.y;
+				
+		p1.x = p1.x + 100; p1.y = p1.y + 100;
+		p2.x = p2.x + 100; p2.y = p2.y + 100;
+		p3.x = p3.x + 100; p3.y = p3.y + 100;
+		p4.x = p4.x + 100; p4.y = p4.y + 100;
+		
+		pDC->MoveTo(p1.x, p1.y);
+		pDC->LineTo(p2.x, p2.y);
+		//pDC->LineTo(p3.x, p3.y);
+		//pDC->LineTo(p4.x, p4.y);
+		//pDC->LineTo(p1.x, p1.y);
 
 	}
 }

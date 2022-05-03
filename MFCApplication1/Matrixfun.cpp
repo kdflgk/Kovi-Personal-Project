@@ -69,8 +69,8 @@ float **Matrixfun::MatrixMul(float** mat1, float** mat2)
 
 void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
 {
-	float x = 1.5;
-	float y = 1.5;
+	float x = 2;
+	float y = 2;
 
 	float smat[4][4] = { { x,0,0,0 },{ 0,y,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
 
@@ -89,8 +89,8 @@ void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], fl
 
 void Matrixfun::Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
 {
-	float x = 1.5;
-	float y = 1.5;
+	float x = 2;
+	float y = 2;
 
 	float tmat[4][4] = { { 1,0,0,100 * x },{ 0,1,0,100 * y },{ 0,0,1,0 },{ 0,0,0,1 } };
 	//float tmat[4][4] = { { 1,0,0,-500 },{ 0,1,0,-150 },{ 0,0,1,0 },{ 0,0,0,1 } };
@@ -110,11 +110,12 @@ void Matrixfun::Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1]
 
 void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
 {
-	int radian = 30;
+	int radian;
 	double sinresult, cosresult;
 
-	sinresult = sin(radian* PI / 180);
-	cosresult = cos(radian* PI / 180);
+	radian = 60;
+	sinresult = sin(radian * PI / 180);
+	cosresult = cos(radian * PI / 180);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//X√‡
 	float rmatx[4][4] = { { 1, 0, 0, 0 }, { 0, cosresult, -sinresult, 0 }, { 0, sinresult, cosresult, 0 }, { 0, 0, 0, 1 } }; //X
@@ -132,6 +133,10 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Y√‡
+	radian = 60;
+	sinresult = sin(radian * PI / 180);
+	cosresult = cos(radian * PI / 180);
+
 	float rmaty[4][4] = { { cosresult, 0, -sinresult, 0 },{ 0, 1, 0, 0 },{ sinresult, 0, cosresult, 0 },{ 0, 0, 0, 1 } }; //Y
 	for (int i = 0; i < COL; i++)
 	{
@@ -146,6 +151,10 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Z√‡
+	radian = 0;
+	sinresult = sin(radian * PI / 180);
+	cosresult = cos(radian * PI / 180);
+
 	float rmatz[4][4] = { { cosresult, -sinresult, 0, 0 },{ sinresult, cosresult, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
 	for (int i = 0; i < COL; i++)
 	{
