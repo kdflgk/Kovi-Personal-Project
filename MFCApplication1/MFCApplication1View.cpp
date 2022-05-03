@@ -284,83 +284,52 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		CPen myPen(PS_SOLID, 5, RGB(0, 0, 0));
 		pDC->SelectObject(myPen);
 
-		//pDC->Rectangle(start.x - 100, start.y - 100, start.x + 100, start.y + 100);
-
 		//더블버퍼링 테스트
 		//pDC->Rectangle(start.x, start.y, end.x, end.y);
 
 		//변환행렬 테스트
-		float resultmat1[4][1] = { { 500},{ 150 },{ 0 },{ 1 } };
-		float resultmat2[4][1] = { { 600 },{ 350 },{ 0 },{ 1 } };
-		float resultmat3[4][1] = { { 400 },{ 350 },{ 0 },{ 1 } };
-		float resultmat4[4][1] = { { 650 },{ 250 },{0 },{ 1 } };
+		CPoint originpoint = { 400,150 };
+		float resultmat1[4][1] = { { originpoint.x},{ originpoint.y - 50 },{ 0 },{ 1 } };
+		float resultmat2[4][1] = { { originpoint.x + 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
+		float resultmat3[4][1] = { { originpoint.x - 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
 
-		//////////////////////////////////////////////////////////////////////
-		CString str;      //문자열
-		CPoint m_pt;    // 좌표
-		m_pt.x = resultmat1[0][0];
-		m_pt.y = resultmat1[1][0];
-		str = "1번점";
-		pDC->TextOut(m_pt.x, m_pt.y, str);
-		m_pt.x = resultmat2[0][0];
-		m_pt.y = resultmat2[1][0];
-		str = "2번점";
-		pDC->TextOut(m_pt.x, m_pt.y, str);
-		m_pt.x = resultmat3[0][0];
-		m_pt.y = resultmat3[1][0];
-		str = "3번점";
-		pDC->TextOut(m_pt.x, m_pt.y, str);
-		//////////////////////////////////////////////////////////////////////
-
-		pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-		pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-		pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
-
-		//pDC->LineTo(resultmat4[0][0], resultmat4[1][0]);
+		//pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
 		//pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-
-		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3);
-		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3);
+		//pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+		//pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+		////////////////////////////////////////////////////////////////////////
+		//CString str;      //문자열
+		//CPoint m_pt;    // 좌표
+		//m_pt.x = resultmat1[0][0];
+		//m_pt.y = resultmat1[1][0];
+		//str = "1번점";
+		//pDC->TextOut(m_pt.x, m_pt.y, str);
+		//m_pt.x = resultmat2[0][0];
+		//m_pt.y = resultmat2[1][0];
+		//str = "2번점";
+		//pDC->TextOut(m_pt.x, m_pt.y, str);
+		//m_pt.x = resultmat3[0][0];
+		//m_pt.y = resultmat3[1][0];
+		//str = "3번점";
+		//pDC->TextOut(m_pt.x, m_pt.y, str);
+		//////////////////////////////////////////////////////////////////////
 		//matfun.Scale(pDC, resultmat1, resultmat2, resultmat3);
-
+		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 45, 0, 45);
+		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3);
 		///////////////////////////////////////////////////////////////////////////		
+		CPoint a[12] = { { 100,200 }, { 100,100 }, { 200,100 }, { 100,200 },{ 200,100 }, { 200, 200 }, 
+						 {200, 200 }, { 300, 100 }, { 200, 100 }	,{ 200, 200 } ,{ 300, 100 } ,{ 300, 200 } };
+		int count = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			count = i * 3;
+			pDC->MoveTo(a[count].x, a[count].y);
+			pDC->LineTo(a[count + 1].x, a[count + 1].y);
+			pDC->LineTo(a[count + 2].x, a[count + 2].y);
+			pDC->LineTo(a[count].x, a[count].y);
 
-		CPoint p1 = { 100, 100 };
-		CPoint p2 = { 100, 200 };
-		CPoint p3 = { 200, 200 };
-		CPoint p4 = { 200, 100 };
+		}
 
-		float radian = 30;
-		double sinresult = sin(radian* PI / 180);
-		double cosresult = cos(radian* PI / 180);
-
-		pDC->MoveTo(p1.x, p1.y);
-		pDC->LineTo(p2.x, p2.y);
-		//pDC->LineTo(p3.x, p3.y);
-		//pDC->LineTo(p4.x, p4.y);
-		//pDC->LineTo(p1.x, p1.y);
-		
-		p1.x = p1.x - 100; p1.y = p1.y - 100;
-		p2.x = p2.x - 100; p2.y = p2.y - 100;
-		p3.x = p3.x - 100; p3.y = p3.y - 100;
-		p4.x = p4.x - 100; p4.y = p4.y - 100;
-		
-		p1.x = cosresult*p1.x - sinresult*p1.y; p1.y = sinresult*p1.x + cosresult*p1.y;
-		p2.x = cosresult*p2.x - sinresult*p2.y; p2.y = sinresult*p2.x + cosresult*p2.y;
-		//p3.x = cosresult*p3.x - sinresult*p3.y; p3.y = sinresult*p3.x + cosresult*p3.y;
-		//p4.x = cosresult*p4.x - sinresult*p4.y; p4.y = sinresult*p4.x + cosresult*p4.y;
-				
-		p1.x = p1.x + 100; p1.y = p1.y + 100;
-		p2.x = p2.x + 100; p2.y = p2.y + 100;
-		p3.x = p3.x + 100; p3.y = p3.y + 100;
-		p4.x = p4.x + 100; p4.y = p4.y + 100;
-		
-		pDC->MoveTo(p1.x, p1.y);
-		pDC->LineTo(p2.x, p2.y);
-		//pDC->LineTo(p3.x, p3.y);
-		//pDC->LineTo(p4.x, p4.y);
-		//pDC->LineTo(p1.x, p1.y);
 
 	}
 }

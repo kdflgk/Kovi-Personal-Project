@@ -56,7 +56,7 @@ public:
 		z /= mag;
 	}
 
-	//변환
+	//변환(?) - 공간을 이동시키는것
 	void transformVector(void)
 	{
 

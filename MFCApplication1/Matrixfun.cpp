@@ -73,6 +73,10 @@ void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], fl
 	float y = 2;
 
 	float smat[4][4] = { { x,0,0,0 },{ 0,y,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
+	
+	resultmat1[0][0] -= 400; resultmat1[1][0] -= 150;
+	resultmat2[0][0] -= 400; resultmat2[1][0] -= 150;
+	resultmat3[0][0] -= 400; resultmat3[1][0] -= 150;
 
 	for (int i = 0; i < COL; i++)
 	{
@@ -80,6 +84,11 @@ void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], fl
 		resultmat2[i][0] = (smat[i][0] * resultmat2[0][0]) + (smat[i][1] * resultmat2[1][0]) + (smat[i][2] * resultmat2[2][0]) + (smat[i][3] * resultmat2[3][0]);
 		resultmat3[i][0] = (smat[i][0] * resultmat3[0][0]) + (smat[i][1] * resultmat3[1][0]) + (smat[i][2] * resultmat3[2][0]) + (smat[i][3] * resultmat3[3][0]);
 	}
+
+
+	resultmat1[0][0] += 400; resultmat1[1][0] += 150;
+	resultmat2[0][0] += 400; resultmat2[1][0] += 150;
+	resultmat3[0][0] += 400; resultmat3[1][0] += 150;
 
 	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
 	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
@@ -110,12 +119,12 @@ void Matrixfun::Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1]
 
 void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
 {
-	int radian;
+	int xradian;
 	double sinresult, cosresult;
 
-	radian = 60;
-	sinresult = sin(radian * PI / 180);
-	cosresult = cos(radian * PI / 180);
+	xradian = 60;
+	sinresult = sin(xradian * PI / 180);
+	cosresult = cos(xradian * PI / 180);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//X축
 	float rmatx[4][4] = { { 1, 0, 0, 0 }, { 0, cosresult, -sinresult, 0 }, { 0, sinresult, cosresult, 0 }, { 0, 0, 0, 1 } }; //X
@@ -126,16 +135,12 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 		resultmat2[i][0] = (rmatx[i][0] * resultmat2[0][0]) + (rmatx[i][1] * resultmat2[1][0]) + (rmatx[i][2] * resultmat2[2][0]) + (rmatx[i][3] * resultmat2[3][0]);
 		resultmat3[i][0] = (rmatx[i][0] * resultmat3[0][0]) + (rmatx[i][1] * resultmat3[1][0]) + (rmatx[i][2] * resultmat3[2][0]) + (rmatx[i][3] * resultmat3[3][0]);
 	}
-	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-	pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-	pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Y축
-	radian = 60;
-	sinresult = sin(radian * PI / 180);
-	cosresult = cos(radian * PI / 180);
+	int yradian = 60;
+	sinresult = sin(yradian * PI / 180);
+	cosresult = cos(yradian * PI / 180);
 
 	float rmaty[4][4] = { { cosresult, 0, -sinresult, 0 },{ 0, 1, 0, 0 },{ sinresult, 0, cosresult, 0 },{ 0, 0, 0, 1 } }; //Y
 	for (int i = 0; i < COL; i++)
@@ -144,16 +149,12 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 		resultmat2[i][0] = (rmaty[i][0] * resultmat2[0][0]) + (rmaty[i][1] * resultmat2[1][0]) + (rmaty[i][2] * resultmat2[2][0]) + (rmaty[i][3] * resultmat2[3][0]);
 		resultmat3[i][0] = (rmaty[i][0] * resultmat3[0][0]) + (rmaty[i][1] * resultmat3[1][0]) + (rmaty[i][2] * resultmat3[2][0]) + (rmaty[i][3] * resultmat3[3][0]);
 	}
-	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-	pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-	pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Z축
-	radian = 0;
-	sinresult = sin(radian * PI / 180);
-	cosresult = cos(radian * PI / 180);
+	int zradian = 0;
+	sinresult = sin(zradian * PI / 180);
+	cosresult = cos(zradian * PI / 180);
 
 	float rmatz[4][4] = { { cosresult, -sinresult, 0, 0 },{ sinresult, cosresult, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
 	for (int i = 0; i < COL; i++)
@@ -162,10 +163,6 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 		resultmat2[i][0] = (rmatz[i][0] * resultmat2[0][0]) + (rmatz[i][1] * resultmat2[1][0]) + (rmatz[i][2] * resultmat2[2][0]) + (rmatz[i][3] * resultmat2[3][0]);
 		resultmat3[i][0] = (rmatz[i][0] * resultmat3[0][0]) + (rmatz[i][1] * resultmat3[1][0]) + (rmatz[i][2] * resultmat3[2][0]) + (rmatz[i][3] * resultmat3[3][0]);
 	}
-	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-	pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-	pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CString str;      //문자열
@@ -199,3 +196,60 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 	//pDC->Polygon(polyPoint, 3);
 
 }
+
+void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian)
+{
+	double sinresult, cosresult;
+	sinresult = sin(xradian * PI / 180);
+	cosresult = cos(xradian * PI / 180);
+
+	resultmat1[0][0] -= 400; resultmat1[1][0] -= 150;
+	resultmat2[0][0] -= 400; resultmat2[1][0] -= 150;
+	resultmat3[0][0] -= 400; resultmat3[1][0] -= 150;
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//X축
+	float rmatx[4][4] = { { 1, 0, 0, 0 },{ 0, cosresult, -sinresult, 0 },{ 0, sinresult, cosresult, 0 },{ 0, 0, 0, 1 } }; //X
+
+	for (int i = 0; i < COL; i++)
+	{
+		resultmat1[i][0] = (rmatx[i][0] * resultmat1[0][0]) + (rmatx[i][1] * resultmat1[1][0]) + (rmatx[i][2] * resultmat1[2][0]) + (rmatx[i][3] * resultmat1[3][0]);
+		resultmat2[i][0] = (rmatx[i][0] * resultmat2[0][0]) + (rmatx[i][1] * resultmat2[1][0]) + (rmatx[i][2] * resultmat2[2][0]) + (rmatx[i][3] * resultmat2[3][0]);
+		resultmat3[i][0] = (rmatx[i][0] * resultmat3[0][0]) + (rmatx[i][1] * resultmat3[1][0]) + (rmatx[i][2] * resultmat3[2][0]) + (rmatx[i][3] * resultmat3[3][0]);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Y축
+	sinresult = sin(yradian * PI / 180);
+	cosresult = cos(yradian * PI / 180);
+
+	float rmaty[4][4] = { { cosresult, 0, -sinresult, 0 },{ 0, 1, 0, 0 },{ sinresult, 0, cosresult, 0 },{ 0, 0, 0, 1 } }; //Y
+	for (int i = 0; i < COL; i++)
+	{
+		resultmat1[i][0] = (rmaty[i][0] * resultmat1[0][0]) + (rmaty[i][1] * resultmat1[1][0]) + (rmaty[i][2] * resultmat1[2][0]) + (rmaty[i][3] * resultmat1[3][0]);
+		resultmat2[i][0] = (rmaty[i][0] * resultmat2[0][0]) + (rmaty[i][1] * resultmat2[1][0]) + (rmaty[i][2] * resultmat2[2][0]) + (rmaty[i][3] * resultmat2[3][0]);
+		resultmat3[i][0] = (rmaty[i][0] * resultmat3[0][0]) + (rmaty[i][1] * resultmat3[1][0]) + (rmaty[i][2] * resultmat3[2][0]) + (rmaty[i][3] * resultmat3[3][0]);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Z축
+	sinresult = sin(zradian * PI / 180);
+	cosresult = cos(zradian * PI / 180);
+
+	float rmatz[4][4] = { { cosresult, -sinresult, 0, 0 },{ sinresult, cosresult, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
+	for (int i = 0; i < COL; i++)
+	{
+		resultmat1[i][0] = (rmatz[i][0] * resultmat1[0][0]) + (rmatz[i][1] * resultmat1[1][0]) + (rmatz[i][2] * resultmat1[2][0]) + (rmatz[i][3] * resultmat1[3][0]);
+		resultmat2[i][0] = (rmatz[i][0] * resultmat2[0][0]) + (rmatz[i][1] * resultmat2[1][0]) + (rmatz[i][2] * resultmat2[2][0]) + (rmatz[i][3] * resultmat2[3][0]);
+		resultmat3[i][0] = (rmatz[i][0] * resultmat3[0][0]) + (rmatz[i][1] * resultmat3[1][0]) + (rmatz[i][2] * resultmat3[2][0]) + (rmatz[i][3] * resultmat3[3][0]);
+	}
+	
+	resultmat1[0][0] += 400; resultmat1[1][0] += 150;
+	resultmat2[0][0] += 400; resultmat2[1][0] += 150;
+	resultmat3[0][0] += 400; resultmat3[1][0] += 150;
+
+	pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
+	pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
+	pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+	pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+}
+

@@ -26,4 +26,7 @@ public:
 	void Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
 	void Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
 	void Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
+	void Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian);
+
+
 };
