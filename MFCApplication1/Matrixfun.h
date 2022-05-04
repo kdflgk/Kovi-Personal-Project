@@ -22,11 +22,14 @@ public:
 	float **MatrixAdd(float** mat1, float** mat2);
 	float **MatrixSub(float** mat1, float** mat2);
 	float **MatrixMul(float** mat1, float** mat2);
+	float MatrixMul1(float mat1[ROW][COL], float mat2[ROW][COL]);
+	float **MatrixInverse(float** mat1);
 
-	void Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
-	void Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
+	void Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], int x, int y);
+	void Transform(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], int x, int y);;
 	void Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1]);
 	void Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian);
 
+	void ViewMat(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian);
 
 };

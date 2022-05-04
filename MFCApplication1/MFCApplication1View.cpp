@@ -51,6 +51,18 @@ CMFCApplication1View::CMFCApplication1View()
 		Matrix[i] = new float[ROW];
 	}
 
+	resultmat1 = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		resultmat1[i] = new float[ROW];
+	}
+	resultmat2 = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		resultmat2[i] = new float[ROW];
+	}
+	resultmat2 = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		resultmat2[i] = new float[ROW];
+	}
 
 }
 
@@ -187,20 +199,26 @@ void CMFCApplication1View::OnColorselect()
 	{
 		for (int j = 0; j < COL; j++)
 		{
-			Matrix[i][j] = num++;
+			Matrix[i][j] = num++;			
+			resultmat1[i][j] = 1;
+			resultmat2[i][j] = num++;
 		}
 	}
+	resultmat1[0][0] = 2;
+	resultmat1[2][1] = 5;
+	resultmat1[1][3] = 4;
 
-	Matrix = matfun.MatrixAdd(Matrix, Matrix);
+	//Matrix = matfun.MatrixAdd(resultmat1, resultmat2);
 	//Matrix = matfun.MatrixSub(Matrix, Matrix);
 	//Matrix = matfun.MatrixMul(Matrix, Matrix);
+	Matrix = matfun.MatrixInverse(resultmat1);
 
 	for (int i = 0; i < ROW; i++)
 	{
 		for (int j = 0; j < COL; j++)
 		{
 			str.Format(L"Matrix[%d][%d] = %.2f", i, j, Matrix[i][j]);
-			AfxMessageBox(str);
+			//AfxMessageBox(str);
 		}
 	}
 	//////////////////////////////////////////////////////////////////////
@@ -288,48 +306,53 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//pDC->Rectangle(start.x, start.y, end.x, end.y);
 
 		//변환행렬 테스트
-		CPoint originpoint = { 400,150 };
-		float resultmat1[4][1] = { { originpoint.x},{ originpoint.y - 50 },{ 0 },{ 1 } };
-		float resultmat2[4][1] = { { originpoint.x + 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
-		float resultmat3[4][1] = { { originpoint.x - 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
+		//CPoint originpoint = { 400,150 };
+		float originpointx = 400;
+		float originpointy = 400;
 
-		//pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-		//pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-		//pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-		//pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+		//float resultmat1[4][1] = { { originpoint.x },{ originpoint.y - 50 },{ 0 },{ 1 } };
+		//float resultmat2[4][1] = { { originpoint.x + 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
+		//float resultmat3[4][1] = { { originpoint.x - 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
+
+		float resultmat1[4][1] = { { originpointx },{ originpointy - 50 },{ 0 },{ 1 } };
+		float resultmat2[4][1] = { { originpointx + 100 },{ originpointy + 50 },{ 0 },{ 1 } };
+		float resultmat3[4][1] = { { originpointx - 100 },{ originpointy + 50 },{ 0 },{ 1 } };
+
+
+		pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
+		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
+		pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+		pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 		////////////////////////////////////////////////////////////////////////
-		//CString str;      //문자열
-		//CPoint m_pt;    // 좌표
-		//m_pt.x = resultmat1[0][0];
-		//m_pt.y = resultmat1[1][0];
-		//str = "1번점";
-		//pDC->TextOut(m_pt.x, m_pt.y, str);
-		//m_pt.x = resultmat2[0][0];
-		//m_pt.y = resultmat2[1][0];
-		//str = "2번점";
-		//pDC->TextOut(m_pt.x, m_pt.y, str);
-		//m_pt.x = resultmat3[0][0];
-		//m_pt.y = resultmat3[1][0];
-		//str = "3번점";
-		//pDC->TextOut(m_pt.x, m_pt.y, str);
+
+
 		//////////////////////////////////////////////////////////////////////
-		//matfun.Scale(pDC, resultmat1, resultmat2, resultmat3);
-		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 45, 0, 45);
-		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3);
+		matfun.Scale(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
+		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 90);
+		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
 		///////////////////////////////////////////////////////////////////////////		
-		CPoint a[12] = { { 100,200 }, { 100,100 }, { 200,100 }, { 100,200 },{ 200,100 }, { 200, 200 }, 
-						 {200, 200 }, { 300, 100 }, { 200, 100 }	,{ 200, 200 } ,{ 300, 100 } ,{ 300, 200 } };
-		int count = 0;
-		for (int i = 0; i < 4; i++)
-		{
-			count = i * 3;
-			pDC->MoveTo(a[count].x, a[count].y);
-			pDC->LineTo(a[count + 1].x, a[count + 1].y);
-			pDC->LineTo(a[count + 2].x, a[count + 2].y);
-			pDC->LineTo(a[count].x, a[count].y);
+		
+		str.Format(_T("1번 %.1f, %.1f"), resultmat1[0][0], resultmat1[1][0]);
+		pDC->TextOut(resultmat1[0][0], resultmat1[1][0], str);
+		str.Format(_T("2번 %.1f, %.1f"), resultmat2[0][0], resultmat2[1][0]);
+		pDC->TextOut(resultmat2[0][0], resultmat2[1][0], str);
+		str.Format(_T("3번 %.1f, %.1f"), resultmat3[0][0], resultmat3[1][0]);
+		pDC->TextOut(resultmat3[0][0], resultmat3[1][0], str);
 
-		}
 
+		///////////////////////////////////////////////////////////////////////////		
+		//CPoint a[12] = { { 100,200 }, { 100,100 }, { 200,100 }, { 100,200 },{ 200,100 }, { 200, 200 }, 
+		//				 {200, 200 }, { 300, 100 }, { 200, 100 }	,{ 200, 200 } ,{ 300, 100 } ,{ 300, 200 } };
+		//int count = 0;
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	count = i * 3;
+		//	pDC->MoveTo(a[count].x, a[count].y);
+		//	pDC->LineTo(a[count + 1].x, a[count + 1].y);
+		//	pDC->LineTo(a[count + 2].x, a[count + 2].y);
+		//	pDC->LineTo(a[count].x, a[count].y);
+		//}
+		///////////////////////////////////////////////////////////////////////////		
 
 	}
 }
@@ -337,8 +360,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 void CMFCApplication1View::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	start = point;
-	m_bDrag = true;
+
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -346,13 +368,7 @@ void CMFCApplication1View::OnLButtonDown(UINT nFlags, CPoint point)
 void CMFCApplication1View::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (m_bDrag)
-	{
-		//start = point;
-		end = point;
 
-		RedrawWindow();
-	}
 
 	CView::OnMouseMove(nFlags, point);
 }
@@ -360,14 +376,7 @@ void CMFCApplication1View::OnMouseMove(UINT nFlags, CPoint point)
 void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (m_bDrag)
-	{
-		//start = point;
-		end = point;
 
-		m_bDrag = FALSE;
-		//RedrawWindow();
-	}
 
 	CView::OnLButtonUp(nFlags, point);
 }

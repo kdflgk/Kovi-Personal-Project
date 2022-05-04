@@ -21,6 +21,8 @@ public:
 	BOOL m_bDrag;
 	CPoint start;
 	CPoint end;
+	CString str;
+
 	float **Matrix; //2차원 배열
 	float **resultmat1;
 	float **resultmat2;
