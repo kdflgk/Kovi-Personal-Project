@@ -330,10 +330,10 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//float resultmat2[4][1] = { { originpoint.x + 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
 		//float resultmat3[4][1] = { { originpoint.x - 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
 
-		float resultmat1[4][1] = { { originpointx },{ originpointy - 50 },{ 0 },{ 1 } };
+		//float resultmat1[4][1] = { { originpointx },{ originpointy - 50 },{ 0 },{ 1 } };
 		float resultmat2[4][1] = { { originpointx + 100 },{ originpointy + 50 },{ 0 },{ 1 } };
 		float resultmat3[4][1] = { { originpointx - 100 },{ originpointy + 50 },{ 0 },{ 1 } };
-
+		float resultmat1[4][1] = { { originpointx+ 1 },{ originpointx+ 0 },{ 0 },{ 1 } };
 
 		pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
 		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
@@ -343,17 +343,18 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 
 
 		//////////////////////////////////////////////////////////////////////
-		matfun.Scale(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
-		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 90);
+		//matfun.Scale(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
+		matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 90);
 		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
+		//matfun.ViewMat1(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 90, 2, 2);
 		///////////////////////////////////////////////////////////////////////////		
 		
-		str.Format(_T("1번 %.1f, %.1f"), resultmat1[0][0], resultmat1[1][0]);
-		pDC->TextOut(resultmat1[0][0], resultmat1[1][0], str);
-		str.Format(_T("2번 %.1f, %.1f"), resultmat2[0][0], resultmat2[1][0]);
-		pDC->TextOut(resultmat2[0][0], resultmat2[1][0], str);
-		str.Format(_T("3번 %.1f, %.1f"), resultmat3[0][0], resultmat3[1][0]);
-		pDC->TextOut(resultmat3[0][0], resultmat3[1][0], str);
+		//str.Format(_T("1번 %.1f, %.1f"), resultmat1[0][0], resultmat1[1][0]);
+		//pDC->TextOut(resultmat1[0][0], resultmat1[1][0], str);
+		//str.Format(_T("2번 %.1f, %.1f"), resultmat2[0][0], resultmat2[1][0]);
+		//pDC->TextOut(resultmat2[0][0], resultmat2[1][0], str);
+		//str.Format(_T("3번 %.1f, %.1f"), resultmat3[0][0], resultmat3[1][0]);
+		//pDC->TextOut(resultmat3[0][0], resultmat3[1][0], str);
 
 
 		///////////////////////////////////////////////////////////////////////////		
