@@ -10,9 +10,9 @@ Matrixfun::Matrixfun()
 //////////////////////////////////////////////////////////////////////////////
 // °è»ê½Ä
 //MatrixAdd
-float **Matrixfun::MatrixAdd(float** mat1, float** mat2)
+float** Matrixfun::MatrixAdd(float** mat1, float** mat2)
 {
-	float **Resultmat = new float*[COL];
+	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -28,9 +28,9 @@ float **Matrixfun::MatrixAdd(float** mat1, float** mat2)
 }
 
 //MatrixSub
-float **Matrixfun::MatrixSub(float** mat1, float** mat2)
+float** Matrixfun::MatrixSub(float** mat1, float** mat2)
 {
-	float **Resultmat = new float*[COL];
+	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -47,9 +47,9 @@ float **Matrixfun::MatrixSub(float** mat1, float** mat2)
 }
 
 //MatrixMul
-float **Matrixfun::MatrixMul(float** mat1, float** mat2)
+float** Matrixfun::MatrixMul(float** mat1, float** mat2)
 {
-	float **Resultmat = new float*[COL];
+	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -81,25 +81,25 @@ float Matrixfun::MatrixMul1(float mat1[ROW][COL], float mat2[ROW][COL])
 
 }
 
-float **Matrixfun::MatrixInverse(float** mat1)
+float** Matrixfun::MatrixInverse(float** mat1)
 {
-	float **Resultmat = new float*[COL];
+	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
 
-	float det = mat1[0][0] * (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
-							- mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
-							+ mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]))
-			  - mat1[0][1] * (mat1[1][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
-							- mat1[1][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
-							+ mat1[1][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]))
-			  + mat1[0][2] * (mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
-							- mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
-							+ mat1[1][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0]))
-			  - mat1[0][3] * (mat1[1][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])
-							- mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])
-							+ mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0]));
+	float det = mat1[0][0] * (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2])
+		- mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
+		+ mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]))
+		- mat1[0][1] * (mat1[1][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2])
+			- mat1[1][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
+			+ mat1[1][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]))
+		+ mat1[0][2] * (mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
+			- mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
+			+ mat1[1][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0]))
+		- mat1[0][3] * (mat1[1][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])
+			- mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])
+			+ mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0]));
 
 	//float C[4][4] = {
 	//	{ mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) - mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]),
@@ -120,43 +120,107 @@ float **Matrixfun::MatrixInverse(float** mat1)
 	//	mat1[0][0] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1]) - mat1[0][1] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]) + mat1[0][2] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0]) }
 	//};
 
-	float CT[4][4] = {
-		{ (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) - mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
+	//float CT[4][4] = {
+	//	{ (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) - mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
+	//	-(-mat1[0][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) + mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),				
+	//	(-mat1[0][1] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2]) + mat1[0][2] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) - mat1[0][3] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1])),		
+	//	-(-mat1[0][1] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) + mat1[0][2] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) - mat1[0][3] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1]))
+	//	},
+	//	{ -(-mat1[1][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) + mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),		
+	//	(mat1[0][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) + mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][2]) - mat1[0][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])),		
+	//	-(mat1[0][0] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2]) + mat1[0][2] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) - mat1[0][3] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0])),		
+	//	(mat1[0][0] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) + mat1[0][2] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) - mat1[0][3] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]))
+	//	},
+	//	{ (-mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) + mat1[1][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),		
+	//	-(mat1[0][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) - mat1[0][3] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])),		
+	//	(-mat1[0][0] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) - mat1[0][1] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) - mat1[0][3] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),		
+	//	-(mat1[0][0] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) - mat1[0][1] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) - mat1[0][3] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0])),
+	//	},
+	//	{ -(-mat1[1][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]) + mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]) - mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),		
+	//	(mat1[0][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]) - mat1[0][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]) + mat1[0][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),		
+	//	-(-mat1[0][0] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1]) - mat1[0][1] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0]) + mat1[0][2] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),		
+	//	(mat1[0][0] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1]) - mat1[0][1] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]) + mat1[0][2] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0]))
+	//	}
+	//};
 
-		-(-mat1[0][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) + mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
-				
-		(-mat1[0][1] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2]) + mat1[0][2] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) - mat1[0][3] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1])),
-		
-		-(-mat1[0][1] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) + mat1[0][2] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) - mat1[0][3] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1]))
-		},
+	float CT[4][4] =	{
+	{ (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
+	- mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
+	+ mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
 
-		{ -(-mat1[0][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) + mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
-		
-		(mat1[0][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) + mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][2]) - mat1[0][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])),
-		
-		-(mat1[0][0] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2]) + mat1[0][2] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) - mat1[0][3] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0])),
-		
-		(mat1[0][0] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) + mat1[0][2] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) - mat1[0][3] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]))
-		},
+	-(mat1[0][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
+		- mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) 
+		+ mat1[0][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
 
-		{ (-mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) + mat1[1][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
-		
-		-(mat1[0][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) + mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) - mat1[0][3] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])),
-		
-		(-mat1[0][1] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) - mat1[0][1] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) - mat1[0][3] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),
-		
-		-(mat1[0][0] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) - mat1[0][1] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) - mat1[0][3] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0])),
-		},
+	(mat1[0][1] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2]) 
+		- mat1[0][2] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) 
+		+ mat1[0][3] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1])),
 
-		{ -(-mat1[1][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]) + mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]) - mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
-		
-		(mat1[0][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1]) - mat1[0][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]) + mat1[0][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
-		
-		-(-mat1[0][1] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1]) - mat1[0][1] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0]) + mat1[0][2] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),
-		
-		(mat1[0][0] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1]) - mat1[0][1] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]) + mat1[0][2] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0]))
-		}
+	-(mat1[0][1] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) 
+		- mat1[0][2] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) 
+		+ mat1[0][3] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1])) 
+	},
+
+
+
+	{ -(mat1[1][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
+		- mat1[1][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+		+ mat1[1][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])),
+
+	(mat1[0][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
+		- mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+		+ mat1[0][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])),
+
+	-(mat1[0][0] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2])
+		- mat1[0][2] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) 
+		+ mat1[0][3] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0])),
+
+	(mat1[0][0] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) 
+		- mat1[0][2] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) 
+		+ mat1[0][3] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]))
+	},
+
+
+
+
+	{ (mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) 
+		- mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+		+ mat1[1][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
+
+	-(mat1[0][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) 
+		- mat1[0][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+		+ mat1[0][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
+
+	(mat1[0][0] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) 
+		- mat1[0][1] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) 
+		+ mat1[0][3] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),
+
+	-(mat1[0][0] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) 
+		- mat1[0][1] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) 
+		+ mat1[0][3] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0])),
+	},
+
+
+
+
+	{ -(mat1[1][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])
+		- mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]) 
+		+ mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
+
+	(mat1[0][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])
+		- mat1[0][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])
+		+ mat1[0][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
+
+	-(mat1[0][0] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1])
+		- mat1[0][1] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0]) 
+		+ mat1[0][2] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),
+
+	(mat1[0][0] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1])
+		- mat1[0][1] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]) 
+		+ mat1[0][2] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0]))
+	}
 	};
+
 
 	CString str;
 	for (int i = 0; i < ROW; i++)
@@ -164,7 +228,7 @@ float **Matrixfun::MatrixInverse(float** mat1)
 		for (int j = 0; j < COL; j++)
 		{
 			str.Format(_T("CT[%f][%f] = %.2f"), i, j, CT[i][j]);
-			//AfxMessageBox(str);
+			AfxMessageBox(str);
 		}
 	}
 	if (det != 0)
@@ -181,7 +245,7 @@ float **Matrixfun::MatrixInverse(float** mat1)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1],int x,int y)
+void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], int x, int y)
 {
 	float smat[4][4] = { { x,0,0,0 },{ 0,y,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
 

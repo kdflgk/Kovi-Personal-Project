@@ -200,13 +200,29 @@ void CMFCApplication1View::OnColorselect()
 		for (int j = 0; j < COL; j++)
 		{
 			Matrix[i][j] = num++;			
-			resultmat1[i][j] = 1;
+			//resultmat1[i][j] = 1;
 			resultmat2[i][j] = num++;
 		}
 	}
 	resultmat1[0][0] = 2;
-	resultmat1[2][1] = 5;
-	resultmat1[1][3] = 4;
+	resultmat1[0][1] = 3;
+	resultmat1[0][2] = 3;
+	resultmat1[0][3] = 2;
+
+	resultmat1[1][0] = 4;
+	resultmat1[1][1] = 5;
+	resultmat1[1][2] = 7;
+	resultmat1[1][3] = 3;
+
+	resultmat1[2][0] = 2;
+	resultmat1[2][1] = 3;
+	resultmat1[2][2] = 4;
+	resultmat1[2][3] = 1;
+
+	resultmat1[3][0] = 5;
+	resultmat1[3][1] = 5;
+	resultmat1[3][2] = 6;
+	resultmat1[3][3] = 4;
 
 	//Matrix = matfun.MatrixAdd(resultmat1, resultmat2);
 	//Matrix = matfun.MatrixSub(Matrix, Matrix);
