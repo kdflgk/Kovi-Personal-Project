@@ -12,7 +12,7 @@ Matrixfun::Matrixfun()
 //MatrixAdd
 float** Matrixfun::MatrixAdd(float** mat1, float** mat2)
 {
-	float** Resultmat = new float* [COL];
+	float** Resultmat = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -30,7 +30,7 @@ float** Matrixfun::MatrixAdd(float** mat1, float** mat2)
 //MatrixSub
 float** Matrixfun::MatrixSub(float** mat1, float** mat2)
 {
-	float** Resultmat = new float* [COL];
+	float** Resultmat = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -49,7 +49,7 @@ float** Matrixfun::MatrixSub(float** mat1, float** mat2)
 //MatrixMul
 float** Matrixfun::MatrixMul(float** mat1, float** mat2)
 {
-	float** Resultmat = new float* [COL];
+	float** Resultmat = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -83,7 +83,7 @@ float Matrixfun::MatrixMul1(float mat1[ROW][COL], float mat2[ROW][COL])
 
 float** Matrixfun::MatrixInverse(float** mat1)
 {
-	float** Resultmat = new float* [COL];
+	float** Resultmat = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[ROW];
 	}
@@ -101,57 +101,57 @@ float** Matrixfun::MatrixInverse(float** mat1)
 			- mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])
 			+ mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0]));
 
-	float CT[4][4] =	{
-	{ (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
+	float CT[4][4] = {
+	{ (mat1[1][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2])
 	- mat1[1][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
 	+ mat1[1][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
-	-(mat1[0][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
-		- mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) 
+	-(mat1[0][1] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2])
+		- mat1[0][2] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
 		+ mat1[0][3] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])),
-	(mat1[0][1] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2]) 
-		- mat1[0][2] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) 
+	(mat1[0][1] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2])
+		- mat1[0][2] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1])
 		+ mat1[0][3] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1])),
-	-(mat1[0][1] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) 
-		- mat1[0][2] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) 
+	-(mat1[0][1] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2])
+		- mat1[0][2] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1])
 		+ mat1[0][3] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1])) },
 
-	{ -(mat1[1][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
-		- mat1[1][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+	{ -(mat1[1][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2])
+		- mat1[1][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
 		+ mat1[1][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])),
-	(mat1[0][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2]) 
-		- mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+	(mat1[0][0] * (mat1[2][2] * mat1[3][3] - mat1[2][3] * mat1[3][2])
+		- mat1[0][2] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
 		+ mat1[0][3] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])),
 	-(mat1[0][0] * (mat1[1][2] * mat1[3][3] - mat1[1][3] * mat1[3][2])
-		- mat1[0][2] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) 
+		- mat1[0][2] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0])
 		+ mat1[0][3] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0])),
-	(mat1[0][0] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2]) 
-		- mat1[0][2] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) 
+	(mat1[0][0] * (mat1[1][2] * mat1[2][3] - mat1[1][3] * mat1[2][2])
+		- mat1[0][2] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0])
 		+ mat1[0][3] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]))	},
 
-	{ (mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) 
-		- mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+	{ (mat1[1][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
+		- mat1[1][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
 		+ mat1[1][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
-	-(mat1[0][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1]) 
-		- mat1[0][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0]) 
+	-(mat1[0][0] * (mat1[2][1] * mat1[3][3] - mat1[2][3] * mat1[3][1])
+		- mat1[0][1] * (mat1[2][0] * mat1[3][3] - mat1[2][3] * mat1[3][0])
 		+ mat1[0][3] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
-	(mat1[0][0] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1]) 
-		- mat1[0][1] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0]) 
+	(mat1[0][0] * (mat1[1][1] * mat1[3][3] - mat1[1][3] * mat1[3][1])
+		- mat1[0][1] * (mat1[1][0] * mat1[3][3] - mat1[1][3] * mat1[3][0])
 		+ mat1[0][3] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),
-	-(mat1[0][0] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1]) 
-		- mat1[0][1] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0]) 
+	-(mat1[0][0] * (mat1[1][1] * mat1[2][3] - mat1[1][3] * mat1[2][1])
+		- mat1[0][1] * (mat1[1][0] * mat1[2][3] - mat1[1][3] * mat1[2][0])
 		+ mat1[0][3] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0])),},
 
 	{ -(mat1[1][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])
-		- mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0]) 
+		- mat1[1][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])
 		+ mat1[1][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
 	(mat1[0][0] * (mat1[2][1] * mat1[3][2] - mat1[2][2] * mat1[3][1])
 		- mat1[0][1] * (mat1[2][0] * mat1[3][2] - mat1[2][2] * mat1[3][0])
 		+ mat1[0][2] * (mat1[2][0] * mat1[3][1] - mat1[2][1] * mat1[3][0])),
 	-(mat1[0][0] * (mat1[1][1] * mat1[3][2] - mat1[1][2] * mat1[3][1])
-		- mat1[0][1] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0]) 
+		- mat1[0][1] * (mat1[1][0] * mat1[3][2] - mat1[1][2] * mat1[3][0])
 		+ mat1[0][2] * (mat1[1][0] * mat1[3][1] - mat1[1][1] * mat1[3][0])),
 	(mat1[0][0] * (mat1[1][1] * mat1[2][2] - mat1[1][2] * mat1[2][1])
-		- mat1[0][1] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0]) 
+		- mat1[0][1] * (mat1[1][0] * mat1[2][2] - mat1[1][2] * mat1[2][0])
 		+ mat1[0][2] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0]))	}
 	};
 
@@ -162,9 +162,9 @@ float** Matrixfun::MatrixInverse(float** mat1)
 	//	for (int j = 0; j < COL; j++)
 	//	{
 	//		str.Format(_T("CT[%f][%f] = %.2f"), i, j, CT[i][j]);
-	//		AfxMessageBox(str);
 	//	}
 	//}
+
 	if (det != 0)
 	{
 		for (int i = 0; i < ROW; i++) {
@@ -173,6 +173,15 @@ float** Matrixfun::MatrixInverse(float** mat1)
 			}
 		}
 	}
+
+	//str.Format(_T("%f %f %f %f"), Resultmat[0][0], Resultmat[0][1], Resultmat[0][2], Resultmat[0][3]);
+	//AfxMessageBox(str);
+	//str.Format(_T("%f %f %f %f"), Resultmat[1][0], Resultmat[1][1], Resultmat[1][2], Resultmat[1][3]);
+	//AfxMessageBox(str);
+	//str.Format(_T("%f %f %f %f"), Resultmat[2][0], Resultmat[2][1], Resultmat[2][2], Resultmat[2][3]);
+	//AfxMessageBox(str);
+	//str.Format(_T("%f %f %f %f"), Resultmat[3][0], Resultmat[3][1], Resultmat[3][2], Resultmat[3][3]);
+	//AfxMessageBox(str);
 
 	return Resultmat;
 }
@@ -333,6 +342,27 @@ float **Matrixfun::AffineTranslatereturn(float resultmat1[][1], float xtrans, fl
 	return Resultmat;
 }
 
+float **Matrixfun::ViewTranslatereturn(float xtrans, float ytrans, float ztrans)
+{
+	float resultmat1[4][4] = { { 1,0,0,0 },{ 0,1,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
+	float tmat[4][4] = { { 1,0,0,100 * xtrans },{ 0,1,0,100 * ytrans },{ 0,0,1,100 * ztrans },{ 0,0,0,1 } };
+
+	float** Resultmat = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[COL];
+	}
+
+	for (int i = 0; i < COL; i++)
+	{
+		for (int j = 0; j < ROW; j++)
+		{
+			Resultmat[i][j] = (tmat[i][0] * resultmat1[0][j]) + (tmat[i][1] * resultmat1[1][j]) + (tmat[i][2] * resultmat1[2][j]) + (tmat[i][3] * resultmat1[3][j]);
+		}
+	}
+
+	return Resultmat;
+}
+
 void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1])
 {
 	int xradian;
@@ -467,8 +497,8 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 		result1[i][0] = (rmaty[i][0] * resultmat1[0][0]) + (rmaty[i][1] * resultmat1[1][0]) + (rmaty[i][2] * resultmat1[2][0]) + (rmaty[i][3] * resultmat1[3][0]);
 		result2[i][0] = (rmaty[i][0] * resultmat2[0][0]) + (rmaty[i][1] * resultmat2[1][0]) + (rmaty[i][2] * resultmat2[2][0]) + (rmaty[i][3] * resultmat2[3][0]);
 		result3[i][0] = (rmaty[i][0] * resultmat3[0][0]) + (rmaty[i][1] * resultmat3[1][0]) + (rmaty[i][2] * resultmat3[2][0]) + (rmaty[i][3] * resultmat3[3][0]);
-	}	
-	
+	}
+
 	str.Format(_T("1번점y : %f,%f"), result1[0][0], result1[1][0]);
 	pDC->TextOut(50, 300, str);
 	str.Format(_T("2번점y : %f,%f"), result2[0][0], result2[1][0]);
@@ -482,7 +512,7 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 	for (int i = 0; i < COL; i++)
 	{
 		result1[i][0] = (rmatz[i][0] * resultmat1[0][0]) + (rmatz[i][1] * resultmat1[1][0]) + (rmatz[i][2] * resultmat1[2][0]) + (rmatz[i][3] * resultmat1[3][0]);
-		result2[i][0] = (rmatz[i][0] * resultmat2[0][0]) + (rmatz[i][1] * resultmat2[1][0]) + (rmatz[i][2] * resultmat2[2][0]) + (rmatz[i][3] * resultmat2[3][0]);	
+		result2[i][0] = (rmatz[i][0] * resultmat2[0][0]) + (rmatz[i][1] * resultmat2[1][0]) + (rmatz[i][2] * resultmat2[2][0]) + (rmatz[i][3] * resultmat2[3][0]);
 		result3[i][0] = (rmatz[i][0] * resultmat3[0][0]) + (rmatz[i][1] * resultmat3[1][0]) + (rmatz[i][2] * resultmat3[2][0]) + (rmatz[i][3] * resultmat3[3][0]);
 	}
 
@@ -526,7 +556,7 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 	float** yresult1 = new float*[COL];
 	float** yresult2 = new float*[COL];
 	float** yresult3 = new float*[COL];
-	
+
 	float** zresult1 = new float*[COL];
 	float** zresult2 = new float*[COL];
 	float** zresult3 = new float*[COL];
@@ -545,7 +575,7 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 		zresult2[i] = new float[1];
 		zresult3[i] = new float[1];
 	}
-	
+
 	//CString str;      //문자열
 	//str.Format(_T("1번점 : %f,%f"), result1[0][0], result1[1][0]);
 	//pDC->TextOut(50, 100, str);
@@ -620,7 +650,7 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 	return Resultmat;
 }
 
-float **Matrixfun::AffineRotationreturn(CPoint cpoint,float resultmat1[][1], float xradian, float yradian, float zradian)
+float **Matrixfun::AffineRotationreturn(CPoint cpoint, float resultmat1[][1], float xradian, float yradian, float zradian)
 {
 	double sinx = sin(xradian * (PI / 180));
 	double cosx = cos(xradian * (PI / 180));
@@ -666,6 +696,68 @@ float **Matrixfun::AffineRotationreturn(CPoint cpoint,float resultmat1[][1], flo
 	return Resultmat;
 }
 
+float **Matrixfun::ViewRotationreturn(float xradian, float yradian, float zradian)
+{
+	double sinx = sin(xradian * (PI / 180));
+	double cosx = cos(xradian * (PI / 180));
+	double siny = sin(yradian * (PI / 180));
+	double cosy = cos(yradian * (PI / 180));
+	double sinz = sin(zradian * (PI / 180));
+	double cosz = cos(zradian * (PI / 180));
+
+	float resultmat1[4][4] = { {1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1} };
+	float rmatx[4][4] = { { 1, 0, 0, 0 },{ 0, cosx, -sinx, 0 },{ 0, sinx, cosx, 0 },{ 0, 0, 0, 1 } }; //X
+	float rmaty[4][4] = { { cosy, 0, siny, 0 },{ 0, 1, 0, 0 },{ -siny, 0, cosy, 0 },{ 0, 0, 0, 1 } }; //Y
+	float rmatz[4][4] = { { cosz, -sinz, 0, 0 },{ sinz, cosz, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
+
+	float** Resultmat = new float*[COL];
+	float** xresult = new float*[COL];
+	float** yresult = new float*[COL];
+	float** zresult = new float*[COL];
+
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[ROW];
+		xresult[i] = new float[ROW];
+		yresult[i] = new float[ROW];
+		zresult[i] = new float[ROW];
+	}
+
+	//x
+	for (int i = 0; i < COL; i++)
+	{
+		for (int j = 0; j < ROW; j++)
+		{
+			xresult[i][j] = (rmatx[i][0] * resultmat1[0][j]) + (rmatx[i][1] * resultmat1[1][j]) + (rmatx[i][2] * resultmat1[2][j]) + (rmatx[i][3] * resultmat1[3][j]);
+		}
+	}
+	//y
+	for (int i = 0; i < COL; i++)
+	{
+		for (int j = 0; j < ROW; j++)
+		{
+			yresult[i][j] = (rmatx[i][0] * xresult[0][j]) + (rmatx[i][1] * xresult[1][j]) + (rmatx[i][2] * xresult[2][j]) + (rmatx[i][3] * xresult[3][j]);
+		}
+	}
+	//z
+	for (int i = 0; i < COL; i++)
+	{
+		for (int j = 0; j < ROW; j++)
+		{
+			zresult[i][j] = (rmatx[i][0] * yresult[0][j]) + (rmatx[i][1] * yresult[1][j]) + (rmatx[i][2] * yresult[2][j]) + (rmatx[i][3] * yresult[3][j]);
+		}
+	}
+	//결과값저장
+	for (int i = 0; i < COL; i++)
+	{
+		for (int j = 0; j < ROW; j++)
+		{
+			Resultmat[i][j] = zresult[i][j];
+		}
+	}
+
+	return Resultmat;
+}
+
 float **Matrixfun::Affinereturn(CPoint cpoint, float resultmat[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans)
 {
 	float Inputmat[4][1];
@@ -694,26 +786,50 @@ float **Matrixfun::Affinereturn(CPoint cpoint, float resultmat[][1], float xradi
 	return Resultmat;
 }
 
-void Matrixfun::ViewMat(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian)
-{
-	//float** Resultmat = new float* [COL];
-	//for (int i = 0; i < COL; i++) {
-	//	Resultmat[i] = new float[ROW];
-	//}
-}
 
-float** Matrixfun::ViewMat1(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian, float scale, float trans)
+float** Matrixfun::ViewMat(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans)
 {
-	float** Resultmat = new float* [COL];
+	float** Resultmat = new float*[COL];
+
+	float** RotateResultmat = new float*[COL];
+	float** InverseRotateResultmat = new float*[COL];
+
+	float** TransResultmat = new float*[COL];
+	float** InverseTransResultmat = new float*[COL];
+
+	float** InverseMulmat = new float*[COL];
+	float** YRotatemat = new float*[COL];
+	float** Viewmat = new float*[COL];
 	for (int i = 0; i < COL; i++) {
-		Resultmat[i] = new float[ROW];
+		Resultmat[i] = new float[1];
+
+		RotateResultmat[i] = new float[ROW];
+		InverseRotateResultmat[i] = new float[ROW];
+
+		TransResultmat[i] = new float[ROW];
+		InverseTransResultmat[i] = new float[ROW];
+
+		InverseMulmat[i] = new float[ROW];
+		YRotatemat[i]= new float[ROW];
+		Viewmat[i] = new float[ROW];
+
 	}
 
+	RotateResultmat = ViewRotationreturn(xradian, yradian, zradian);//x,y,z회전결과 4x4
+	InverseRotateResultmat = MatrixInverse(RotateResultmat);//RotateResultmat의 역행렬 4x4
 
+	TransResultmat = ViewTranslatereturn(xtrans, ytrans, ztrans);//이동결과 4x4
+	InverseTransResultmat = MatrixInverse(TransResultmat);//TransResultmat의 역행렬 4x4
 
+	InverseMulmat = MatrixMul(InverseRotateResultmat, InverseTransResultmat); //역행렬의 곱 4x4
+	YRotatemat = ViewRotationreturn(0, 180, 0);//y축180도 회전결과 4x4
+	Viewmat = MatrixMul(YRotatemat, InverseMulmat);
 
-
-
+	for (int i = 0; i < COL; i++)
+	{
+		Resultmat[i][0] = (Viewmat[i][0] * Inputmat[0][0]) + (Viewmat[i][1] * Inputmat[1][0]) + (Viewmat[i][2] * Inputmat[2][0]) + (Viewmat[i][3] * Inputmat[3][0]);
+		//Resultmat[i][0] = (Viewmat[i][0] * Inputmat[0][0]) + (Viewmat[i][1] * Inputmat[1][0]) + (Viewmat[i][2] * Inputmat[2][0]) + (Viewmat[i][3] * Inputmat[3][0]);
+	}
 
 	return Resultmat;
 }

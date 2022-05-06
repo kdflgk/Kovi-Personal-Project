@@ -41,7 +41,8 @@ public:
 	//float **Affinereturn(float xradian, float yradian, float zradian, float xscale, float yscale, float zscale, float xtrans, float ytrans, float ztrans = 1);
 	float **Affinereturn(CPoint cpoint, float resultmat1[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans = 1);
 
-	void ViewMat(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian);
-	float **ViewMat1(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian, float scale, float trans);
+	float **ViewRotationreturn(float xradian, float yradian, float zradian);
+	float **ViewTranslatereturn(float xtrans, float ytrans, float ztrans);
+	float **ViewMat(float resultmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans);
 
 };

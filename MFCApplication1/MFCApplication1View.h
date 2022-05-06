@@ -28,6 +28,10 @@ public:
 	float **resultmat2;
 	float **resultmat3;
 
+	float x = -3;
+	float y = 2;
+	float z = 1;
+
 
 	// 재정의입니다.
 public:
@@ -62,6 +66,7 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void Mydraw(CDC* pDC);
 
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // MFCApplication1View.cpp의 디버그 버전

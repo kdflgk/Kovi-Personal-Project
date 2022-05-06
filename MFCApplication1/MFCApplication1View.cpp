@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication1View, CView)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 Matrixfun matfun = Matrixfun();
@@ -96,7 +97,7 @@ void CMFCApplication1View::OnPaint()
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CView::OnPaint()을(를) 호출하지 마십시오.	
-	/////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//더블버퍼링
 	CDC mDC;
 	CBitmap * pOldBitmap, m_bitmap;
@@ -114,13 +115,13 @@ void CMFCApplication1View::OnPaint()
 	GetClientRect(rect);
 	mDC.FillSolidRect(rect, RGB(0, 155, 0));
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 실제 그리는부분
 	Mydraw(&mDC);
 
 
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//더블버퍼링
 	dc.BitBlt(0, 0, m_rtCtrlSize.Width(), m_rtCtrlSize.Height(), &mDC, 0, 0, SRCCOPY);
 	mDC.SelectObject(pOldBitmap);
@@ -191,7 +192,7 @@ void CMFCApplication1View::OnColorselect()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	//AfxMessageBox(_T("Colorselect"));
 
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//배열 함수 테스트용
 	CString str;
 	float num = 0;
@@ -199,7 +200,7 @@ void CMFCApplication1View::OnColorselect()
 	{
 		for (int j = 0; j < COL; j++)
 		{
-			Matrix[i][j] = num++;			
+			Matrix[i][j] = num++;
 			//resultmat1[i][j] = 1;
 			resultmat2[i][j] = num++;
 		}
@@ -237,7 +238,7 @@ void CMFCApplication1View::OnColorselect()
 			//AfxMessageBox(str);
 		}
 	}
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 
@@ -260,17 +261,17 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//pDC->Rectangle(start.x, start.y, end.x, end.y);
 
 		//변환행렬 테스트
-		CPoint cpoint = { 400,400 };
+		//CPoint cpoint = { 400,400 };
 
-		float resultmat1[4][1] = { { cpoint.x },{ cpoint.y - 50 },{ 0 },{ 1 } };
-		float resultmat2[4][1] = { { cpoint.x + 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
-		float resultmat3[4][1] = { { cpoint.x - 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
+		//float resultmat1[4][1] = { { cpoint.x },{ cpoint.y - 50 },{ 0 },{ 1 } };
+		//float resultmat2[4][1] = { { cpoint.x + 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
+		//float resultmat3[4][1] = { { cpoint.x - 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
 
-		pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-		pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-		pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
-		////////////////////////////////////////////////////////////////////////
+		//pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
+		//pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
+		//pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
+		//pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// 아핀행렬 테스트
 		//float testmat1[4][1] = { { cpoint.x },{ cpoint.y +1 },{ 0 },{ 1 } };
 		//float **result = new float*[COL];
@@ -282,22 +283,118 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//CString str;      //문자열
 		//str.Format(_T("1번점 : %f,%f,%f,%f"), result[0][0], result[1][0], result[2][0], result[3][0]);
 		//pDC->TextOut(50, 100, str);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//뷰행렬 테스트
+		//float testmat[4][1] = { { 100 },{ 100 },{ 0 },{ 1 } };
+		//float **result = new float*[COL];
+		//for (int i = 0; i < COL; i++) {
+		//	result[i] = new float[1];
+		//}
+		//result = matfun.ViewMat(testmat, 0, 180, 0, 0, -2, 1);
+		//CString str;      //문자열
+		//str.Format(_T("1번점 : %f,%f,%f,%f"), result[0][0], result[1][0], result[2][0], result[3][0]);
+		//pDC->TextOut(50, 100, str);
 
-		//////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//뷰행렬 테스트
+		CPoint cpoint = { 400,400 };
+		float testmat1[4][1] = { { cpoint.x },{ cpoint.y - 50 },{ 0 },{ 1 } };
+		float testmat2[4][1] = { { cpoint.x + 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
+		float testmat3[4][1] = { { cpoint.x - 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
+		
+		float **result1 = new float*[COL];
+		float **result2 = new float*[COL];
+		float **result3 = new float*[COL];
+		for (int i = 0; i < COL; i++) {
+			result1[i] = new float[1];
+			result2[i] = new float[1];
+			result3[i] = new float[1];
+		}
+		
+		pDC->MoveTo(testmat1[0][0], testmat1[1][0]);
+		pDC->LineTo(testmat2[0][0], testmat2[1][0]);
+		pDC->LineTo(testmat3[0][0], testmat3[1][0]);
+		pDC->LineTo(testmat1[0][0], testmat1[1][0]);
+			
+		result1 = matfun.ViewMat(testmat1, 0, 180, 0, x, y, z);
+		result2 = matfun.ViewMat(testmat2, 0, 180, 0, x, y, z);
+		result3 = matfun.ViewMat(testmat3, 0, 180, 0, x, y, z);
+		
+		pDC->BeginPath();
+		pDC->MoveTo(result1[0][0], result1[1][0]);
+		pDC->LineTo(result2[0][0], result2[1][0]);
+		pDC->LineTo(result3[0][0], result3[1][0]);
+		pDC->LineTo(result1[0][0], result1[1][0]);
+		pDC->EndPath();
+		pDC->StrokeAndFillPath();
+		///////////////////////////////////////////////////////////////
+		CPoint cpoint1 = { 200,200 };
+
+		float resultmat1[4][1] = { { cpoint1.x },{ cpoint1.y - 50 },{ 0 },{ 1 } };
+		float resultmat2[4][1] = { { cpoint1.x + 100 },{ cpoint1.y + 50 },{ 0 },{ 1 } };
+		float resultmat3[4][1] = { { cpoint1.x - 100 },{ cpoint1.y + 50 },{ 0 },{ 1 } };
+
+		float **result4 = new float*[COL];
+		float **result5 = new float*[COL];
+		float **result6 = new float*[COL];
+		for (int i = 0; i < COL; i++) {
+			result4[i] = new float[1];
+			result5[i] = new float[1];
+			result6[i] = new float[1];
+		}
+		
+		result4 = matfun.ViewMat(resultmat1, 0, 180, 0, x, y, z);
+		result5 = matfun.ViewMat(resultmat2, 0, 180, 0, x, y, z);
+		result6 = matfun.ViewMat(resultmat3, 0, 180, 0, x, y, z);
+
+		pDC->BeginPath();
+		pDC->MoveTo(result4[0][0], result4[1][0]);
+		pDC->LineTo(result5[0][0], result5[1][0]);
+		pDC->LineTo(result6[0][0], result6[1][0]);
+		pDC->LineTo(result4[0][0], result4[1][0]);
+		pDC->EndPath();
+		pDC->StrokeAndFillPath();
+
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//matfun.Scale(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
 		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 30);
 		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
 		//Matrix = matfun.Scalereturn(pDC, cpoint, resultmat1, resultmat2, resultmat3, 2, 2);
 		//Matrix = matfun.Rotationreturn(pDC, cpoint, resultmat1, resultmat2, resultmat3, 0, 0, 180);
 		//Matrix = matfun.Transformreturn(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
-		///////////////////////////////////////////////////////////////////////////		
-		
+
 		pDC->MoveTo(Matrix[0][0], Matrix[1][0]);
 		pDC->LineTo(Matrix[0][1], Matrix[1][1]);
 		pDC->LineTo(Matrix[0][2], Matrix[1][2]);
 		pDC->LineTo(Matrix[0][0], Matrix[1][0]);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+		//Cube 그리기
+		//CPoint cubepoint = { 300, 300 };
+		//float CubeVertex[8][3] = { { cubepoint.x - 100, cubepoint.y - 100, 0}, { cubepoint.x - 100, cubepoint.y + 100, 0}, { cubepoint.x + 100, cubepoint.y + 100, 0}, { cubepoint.x + 100,  cubepoint.y - 100, 0},
+		//						   { cubepoint.x - 200, cubepoint.y - 200, 100}, { cubepoint.x - 200, cubepoint.y + 200, 100}, { cubepoint.x + 200, cubepoint.y + 200, 100}, { cubepoint.x + 200, cubepoint.y - 200, 100} };
 
-		///////////////////////////////////////////////////////////////////////////
+		//pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);		
+		//pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+		//pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+		//pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+		//pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+		//pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+		//pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+		//pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+		//pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+		//pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+
+		//pDC->MoveTo(CubeVertex[1][0], CubeVertex[1][1]);
+		//pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+
+		//pDC->MoveTo(CubeVertex[2][0], CubeVertex[2][1]);
+		//pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+
+		//pDC->MoveTo(CubeVertex[3][0], CubeVertex[3][1]);
+		//pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//삼각형으로 도형그리기 테스트
 		//CPoint a[12] = { { 100,200 }, { 100,100 }, { 200,100 }, { 100,200 },{ 200,100 }, { 200, 200 }, 
 		//				 {200, 200 }, { 300, 100 }, { 200, 100 }	,{ 200, 200 } ,{ 300, 100 } ,{ 300, 200 } };
@@ -310,7 +407,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//	pDC->LineTo(a[count + 2].x, a[count + 2].y);
 		//	pDC->LineTo(a[count].x, a[count].y);
 		//}
-		///////////////////////////////////////////////////////////////////////////		
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 
 	}
 }
@@ -339,3 +436,28 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	CView::OnLButtonUp(nFlags, point);
 }
 
+
+
+void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (nChar == VK_LEFT)
+	{
+		x -= 1;
+	}
+	else if (nChar == VK_RIGHT)
+	{
+		x += 1;
+	}
+	else if (nChar == VK_UP)
+	{
+		y -= 1;
+	}
+	else if (nChar == VK_DOWN)
+	{
+		y += 1;
+	}
+
+	Invalidate();
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
