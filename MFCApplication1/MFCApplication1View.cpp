@@ -246,68 +246,6 @@ BOOL CMFCApplication1View::OnEraseBkgnd(CDC* pDC)
 	return TRUE;	// TRUE 로 해주어야 한다. 기존것(return CView::OnEraseBkgnd(pDC);)
 }
 
-//////////////////////////////////////////////////////////////////////////////
-//// 계산식
-////MatrixAdd
-//float **CMFCApplication1View::MatrixAdd(float** mat1, float** mat2)
-//{
-//	float **Resultmat = new float*[COL];
-//	for (int i = 0; i < COL; i++) {
-//		Resultmat[i] = new float[ROW];
-//	}
-//
-//	for (int i = 0; i < ROW; i++)
-//	{
-//		for (int j = 0; j < COL; j++)
-//		{
-//			Resultmat[i][j] = mat1[i][j] + mat2[i][j];
-//		}
-//	}
-//	return Resultmat;
-//}
-//
-////MatrixSub
-//float **CMFCApplication1View::MatrixSub(float** mat1, float** mat2)
-//{
-//	float **Resultmat = new float*[COL];
-//	for (int i = 0; i < COL; i++) {
-//		Resultmat[i] = new float[ROW];
-//	}
-//
-//	for (int i = 0; i < ROW; i++)
-//	{
-//		for (int j = 0; j < COL; j++)
-//		{
-//			Resultmat[i][j] = mat1[i][j] - mat2[i][j];
-//		}
-//	}
-//
-//	return Resultmat;
-//}
-//
-////MatrixMul
-//float **CMFCApplication1View::MatrixMul(float** mat1, float** mat2)
-//{
-//	float **Resultmat = new float*[COL];
-//	for (int i = 0; i < COL; i++) {
-//		Resultmat[i] = new float[ROW];
-//	}
-//
-//	for (int i = 0; i < ROW; i++)
-//	{
-//		for (int j = 0; j < COL; j++)
-//		{
-//			Resultmat[i][j] = (mat1[i][0] * mat2[0][j]) + (mat1[i][1] * mat2[1][j]) + (mat1[i][2] * mat2[2][j]) + (mat1[i][3] * mat2[3][j]);
-//		}
-//	}
-//
-//	return Resultmat;
-//}
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 void CMFCApplication1View::Mydraw(CDC* pDC)
 {
 	CBrush cbrush(RGB(0, 0, 0));
@@ -322,42 +260,45 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//pDC->Rectangle(start.x, start.y, end.x, end.y);
 
 		//변환행렬 테스트
-		//CPoint originpoint = { 400,150 };
-		float originpointx = 400;
-		float originpointy = 400;
+		CPoint cpoint = { 400,400 };
 
-		//float resultmat1[4][1] = { { originpoint.x },{ originpoint.y - 50 },{ 0 },{ 1 } };
-		//float resultmat2[4][1] = { { originpoint.x + 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
-		//float resultmat3[4][1] = { { originpoint.x - 100 },{ originpoint.y + 50 },{ 0 },{ 1 } };
-
-		//float resultmat1[4][1] = { { originpointx },{ originpointy - 50 },{ 0 },{ 1 } };
-		float resultmat2[4][1] = { { originpointx + 100 },{ originpointy + 50 },{ 0 },{ 1 } };
-		float resultmat3[4][1] = { { originpointx - 100 },{ originpointy + 50 },{ 0 },{ 1 } };
-		float resultmat1[4][1] = { { originpointx+ 1 },{ originpointx+ 0 },{ 0 },{ 1 } };
+		float resultmat1[4][1] = { { cpoint.x },{ cpoint.y - 50 },{ 0 },{ 1 } };
+		float resultmat2[4][1] = { { cpoint.x + 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
+		float resultmat3[4][1] = { { cpoint.x - 100 },{ cpoint.y + 50 },{ 0 },{ 1 } };
 
 		pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
 		pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
 		pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
 		pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 		////////////////////////////////////////////////////////////////////////
+		// 아핀행렬 테스트
+		//float testmat1[4][1] = { { cpoint.x },{ cpoint.y +1 },{ 0 },{ 1 } };
+		//float **result = new float*[COL];
+		//for (int i = 0; i < COL; i++) {
+		//	result[i] = new float[1];
+		//}
 
+		//result = matfun.Affinereturn(cpoint, testmat1, 0, 0, 90, 1, 1, 1, 1);
+		//CString str;      //문자열
+		//str.Format(_T("1번점 : %f,%f,%f,%f"), result[0][0], result[1][0], result[2][0], result[3][0]);
+		//pDC->TextOut(50, 100, str);
 
 		//////////////////////////////////////////////////////////////////////
 		//matfun.Scale(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
-		matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 90);
+		//matfun.Rotation(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 30);
 		//matfun.Transform(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
-		//matfun.ViewMat1(pDC, resultmat1, resultmat2, resultmat3, 0, 0, 90, 2, 2);
+		//Matrix = matfun.Scalereturn(pDC, cpoint, resultmat1, resultmat2, resultmat3, 2, 2);
+		//Matrix = matfun.Rotationreturn(pDC, cpoint, resultmat1, resultmat2, resultmat3, 0, 0, 180);
+		//Matrix = matfun.Transformreturn(pDC, resultmat1, resultmat2, resultmat3, 2, 2);
 		///////////////////////////////////////////////////////////////////////////		
 		
-		//str.Format(_T("1번 %.1f, %.1f"), resultmat1[0][0], resultmat1[1][0]);
-		//pDC->TextOut(resultmat1[0][0], resultmat1[1][0], str);
-		//str.Format(_T("2번 %.1f, %.1f"), resultmat2[0][0], resultmat2[1][0]);
-		//pDC->TextOut(resultmat2[0][0], resultmat2[1][0], str);
-		//str.Format(_T("3번 %.1f, %.1f"), resultmat3[0][0], resultmat3[1][0]);
-		//pDC->TextOut(resultmat3[0][0], resultmat3[1][0], str);
+		pDC->MoveTo(Matrix[0][0], Matrix[1][0]);
+		pDC->LineTo(Matrix[0][1], Matrix[1][1]);
+		pDC->LineTo(Matrix[0][2], Matrix[1][2]);
+		pDC->LineTo(Matrix[0][0], Matrix[1][0]);
 
-
-		///////////////////////////////////////////////////////////////////////////		
+		///////////////////////////////////////////////////////////////////////////
+		//삼각형으로 도형그리기 테스트
 		//CPoint a[12] = { { 100,200 }, { 100,100 }, { 200,100 }, { 100,200 },{ 200,100 }, { 200, 200 }, 
 		//				 {200, 200 }, { 300, 100 }, { 200, 100 }	,{ 200, 200 } ,{ 300, 100 } ,{ 300, 200 } };
 		//int count = 0;
