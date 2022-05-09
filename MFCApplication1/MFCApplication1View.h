@@ -28,9 +28,9 @@ public:
 	float **resultmat2;
 	float **resultmat3;
 
-	float x = -3;
-	float y = 2;
-	float z = 1;
+	float xvalue = 0;
+	float yvalue = 0;
+	float zvalue = 5;
 
 
 	// 재정의입니다.
@@ -66,6 +66,8 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void Mydraw(CDC* pDC);
 
+	afx_msg void OnPerspective();
+	afx_msg void OnParallel();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
