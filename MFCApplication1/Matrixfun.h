@@ -34,6 +34,7 @@ public:
 	float **Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float x, float y, float z = 1);
 	float **Translatereturn(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float x, float y, float z = 0);
 	float **Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian);
+	float **ZRotationreturn(float resultmat1[][1], float yradian);
 
 	float **AffineScalereturn(CPoint cpoint, float resultmat1[][1], float scale);
 	float **AffineRotationreturn(CPoint cpoint, float resultmat1[][1], float xradian, float yradian, float zradian);

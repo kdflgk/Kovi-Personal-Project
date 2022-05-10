@@ -658,6 +658,39 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 	return Resultmat;
 }
 
+float **Matrixfun::ZRotationreturn( float resultmat1[][1], float zradian)
+{
+
+	double sinz = sin(zradian * (PI / 180));
+	double cosz = cos(zradian * (PI / 180));
+
+	float** Resultmat = new float*[COL];
+	float** zresult1 = new float*[COL];
+
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[ROW];
+
+		zresult1[i] = new float[1];
+	}
+
+	//float xValue = resultmat1[0][0], yValue = resultmat1[1][0];
+	//resultmat1[0][0] -= xValue, resultmat1[1][0] -= yValue;
+	//ZÃà
+	float rmatz[4][4] = { { (float)cosz, (float)-sinz, 0, 0 },{ (float)sinz, (float)cosz, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
+	for (int i = 0; i < COL; i++)
+	{
+		zresult1[i][0] = (rmatz[i][0] * resultmat1[0][0]) + (rmatz[i][1] * resultmat1[1][0]) + (rmatz[i][2] * resultmat1[2][0]) + (rmatz[i][3] * resultmat1[3][0]);
+	}
+	
+	//zresult1[0][0] += xValue; zresult1[1][0] += yValue;
+
+	for (int i = 0; i < ROW; i++)
+	{
+		Resultmat[i][0] = zresult1[i][0];
+	}
+
+	return Resultmat;
+}
 float **Matrixfun::AffineRotationreturn(CPoint cpoint, float resultmat1[][1], float xradian, float yradian, float zradian)
 {
 	double sinx = sin(xradian * (PI / 180));

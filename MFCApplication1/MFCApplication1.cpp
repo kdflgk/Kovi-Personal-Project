@@ -132,7 +132,7 @@ int CMFCApplication1App::ExitInstance()
 {
 	//TODO: 추가한 추가 리소스를 처리합니다.
 	AfxOleTerm(FALSE);
-
+	
 	return CWinApp::ExitInstance();
 }
 
@@ -161,6 +161,7 @@ protected:
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
 {
+	
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)

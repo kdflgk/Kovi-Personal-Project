@@ -40,6 +40,7 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
+	GetParent()->SendMessage(WM_CLOSE);
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
