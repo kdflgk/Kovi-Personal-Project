@@ -46,6 +46,6 @@ public:
 	float **ViewTranslatereturn(float xtrans, float ytrans, float ztrans);
 	float **ViewMat(float resultmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans);
 
-	float **ProjectionMat(float resultmat[][1], float inputratio);
+	float **ProjectionMat(float resultmat[][1], float inputratio, int ViewAngle);
 
 };

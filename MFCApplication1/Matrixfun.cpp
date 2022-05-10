@@ -884,19 +884,21 @@ float** Matrixfun::ViewMat(float Inputmat[][1], float xradian, float yradian, fl
 	return Resultmat;
 }
 
-float **Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio)
+float **Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, int ViewAngle)
 {
 	float** Resultmat = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[1];
 	}
-	float n = 0, f = 1;
-	int tanradian = 90 / 2;
+	float n = 1, f = 1000;
+	//int tanradian = 90 / 2;
+	int tanradian = ViewAngle / 2;
+
 	double tanresult = tan(tanradian * PI / 180);
 	//float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 }, {0, 0, 0, 1 } };
 	float Promat[4][4] = { 
 		{ (float)(tanresult) / inputratio, 0, 0, 0 },
-		{0, (float)tanresult, 0, 0},
+		{0, (float)(tanresult), 0, 0},
 		{ 0, 0,(n + f) * (n - f), ( 2 * n * f ) * ( n - f ) },
 		{0, 0, -1, 0} };
 

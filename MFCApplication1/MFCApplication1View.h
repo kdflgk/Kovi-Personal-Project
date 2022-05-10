@@ -28,9 +28,15 @@ public:
 	float **resultmat2;
 	float **resultmat3;
 
+	//도형 회전
 	float xvalue = 0;
 	float yvalue = 0;
 	float zvalue = 5;
+
+	
+	int viewAngle = 90; //시야각
+
+	int shape; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 
 
 	// 재정의입니다.
@@ -69,6 +75,11 @@ public:
 	afx_msg void OnPerspective();
 	afx_msg void OnParallel();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	void DrawFigure(CDC* pDC);
+	void DrawCube(CDC* pDC);
+	void DrawSphere(CDC* pDC);
+	void DrawTorus(CDC* pDC);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
 
 #ifndef _DEBUG  // MFCApplication1View.cpp의 디버그 버전
