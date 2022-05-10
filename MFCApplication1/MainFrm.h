@@ -38,6 +38,10 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnCubeselect();
+	afx_msg void OnSphereselect();
+	afx_msg void OnTorusselect();
 };
 
 

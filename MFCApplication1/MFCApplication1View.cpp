@@ -51,8 +51,10 @@ CMFCApplication1View::CMFCApplication1View()
 {
 	//4차 행렬 선언
 	Matrix = new float*[COL];
+	resultmat1 = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		Matrix[i] = new float[ROW];
+		resultmat1[i] = new float[ROW];
 	}
 
 }
@@ -62,8 +64,10 @@ CMFCApplication1View::~CMFCApplication1View()
 	for (int i = 0; i < COL; i++)
 	{
 		delete[] Matrix[i];
+		delete[] resultmat1[i];
 	}
 	delete[] Matrix;
+	delete[] resultmat1;
 
 
 }
@@ -117,7 +121,7 @@ void CMFCApplication1View::OnPaint()
 	Mydraw(&mDC);
 
 	//OnPaint에서 DrawFigure부르고
-	//int shape 값에따라서 큐브, 구, 원환면 함수 따로 호출
+	//int m_shape 값에따라서 큐브, 구, 원환면 함수 따로 호출
 	//DrawCube, DrawSphere, DrawTorus
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,13 +199,14 @@ void CMFCApplication1View::OnColorselect()
 	//배열 함수 테스트용
 	CString str;
 	float num = 0;
+
 	for (int i = 0; i < ROW; i++)
 	{
 		for (int j = 0; j < COL; j++)
 		{
 			Matrix[i][j] = num++;
 			//resultmat1[i][j] = 1;
-			resultmat2[i][j] = num++;
+			resultmat1[i][j] = num++;
 		}
 	}
 	resultmat1[0][0] = 2;
@@ -234,7 +239,7 @@ void CMFCApplication1View::OnColorselect()
 		for (int j = 0; j < COL; j++)
 		{
 			str.Format(L"Matrix[%d][%d] = %.2f", i, j, Matrix[i][j]);
-			//AfxMessageBox(str);
+			AfxMessageBox(str);
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,9 +360,9 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 //}
 
 		//inputratio = winrect.right / winrect.bottom;
-//proresult1 = matfun.ProjectionMat(resultret1, inputratio, viewAngle);
-//proresult2 = matfun.ProjectionMat(resultret2, inputratio, viewAngle);
-//proresult3 = matfun.ProjectionMat(resultret3, inputratio, viewAngle);
+//proresult1 = matfun.ProjectionMat(resultret1, inputratio, m_viewAngle);
+//proresult2 = matfun.ProjectionMat(resultret2, inputratio, m_viewAngle);
+//proresult3 = matfun.ProjectionMat(resultret3, inputratio, m_viewAngle);
 
 		//str.Format(_T("%.2f, %.2f, %.2f"), proresult1[0][0], proresult1[1][0], proresult1[2][0]);
 //pDC->TextOut(10, 30, str);
@@ -428,7 +433,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 			{
 				inputmat[i][0] = cubeviewresult[i][0];
 			}
-			cubeproresult = matfun.ProjectionMat(inputmat, inputratio, viewAngle);
+			cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle);
 
 			for (int i = 0; i < COL; i++)
 			{
@@ -596,13 +601,13 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 					vInputmat[i][0] = Resultmat[i][0];
 				}
 				sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, 0, 0, 0, zvalue); // 회전
-				//sphereviewresult = matfun.ViewMat(vInputmat, 0,0, 0, xvalue, yvalue, zvalue); // 이동
+				//sphereviewresult = matfun.ViewMat(vInputmat, yvalue * 10, xvalue * 10, 0, xvalue, yvalue, zvalue); // 이동(뭔가이상)
 
 				for (int i = 0; i < COL; i++)
 				{
 					vInputmat[i][0] = sphereviewresult[i][0];
 				}
-				sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, viewAngle);
+				sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, m_viewAngle);
 
 				for (int i = 0; i < COL; i++)
 				{
@@ -627,12 +632,13 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 					vInputmat[i][0] = Resultmat[i][0];
 				}
 				sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, 0, 0, 0, zvalue); // 회전
+				//sphereviewresult = matfun.ViewMat(vInputmat, yvalue * 10, xvalue * 10, 0, xvalue, yvalue, zvalue); // 이동(뭔가이상)		
 
 				for (int i = 0; i < COL; i++)
 				{
 					vInputmat[i][0] = sphereviewresult[i][0];
 				}
-				sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, viewAngle);
+				sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, m_viewAngle);
 
 				for (int i = 0; i < COL; i++)
 				{
@@ -662,6 +668,8 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		//str.Format(_T("%.2f, %.2f, %.2f, %.2f"), SphereVertex[44][0], SphereVertex[44][1], SphereVertex[44][2], SphereVertex[44][3]);
 		//pDC->TextOut(10, 270, str);
 
+		//str.Format(_T("%d"), m_drawType);
+		//pDC->TextOut(10, 50, str);
 
 		//int vcount = 0;
 		//for (int i = 0; i < 9; i++)
@@ -873,11 +881,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 			pDC->LineTo(SphereVertex[i][0], SphereVertex[i][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
-
-
 		}
-
-
 
 		//백업본
 		//num = num + 9;
@@ -913,6 +917,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma region Trorus그리기
+		//이거 어케하냐;;
 		int x = 0;
 #pragma endregion
 
@@ -922,18 +927,62 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 
 }//Mydraw
 
+#pragma region DrawFunction()
+void CMFCApplication1View::DrawFigure(CDC* pDC)
+{
+	//pDC 설정값들
+
+	switch (m_shape)
+	{
+	case 0:
+		DrawCube(pDC);
+		break;
+	case 1:
+		DrawSphere(pDC);
+		break;
+	case 2:
+		DrawTorus(pDC);
+		break;
+	default:
+		break;
+	}
+}//DrawFigure
+
+
+void CMFCApplication1View::DrawCube(CDC* pDC)
+{
+
+}//DrawCube
+
+
+void CMFCApplication1View::DrawSphere(CDC* pDC)
+{
+
+}//DrawSphere
+
+void CMFCApplication1View::DrawTorus(CDC* pDC)
+{
+
+}//DrawTorus
+#pragma endregion
+
+
+#pragma region MouseEvent
 void CMFCApplication1View::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	m_DrawPoint = point;
 
-	//GetParent()->SendMessage(WM_CLOSE);
+	Invalidate();
 	CView::OnLButtonDown(nFlags, point);
 }
 
 void CMFCApplication1View::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.	
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
+
+	Invalidate();
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -941,8 +990,33 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
+
+	Invalidate();
 	CView::OnLButtonUp(nFlags, point);
 }
+
+BOOL CMFCApplication1View::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	if (zDelta > 0)
+	{
+		m_viewAngle += 5;
+		//zvalue++;
+	}
+	else if (zDelta < 0)
+	{
+		m_viewAngle -= 5;
+		//zvalue--;
+	}
+
+	Invalidate();
+
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+#pragma endregion
+
+
 
 
 void CMFCApplication1View::OnPerspective()
@@ -956,6 +1030,7 @@ void CMFCApplication1View::OnParallel()
 }
 
 
+//키보드 이벤트
 void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -973,70 +1048,17 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_DOWN:
 		yvalue += 1;
 		break;
+	case VK_F2:	{
+		if (m_drawType) m_drawType = FALSE;
+		else if (m_drawType == FALSE) m_drawType = TRUE;
+		break;
+	}
 	default:
 		break;
 	}
+	if (m_drawType)
+
 	Invalidate();
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-
-
-void CMFCApplication1View::DrawFigure(CDC* pDC)
-{
-	//pDC 설정값들
-
-
-
-
-
-	switch (shape)
-	{
-	case 0:
-		DrawCube(pDC);
-		break;
-	case 1:
-		DrawSphere(pDC);
-		break;
-	case 2:
-		DrawTorus(pDC);
-		break;
-	default:
-		break;
-	}
-}
-
-
-void CMFCApplication1View::DrawCube(CDC* pDC)
-{
-
-}
-
-
-void CMFCApplication1View::DrawSphere(CDC* pDC)
-{
-}
-
-
-void CMFCApplication1View::DrawTorus(CDC* pDC)
-{
-}
-
-
-BOOL CMFCApplication1View::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	if (zDelta > 0)
-	{
-		viewAngle += 10;
-	}
-	else if (zDelta < 0)
-	{
-		viewAngle -= 10;
-	}
-
-	Invalidate();	
-
-	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }

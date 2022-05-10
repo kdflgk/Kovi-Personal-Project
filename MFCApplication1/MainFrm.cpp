@@ -6,6 +6,8 @@
 #include "MFCApplication1.h"
 
 #include "MainFrm.h"
+#include "MFCApplication1Doc.h"
+#include "MFCApplication1View.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,6 +23,9 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_CUBESELECT, &CMainFrame::OnCubeselect)
+	ON_COMMAND(ID_SPHERESELECT, &CMainFrame::OnSphereselect)
+	ON_COMMAND(ID_TORUSSELECT, &CMainFrame::OnTorusselect)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -98,3 +103,33 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 // CMainFrame 메시지 처리기
 
+
+
+void CMainFrame::OnCubeselect()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMainFrame *pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	CMFCApplication1View *pView = (CMFCApplication1View *)pMainFrame->GetActiveView();
+
+	pView->m_shape = 0;
+}
+
+
+void CMainFrame::OnSphereselect()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMainFrame *pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	CMFCApplication1View *pView = (CMFCApplication1View *)pMainFrame->GetActiveView();
+
+	pView->m_shape = 1;
+}
+
+
+void CMainFrame::OnTorusselect()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMainFrame *pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	CMFCApplication1View *pView = (CMFCApplication1View *)pMainFrame->GetActiveView();
+
+	pView->m_shape = 2;
+}

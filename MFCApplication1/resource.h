@@ -20,9 +20,9 @@
 #define ID_PERSPECTIVE                  32782
 #define ID_32783                        32783
 #define ID_BUTTON32784                  32784
-#define ID_BUTTON32789                  32789
-#define ID_BUTTON32791                  32791
-#define ID_BUTTON32792                  32792
+#define ID_CUBESELECT                   32789
+#define ID_SPHERESELECT                 32791
+#define ID_TORUSSELECT                  32792
 #define ID_32793                        32793
 #define ID_32794                        32794
 #define ID_32795                        32795

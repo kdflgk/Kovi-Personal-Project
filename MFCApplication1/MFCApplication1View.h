@@ -19,14 +19,13 @@ public:
 	// 작업입니다.
 public:
 	BOOL m_bDrag;
+	CPoint m_DrawPoint;
 	CPoint start;
 	CPoint end;
 	CString str;
 
 	float **Matrix; //2차원 배열
 	float **resultmat1;
-	float **resultmat2;
-	float **resultmat3;
 
 	//도형 회전
 	float xvalue = 0;
@@ -34,9 +33,10 @@ public:
 	float zvalue = 5;
 
 	
-	int viewAngle = 90; //시야각
+	int m_viewAngle = 90; //시야각
 
-	int shape; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	bool m_drawType = TRUE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 
 
 	// 재정의입니다.
