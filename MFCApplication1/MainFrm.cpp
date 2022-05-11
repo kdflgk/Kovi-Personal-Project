@@ -112,6 +112,7 @@ void CMainFrame::OnCubeselect()
 	CMFCApplication1View *pView = (CMFCApplication1View *)pMainFrame->GetActiveView();
 
 	pView->m_shape = 0;
+	Invalidate();
 }
 
 
@@ -122,6 +123,7 @@ void CMainFrame::OnSphereselect()
 	CMFCApplication1View *pView = (CMFCApplication1View *)pMainFrame->GetActiveView();
 
 	pView->m_shape = 1;
+	Invalidate();
 }
 
 
@@ -132,4 +134,5 @@ void CMainFrame::OnTorusselect()
 	CMFCApplication1View *pView = (CMFCApplication1View *)pMainFrame->GetActiveView();
 
 	pView->m_shape = 2;
+	Invalidate();
 }

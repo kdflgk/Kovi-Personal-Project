@@ -658,6 +658,88 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 	return Resultmat;
 }
 
+float **Matrixfun::SelectRotationreturn(float inputxpoint, float inputypoint, float resultmat1[][1], float xradian, float yradian, float zradian)
+{
+	double sinx = sin(xradian * (PI / 180));
+	double cosx = cos(xradian * (PI / 180));
+	double siny = sin(yradian * (PI / 180));
+	double cosy = cos(yradian * (PI / 180));
+	double sinz = sin(zradian * (PI / 180));
+	double cosz = cos(zradian * (PI / 180));
+
+	//resultmat1[0][0] -= inputxpoint; resultmat1[1][0] -= inputypoint;
+	resultmat1[2][0] -= inputxpoint;
+
+	float** Resultmat = new float*[COL];
+	float** xresult1 = new float*[COL];
+	float** yresult1 = new float*[COL];
+	float** zresult1 = new float*[COL];
+
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[1];
+		xresult1[i] = new float[1];
+		yresult1[i] = new float[1];
+		zresult1[i] = new float[1];
+	}
+	//XÃà
+	float rmatx[4][4] = { { 1, 0, 0, 0 },{ 0, (float)cosx, (float)-sinx, 0 },{ 0, (float)sinx, (float)cosx, 0 },{ 0, 0, 0, 1 } }; //X
+
+	for (int i = 0; i < COL; i++)
+	{
+		xresult1[i][0] = (rmatx[i][0] * resultmat1[0][0]) + (rmatx[i][1] * resultmat1[1][0]) + (rmatx[i][2] * resultmat1[2][0]) + (rmatx[i][3] * resultmat1[3][0]);
+	}
+	//YÃà
+	float rmaty[4][4] = { { (float)cosy, 0, (float)siny, 0 },{ 0, 1, 0, 0 },{ (float)-siny, 0, (float)cosy, 0 },{ 0, 0, 0, 1 } }; //Y
+	for (int i = 0; i < COL; i++)
+	{
+		yresult1[i][0] = (rmaty[i][0] * xresult1[0][0]) + (rmaty[i][1] * xresult1[1][0]) + (rmaty[i][2] * xresult1[2][0]) + (rmaty[i][3] * xresult1[3][0]);
+	};
+	//ZÃà
+	float rmatz[4][4] = { { (float)cosz, (float)-sinz, 0, 0 },{ (float)sinz, (float)cosz, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
+	for (int i = 0; i < COL; i++)
+	{
+		zresult1[i][0] = (rmatz[i][0] * yresult1[0][0]) + (rmatz[i][1] * yresult1[1][0]) + (rmatz[i][2] * yresult1[2][0]) + (rmatz[i][3] * yresult1[3][0]);
+	}
+
+	//zresult1[0][0] += inputxpoint; zresult1[1][0] += inputypoint;
+	zresult1[2][0] += inputxpoint;
+
+	for (int i = 0; i < ROW; i++)
+	{
+		Resultmat[i][0] = zresult1[i][0];
+	}
+
+	return Resultmat;
+}
+float **Matrixfun::YRotationreturn(float resultmat1[][1], float yradian)
+{
+
+	double siny = sin(yradian * (PI / 180));
+	double cosy = cos(yradian * (PI / 180));
+
+	float** Resultmat = new float*[COL];
+	float** yresult1 = new float*[COL];
+
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[1];
+
+		yresult1[i] = new float[1];
+	}
+	
+	float rmaty[4][4] = { { (float)cosy, 0, (float)siny, 0 },{ 0, 1, 0, 0 },{ (float)-siny, 0, (float)cosy, 0 },{ 0, 0, 0, 1 } }; //Y
+	for (int i = 0; i < COL; i++)
+	{
+		yresult1[i][0] = (rmaty[i][0] * resultmat1[0][0]) + (rmaty[i][1] * resultmat1[1][0]) + (rmaty[i][2] * resultmat1[2][0]) + (rmaty[i][3] * resultmat1[3][0]);
+	}
+	
+	for (int i = 0; i < ROW; i++)
+	{
+		Resultmat[i][0] = yresult1[i][0];
+	}
+
+	return Resultmat;
+}
+
 float **Matrixfun::ZRotationreturn( float resultmat1[][1], float zradian)
 {
 
@@ -668,7 +750,7 @@ float **Matrixfun::ZRotationreturn( float resultmat1[][1], float zradian)
 	float** zresult1 = new float*[COL];
 
 	for (int i = 0; i < COL; i++) {
-		Resultmat[i] = new float[ROW];
+		Resultmat[i] = new float[1];
 
 		zresult1[i] = new float[1];
 	}
@@ -691,6 +773,7 @@ float **Matrixfun::ZRotationreturn( float resultmat1[][1], float zradian)
 
 	return Resultmat;
 }
+
 float **Matrixfun::AffineRotationreturn(CPoint cpoint, float resultmat1[][1], float xradian, float yradian, float zradian)
 {
 	double sinx = sin(xradian * (PI / 180));
@@ -890,7 +973,7 @@ float **Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, int View
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[1];
 	}
-	float n = 1, f = 1000;
+	float n = 400, f = 500;
 	//int tanradian = 90 / 2;
 	int tanradian = ViewAngle / 2;
 
@@ -899,7 +982,7 @@ float **Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, int View
 	float Promat[4][4] = { 
 		{ (float)(tanresult) / inputratio, 0, 0, 0 },
 		{0, (float)(tanresult), 0, 0},
-		{ 0, 0,(n + f) * (n - f), ( 2 * n * f ) * ( n - f ) },
+		{ 0, 0, (n + f) / (n - f), ( 2 * n * f ) / ( n - f ) },
 		{0, 0, -1, 0} };
 
 	for (int i = 0; i < COL; i++)
