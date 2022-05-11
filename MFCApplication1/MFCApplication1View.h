@@ -21,8 +21,8 @@ public:
 	BOOL m_bDrag;
 	CPoint m_DrawPoint;
 	CPoint start;
-	CPoint end;
-	CString str;
+	//CString str;
+	CRect winrect;
 
 	float **Matrix; //2차원 배열
 	float **resultmat1;
@@ -37,6 +37,7 @@ public:
 	float yMove = 0;
 
 	
+	float inputratio=1; //종횡비
 	int m_viewAngle = 90; //시야각
 
 	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
