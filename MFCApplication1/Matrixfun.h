@@ -50,4 +50,5 @@ public:
 
 	float **ProjectionMat(float resultmat[][1], float inputratio, int ViewAngle);
 
+	//trans는 카메라 위치값(0,0,500)
 };

@@ -155,16 +155,6 @@ float** Matrixfun::MatrixInverse(float** mat1)
 		+ mat1[0][2] * (mat1[1][0] * mat1[2][1] - mat1[1][1] * mat1[2][0]))	}
 	};
 
-
-	//CString str;
-	//for (int i = 0; i < ROW; i++)
-	//{
-	//	for (int j = 0; j < COL; j++)
-	//	{
-	//		str.Format(_T("CT[%f][%f] = %.2f"), i, j, CT[i][j]);
-	//	}
-	//}
-
 	if (det != 0)
 	{
 		for (int i = 0; i < ROW; i++) {
@@ -173,15 +163,6 @@ float** Matrixfun::MatrixInverse(float** mat1)
 			}
 		}
 	}
-
-	//str.Format(_T("%f %f %f %f"), Resultmat[0][0], Resultmat[0][1], Resultmat[0][2], Resultmat[0][3]);
-	//AfxMessageBox(str);
-	//str.Format(_T("%f %f %f %f"), Resultmat[1][0], Resultmat[1][1], Resultmat[1][2], Resultmat[1][3]);
-	//AfxMessageBox(str);
-	//str.Format(_T("%f %f %f %f"), Resultmat[2][0], Resultmat[2][1], Resultmat[2][2], Resultmat[2][3]);
-	//AfxMessageBox(str);
-	//str.Format(_T("%f %f %f %f"), Resultmat[3][0], Resultmat[3][1], Resultmat[3][2], Resultmat[3][3]);
-	//AfxMessageBox(str);
 
 	return Resultmat;
 }
@@ -206,11 +187,6 @@ void Matrixfun::Scale(CDC* pDC, float resultmat1[][1], float resultmat2[][1], fl
 	resultmat1[0][0] += 400; resultmat1[1][0] += 150;
 	resultmat2[0][0] += 400; resultmat2[1][0] += 150;
 	resultmat3[0][0] += 400; resultmat3[1][0] += 150;
-
-	//pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-	//pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-	//pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-	//pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 }
 
 float **Matrixfun::Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float x, float y, float z)
@@ -251,6 +227,18 @@ float **Matrixfun::Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], f
 		Resultmat[i][3] = 0;
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] result1[i];
+		delete[] result2[i];
+		delete[] result3[i];
+	}
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	return Resultmat;
 }
 
@@ -276,7 +264,6 @@ float **Matrixfun::AffineScalereturn(CPoint cpoint, float resultmat1[][1], float
 void Matrixfun::Translate(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float x, float y, float z)
 {
 	float tmat[4][4] = { { 1,0,0,100 * x },{ 0,1,0,100 * y },{ 0,0,1,100 * z },{ 0,0,0,1 } };
-	//float tmat[4][4] = { { 1,0,0,-500 },{ 0,1,0,-150 },{ 0,0,1,0 },{ 0,0,0,1 } };
 
 	for (int i = 0; i < COL; i++)
 	{
@@ -284,11 +271,6 @@ void Matrixfun::Translate(CDC* pDC, float resultmat1[][1], float resultmat2[][1]
 		resultmat2[i][0] = (tmat[i][0] * resultmat2[0][0]) + (tmat[i][1] * resultmat2[1][0]) + (tmat[i][2] * resultmat2[2][0]) + (tmat[i][3] * resultmat2[3][0]);
 		resultmat3[i][0] = (tmat[i][0] * resultmat3[0][0]) + (tmat[i][1] * resultmat3[1][0]) + (tmat[i][2] * resultmat3[2][0]) + (tmat[i][3] * resultmat3[3][0]);
 	}
-
-	//pDC->MoveTo(resultmat1[0][0], resultmat1[1][0]);
-	//pDC->LineTo(resultmat2[0][0], resultmat2[1][0]);
-	//pDC->LineTo(resultmat3[0][0], resultmat3[1][0]);
-	//pDC->LineTo(resultmat1[0][0], resultmat1[1][0]);
 }
 
 float **Matrixfun::Translatereturn(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float x, float y, float z)
@@ -321,6 +303,18 @@ float **Matrixfun::Translatereturn(CDC* pDC, float resultmat1[][1], float result
 		Resultmat[i][2] = result3[i][0];
 		Resultmat[i][3] = 0;
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] result1[i];
+		delete[] result2[i];
+		delete[] result3[i];
+	}
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return Resultmat;
 }
@@ -409,39 +403,6 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 		resultmat2[i][0] = (rmatz[i][0] * resultmat2[0][0]) + (rmatz[i][1] * resultmat2[1][0]) + (rmatz[i][2] * resultmat2[2][0]) + (rmatz[i][3] * resultmat2[3][0]);
 		resultmat3[i][0] = (rmatz[i][0] * resultmat3[0][0]) + (rmatz[i][1] * resultmat3[1][0]) + (rmatz[i][2] * resultmat3[2][0]) + (rmatz[i][3] * resultmat3[3][0]);
 	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	CString str;      //문자열
-	CPoint m_pt;    // 좌표
-	m_pt.x = (LONG)resultmat1[0][0];
-	m_pt.y = (LONG)resultmat1[1][0];
-	str.Format(_T("1번점 : %f,%f"), resultmat1[0][0], resultmat1[1][0]);
-	//str = "1번점";
-	pDC->TextOut(300, 300, str);
-	//m_pt.x = resultmat2[0][0];
-	//m_pt.y = resultmat2[1][0];
-	//str = "2번점";
-	//pDC->TextOut(m_pt.x, m_pt.y, str);
-	//m_pt.x = resultmat3[0][0];
-	//m_pt.y = resultmat3[1][0];
-	//str = "3번점";
-	//pDC->TextOut(m_pt.x, m_pt.y, str);
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//POINT polyPoint[6];
-	//polyPoint[0].x = resultmat1[0][0];
-	//polyPoint[0].y = resultmat1[1][0];
-	//polyPoint[1].x = resultmat2[0][0];
-	//polyPoint[1].y = resultmat2[1][0];
-	//polyPoint[2].x = resultmat3[0][0];
-	//polyPoint[2].y = resultmat3[1][0];
-	//pDC->Polygon(polyPoint, 3);
-
 }
 
 void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian)
@@ -527,20 +488,17 @@ void Matrixfun::Rotation(CDC* pDC, float resultmat1[][1], float resultmat2[][1],
 	result2[0][0] += 400; result2[1][0] += 400;
 	result3[0][0] += 400; result3[1][0] += 400;
 
-
-	//pDC->MoveTo(result1[0][0], result1[1][0]);
-	//pDC->LineTo(result2[0][0], result2[1][0]);
-	//pDC->LineTo(result3[0][0], result3[1][0]);
-	//pDC->LineTo(result1[0][0], result1[1][0]);
-
-	//for (int i = 0; i < COL; i++) {
-	//	delete[] result1[i];
-	//	delete[] result2[i];
-	//	delete[] result3[i];
-	//}
-	//delete[] result1;
-	//delete[] result2;
-	//delete[] result3;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] result1[i];
+		delete[] result2[i];
+		delete[] result3[i];
+	}
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian)
@@ -584,14 +542,6 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 		zresult3[i] = new float[1];
 	}
 
-	//CString str;      //문자열
-	//str.Format(_T("1번점 : %f,%f"), result1[0][0], result1[1][0]);
-	//pDC->TextOut(50, 100, str);
-	//str.Format(_T("1번점 : %f,%f"), result2[0][0], result2[1][0]);
-	//pDC->TextOut(50, 120, str);
-	//str.Format(_T("1번점 : %f,%f"), result3[0][0], result3[1][0]);
-	//pDC->TextOut(50, 140, str);
-
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//X축
 	float rmatx[4][4] = { { 1, 0, 0, 0 },{ 0, (float)cosx, (float)-sinx, 0 },{ 0, (float)sinx, (float)cosx, 0 },{ 0, 0, 0, 1 } }; //X
@@ -602,12 +552,6 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 		xresult2[i][0] = (rmatx[i][0] * resultmat2[0][0]) + (rmatx[i][1] * resultmat2[1][0]) + (rmatx[i][2] * resultmat2[2][0]) + (rmatx[i][3] * resultmat2[3][0]);
 		xresult3[i][0] = (rmatx[i][0] * resultmat3[0][0]) + (rmatx[i][1] * resultmat3[1][0]) + (rmatx[i][2] * resultmat3[2][0]) + (rmatx[i][3] * resultmat3[3][0]);
 	}
-	//str.Format(_T("1번점x : %f,%f"), result1[0][0], result1[1][0]);
-	//pDC->TextOut(50, 200, str);
-	//str.Format(_T("2번점x : %f,%f"), result2[0][0], result2[1][0]);
-	//pDC->TextOut(50, 220, str);
-	//str.Format(_T("3번점x : %f,%f"), result3[0][0], result3[1][0]);
-	//pDC->TextOut(50, 240, str);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Y축
@@ -619,13 +563,6 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 		yresult3[i][0] = (rmaty[i][0] * xresult3[0][0]) + (rmaty[i][1] * xresult3[1][0]) + (rmaty[i][2] * xresult3[2][0]) + (rmaty[i][3] * xresult3[3][0]);
 	}
 
-	//str.Format(_T("1번점y : %f,%f"), result1[0][0], result1[1][0]);
-	//pDC->TextOut(50, 300, str);
-	//str.Format(_T("2번점y : %f,%f"), result2[0][0], result2[1][0]);
-	//pDC->TextOut(50, 320, str);
-	//str.Format(_T("3번점y : %f,%f"), result3[0][0], result3[1][0]);
-	//pDC->TextOut(50, 340, str);
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Z축
 	float rmatz[4][4] = { { (float)cosz, (float)-sinz, 0, 0 },{ (float)sinz, (float)cosz, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
@@ -635,13 +572,6 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 		zresult2[i][0] = (rmatz[i][0] * yresult2[0][0]) + (rmatz[i][1] * yresult2[1][0]) + (rmatz[i][2] * yresult2[2][0]) + (rmatz[i][3] * yresult2[3][0]);
 		zresult3[i][0] = (rmatz[i][0] * yresult3[0][0]) + (rmatz[i][1] * yresult3[1][0]) + (rmatz[i][2] * yresult3[2][0]) + (rmatz[i][3] * yresult3[3][0]);
 	}
-
-	//str.Format(_T("1번점z : %f,%f"), result1[0][0], result1[1][0]);
-	//pDC->TextOut(50, 400, str);
-	//str.Format(_T("2번점z : %f,%f"), result2[0][0], result2[1][0]);
-	//pDC->TextOut(50, 420, str);
-	//str.Format(_T("3번점z : %f,%f"), result3[0][0], result3[1][0]);
-	//pDC->TextOut(50, 440, str);
 
 	zresult1[0][0] += cpoint.x; zresult1[1][0] += cpoint.y;
 	zresult2[0][0] += cpoint.x; zresult2[1][0] += cpoint.y;
@@ -654,6 +584,30 @@ float **Matrixfun::Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1]
 		Resultmat[i][2] = zresult3[i][0];
 		Resultmat[i][3] = 0;
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] xresult1[i];
+		delete[] xresult2[i];
+		delete[] xresult3[i];
+		delete[] yresult1[i];
+		delete[] yresult2[i];
+		delete[] yresult3[i];
+		delete[] zresult1[i];
+		delete[] zresult2[i];
+		delete[] zresult3[i];
+	}
+	delete[] xresult1;
+	delete[] xresult2;
+	delete[] xresult3;
+	delete[] yresult1;
+	delete[] yresult2;
+	delete[] yresult3;
+	delete[] zresult1;
+	delete[] zresult2;
+	delete[] zresult3;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return Resultmat;
 }
@@ -681,6 +635,7 @@ float **Matrixfun::SelectRotationreturn(float inputxpoint, float inputypoint, fl
 		yresult1[i] = new float[1];
 		zresult1[i] = new float[1];
 	}
+
 	//X축
 	float rmatx[4][4] = { { 1, 0, 0, 0 },{ 0, (float)cosx, (float)-sinx, 0 },{ 0, (float)sinx, (float)cosx, 0 },{ 0, 0, 0, 1 } }; //X
 
@@ -709,6 +664,18 @@ float **Matrixfun::SelectRotationreturn(float inputxpoint, float inputypoint, fl
 		Resultmat[i][0] = zresult1[i][0];
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] xresult1[i];
+		delete[] yresult1[i];
+		delete[] zresult1[i];
+	}
+	delete[] xresult1;
+	delete[] yresult1;
+	delete[] zresult1;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	return Resultmat;
 }
 float **Matrixfun::YRotationreturn(float resultmat1[][1], float yradian)
@@ -736,6 +703,14 @@ float **Matrixfun::YRotationreturn(float resultmat1[][1], float yradian)
 	{
 		Resultmat[i][0] = yresult1[i][0];
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] yresult1[i];
+	}
+	delete[] yresult1;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return Resultmat;
 }
@@ -770,6 +745,14 @@ float **Matrixfun::ZRotationreturn( float resultmat1[][1], float zradian)
 	{
 		Resultmat[i][0] = zresult1[i][0];
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] zresult1[i];
+	}
+	delete[] zresult1;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return Resultmat;
 }
@@ -816,6 +799,18 @@ float **Matrixfun::AffineRotationreturn(CPoint cpoint, float resultmat1[][1], fl
 	{
 		Resultmat[i][0] = zresult[i][0];
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] xresult[i];
+		delete[] yresult[i];
+		delete[] zresult[i];
+	}
+	delete[] xresult;
+	delete[] yresult;
+	delete[] zresult;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return Resultmat;
 }
@@ -879,6 +874,18 @@ float **Matrixfun::ViewRotationreturn(float xradian, float yradian, float zradia
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] xresult[i];
+		delete[] yresult[i];
+		delete[] zresult[i];
+	}
+	delete[] xresult;
+	delete[] yresult;
+	delete[] zresult;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	return Resultmat;
 }
 
@@ -935,8 +942,8 @@ float** Matrixfun::ViewMat(float Inputmat[][1], float xradian, float yradian, fl
 		InverseMulmat[i] = new float[ROW];
 		YRotatemat[i]= new float[ROW];
 		Viewmat[i] = new float[ROW];
-
 	}
+
 
 	RotateResultmat = ViewRotationreturn(xradian, yradian, zradian);//x,y,z회전결과 4x4
 	InverseRotateResultmat = MatrixInverse(RotateResultmat);//RotateResultmat의 역행렬 4x4
@@ -949,20 +956,31 @@ float** Matrixfun::ViewMat(float Inputmat[][1], float xradian, float yradian, fl
 	YRotatemat = ViewRotationreturn(0, 180, 0);//y축180도 회전결과 4x4
 	Viewmat = MatrixMul(YRotatemat, InverseMulmat);
 
-
-	//CString str;
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	str.Format(_T("%.2f, %.2f, %.2f, %.2f"), InverseRotateResultmat[i][0], InverseRotateResultmat[i][1], InverseRotateResultmat[i][2], InverseRotateResultmat[i][3]);
-	//	AfxMessageBox(str);
-	//}
-	//return 0 ;
-
 	for (int i = 0; i < COL; i++)
 	{
 		Resultmat[i][0] = (Viewmat[i][0] * Inputmat[0][0]) + (Viewmat[i][1] * Inputmat[1][0]) + (Viewmat[i][2] * Inputmat[2][0]) + (Viewmat[i][3] * Inputmat[3][0]);
 		//Resultmat[i][0] = (Viewmat[i][0] * Inputmat[0][0]) + (Viewmat[i][1] * Inputmat[1][0]) + (Viewmat[i][2] * Inputmat[2][0]) + (Viewmat[i][3] * Inputmat[3][0]);
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] RotateResultmat[i];
+		delete[] InverseRotateResultmat[i];
+		delete[] TransResultmat[i];
+		delete[] InverseTransResultmat[i];
+		delete[] InverseMulmat[i];
+		delete[] YRotatemat[i];
+		delete[] Viewmat[i];
+	}
+	delete[] RotateResultmat;
+	delete[] InverseRotateResultmat;
+	delete[] TransResultmat;
+	delete[] InverseTransResultmat;
+	delete[] InverseMulmat;
+	delete[] YRotatemat;
+	delete[] Viewmat;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return Resultmat;
 }
@@ -973,7 +991,7 @@ float **Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, int View
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[1];
 	}
-	float n = 400, f = 500;
+	float n = 100, f = 500;
 	//int tanradian = 90 / 2;
 	int tanradian = ViewAngle / 2;
 
@@ -989,7 +1007,6 @@ float **Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, int View
 	{
 		Resultmat[i][0] = (Promat[i][0] * Inputmat[0][0]) + (Promat[i][1] * Inputmat[1][0]) + (Promat[i][2] * Inputmat[2][0]) + (Promat[i][3] * Inputmat[3][0]);
 	}
-
-
+	
 	return Resultmat;
 }
