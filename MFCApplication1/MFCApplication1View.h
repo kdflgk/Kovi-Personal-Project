@@ -31,7 +31,12 @@ public:
 	BOOL m_IsClicked;
 	CPoint m_DrawPoint;
 	CPoint start;
+
 	CString str;
+	CString str123;
+	CString str1234;
+	CString str12345;
+
 	CRect winrect;
 	CPoint prevpoint = (0, 0);
 
@@ -40,10 +45,12 @@ public:
 	vector<Cube> m_vCube;
 
 	float **Matrix; //2차원 배열
-	float **resultmat1;
+	float **resultmat1; //테스트용
+	float intputmat[4][1];
+	float campos[4][1];
 
 	//도형 크기
-	int m_CubeSize = 30;
+	float m_CubeSize = 50000;
 	float m_SphereRadius = 80;
 	float m_TorusRadius = 50;
 	float m_nCircleRadius = 25;
@@ -63,7 +70,7 @@ public:
 	float yMove = 0;
 	
 	float inputratio; //종횡비
-	int m_viewAngle = 90; //시야각
+	float m_viewAngle = 90; //시야각
 
 	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	BOOL m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
@@ -112,6 +119,8 @@ public:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	void GetpointDrawCube(CDC* pDC, float Inputmat[][1]);
+	void GetpointDrawCube(float Inputmat[][1]);
 };
 
 #ifndef _DEBUG  // MFCApplication1View.cpp의 디버그 버전

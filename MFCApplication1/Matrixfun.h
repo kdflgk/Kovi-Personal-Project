@@ -46,9 +46,13 @@ public:
 
 	float **ViewRotationreturn(float xradian, float yradian, float zradian);
 	float **ViewTranslatereturn(float xtrans, float ytrans, float ztrans);
-	float **ViewMat(float resultmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans);
+	float **ViewMat(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans);
+	
 
-	float **ProjectionMat(float resultmat[][1], float inputratio, int ViewAngle);
+	float **ProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle);
+	float **ProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height);
+
+	float **GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height);
 
 	//trans는 카메라 위치값(0,0,500)
 };
