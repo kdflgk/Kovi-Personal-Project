@@ -35,6 +35,7 @@ public:
 	float **Translatereturn(CDC* pDC, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float x, float y, float z = 0);
 	float **Rotationreturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], float resultmat2[][1], float resultmat3[][1], float xradian, float yradian, float zradian);
 	float **SelectRotationreturn(float xpoint, float ypoint, float resultmat1[][1], float xradian, float yradian, float zradian);
+	//float **SelectRotationreturn(float xpoint, float ypoint, float zpoint, float resultmat1[][1], float xradian, float yradian, float zradian);
 	float **YRotationreturn(float resultmat1[][1], float yradian);
 	float **ZRotationreturn(float resultmat1[][1], float zradian);
 
