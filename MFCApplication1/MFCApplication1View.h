@@ -90,9 +90,9 @@ public:
 
 	//도형 크기
 	float m_CubeSize = 100;
-	float m_SphereRadius = 30;
-	float m_TorusRadius = 50;
-	float m_nCircleRadius = 25;
+	float m_SphereRadius = 90;
+	float m_TorusRadius = 70;
+	float m_nCircleRadius = 40;
 
 	//도형 회전
 	float rxvalue = 0;

@@ -250,8 +250,8 @@ float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[1];
 	}
-	float x= resultmat1[0][0], y= resultmat1[1][0];
-	resultmat1[0][0] -= x; resultmat1[1][0] -= y;
+	float x= resultmat1[0][0], y= resultmat1[1][0], z = resultmat1[2][0];
+	resultmat1[0][0] -= x; resultmat1[1][0] -= y, resultmat1[2][0] -= z;
 	//resultmat1[0][0] -= cpoint.x; resultmat1[1][0] -= cpoint.y;
 
 	for (int i = 0; i < COL; i++)
@@ -259,7 +259,7 @@ float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 		Resultmat[i][0] = (smat[i][0] * resultmat1[0][0]) + (smat[i][1] * resultmat1[1][0]) + (smat[i][2] * resultmat1[2][0]) + (smat[i][3] * resultmat1[3][0]);
 	}
 	//Resultmat[0][0] += cpoint.x; Resultmat[1][0] += cpoint.y;
-	Resultmat[0][0] += x; Resultmat[1][0] += y;
+	Resultmat[0][0] += x; Resultmat[1][0] += y, resultmat1[2][0] += z;
 
 	return Resultmat;
 }
