@@ -39,7 +39,9 @@ public:
 	float **SelectRotationreturn(float xpoint, float ypoint, float resultmat1[][1], float xradian, float yradian, float zradian);
 	//float **SelectRotationreturn(float xpoint, float ypoint, float zpoint, float resultmat1[][1], float xradian, float yradian, float zradian);
 	float **YRotationreturn(float resultmat1[][1], float yradian);
-	float **ZRotationreturn(float resultmat1[][1], float zradian);
+	float **ZRotationreturn(float resultmat1[][1], float zradian); 
+	float **ZRotationreturn(float x, float y, float resultmat1[][1], float zradian);
+	float **ZRotationreturn(float x, float y, float z, float resultmat1[][1], float zradian);
 
 	//float **AffineScalereturn(CPoint cpoint, float resultmat1[][1], float scale);
 	float **AffineScalereturn(float resultmat1[][1], float scale);
@@ -59,6 +61,6 @@ public:
 	float **ProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height);
 
 	float **GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height, float size);
-	float **GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height, float rx, float ry, float rz);
+	//float **GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height, float rx, float ry, float rz);
 	//trans는 카메라 위치값(0,0,500)
 };

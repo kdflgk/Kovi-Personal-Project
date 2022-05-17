@@ -10,14 +10,40 @@
 using namespace std;
 struct Cube
 {
-	float Vertex[8][4]; // 정점의 배열
+	float Cube_Vertex[8][4]; // 정점의 배열
 	BOOL isClicked=FALSE;
-	float m_Size;	// 크기
-	float xRotate;	// 회전
-	float yRotate;	// 회전
-	float zRotate;	// 회전
-	float xMove;	// 이동
-	float yMove;	// 이동
+	float Cube_Size;	// 크기
+	float Cube_xRotate;	// 회전
+	float Cube_yRotate;	// 회전
+	float Cube_zRotate;	// 회전
+	float Cube_xMove;	// 이동
+	float Cube_yMove;	// 이동
+};
+
+struct Sphere
+{
+	//float focusdot[9][4];
+	float Sphere_Vertex[83][4]; // 정점의 배열
+	BOOL isClicked = FALSE;
+	float Sphere_Size;	// 크기
+	float Sphere_xRotate;	// 회전
+	float Sphere_yRotate;	// 회전
+	float Sphere_zRotate;	// 회전
+	float Sphere_xMove;	// 이동
+	float Sphere_yMove;	// 이동
+};
+
+struct Torus
+{
+	float Torus_Vertex[64][4]; // 정점의 배열
+	BOOL isClicked = FALSE;
+	float Torus_Radius;	// 크기
+	float Torus_nCirclSize;	// 크기
+	float Torus_xRotate;	// 회전
+	float Torus_yRotate;	// 회전
+	float Torus_zRotate;	// 회전
+	float Torus_xMove;	// 이동
+	float Torus_yMove;	// 이동
 };
 
 
@@ -50,6 +76,10 @@ public:
 	//여러개의 도형을 찍기위해
 	Cube MyCube;
 	vector<Cube> m_vCube;
+	Sphere MySphere;
+	vector<Sphere> m_vSphere;
+	Torus MyTorus;
+	vector<Torus> m_vTorus;
 
 	float **Matrix; //2차원 배열
 	float **resultmat1; //테스트용
@@ -60,7 +90,7 @@ public:
 
 	//도형 크기
 	float m_CubeSize = 100;
-	float m_SphereRadius = 80;
+	float m_SphereRadius = 30;
 	float m_TorusRadius = 50;
 	float m_nCircleRadius = 25;
 
@@ -68,6 +98,10 @@ public:
 	float rxvalue = 0;
 	float ryvalue = 0;
 	float rzvalue = 0;
+
+	//도형 이동
+	float Figure_xMove = 0;
+	float Figure_yMove = 0;
 
 	//카메라 회전
 	float xvalue = 0;

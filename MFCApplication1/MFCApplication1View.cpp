@@ -59,10 +59,6 @@ CMFCApplication1View::CMFCApplication1View()
 		resultmat1[i] = new float[ROW];
 	}
 
-	//campos[0][0] = 1420 / 2;
-	//campos[1][0] = 653 / 2;
-	//campos[2][0] = 500;
-
 	campos[0][0] = 0;
 	campos[1][0] = 0;
 	campos[2][0] = 500;
@@ -230,16 +226,18 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	CPen myPen(PS_SOLID, 5, RGB(0, 0, 0));
 	CPen whitePen(PS_SOLID, 2, RGB(255, 255, 255));
 	pDC->SelectObject(whitePen);
-	DrawFigure(pDC);
+
+	//DrawSphere(pDC);
+	//DrawFigure(pDC);
+	GetpointDrawCube(pDC, intputmat);
 
 #pragma region 현재상태UI
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	pDC->TextOut(500, winrect.bottom - 30, str123);
 
 	pDC->TextOut(winrect.right - 330, winrect.bottom - 50, str1234); //스크린좌표[변환]
-	pDC->TextOut(winrect.right - 330, winrect.bottom - 30, str123456); //스크린좌표[변환]
-
 	pDC->TextOut(winrect.right - 330, winrect.bottom - 70, str12345);//스크린좌표[초기]
+	pDC->TextOut(winrect.right - 380, winrect.bottom - 30, str123456);
 
 	//str.Format(_T("변환값 : %.1f, %.1f, %.1f, %.1f"), intputmat[0][0], intputmat[0][1], intputmat[0][2], intputmat[0][3]);
 	//pDC->TextOut(500, winrect.bottom - 60, str);
@@ -251,8 +249,14 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 
 	str.Format(_T("도형 회전 : %.1f, %.1f, %.1f"), rxvalue * 10, ryvalue * 10, rzvalue * 10);
 	pDC->TextOut(winrect.right - 230, 30, str);
+	str.Format(_T("큐브 크기     : %.1f"), m_CubeSize);
+	pDC->TextOut(winrect.right - 230, 50, str);
+	str.Format(_T("구체 반지름   : %.1f"), m_SphereRadius);
+	pDC->TextOut(winrect.right - 230, 70, str);
+	str.Format(_T("원환면 반지름 : %.1f"), m_TorusRadius);
+	pDC->TextOut(winrect.right - 230, 90, str);
 
-	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0], campos[1][0], campos[2][0]);
+	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0] + xMove, campos[1][0] - yMove, campos[2][0]);
 	pDC->TextOut(10, 10, str);
 
 	str.Format(_T("카메라 회전 : %.1f, %.1f, %.1f"), xvalue * 10, yvalue * 10, zvalue * 10);
@@ -297,27 +301,33 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 #pragma region DrawFunction()
 void CMFCApplication1View::DrawFigure(CDC* pDC)
 {
-	//pDC 설정값들
-	switch (m_shape)
-	{
-	case 0:
-		//DrawCube(pDC);
-		//if(m_drawType)
-		GetpointDrawCube(pDC, intputmat);
-		//else
-		//GetpointDrawCubeWire(pDC, intputmat);
-		break;
-	case 1:
-		DrawSphere(pDC);
-		break;
-	case 2:
-		DrawTorus(pDC);
-		break;
-	default:
-		break;
-	}
+	GetpointDrawCube(pDC, intputmat);
 
-	Invalidate(); //나중에 마우스클릭 이벤트 구현하고나면 지워야함
+
+
+	//DrawSphere(pDC);
+	//DrawTorus(pDC);
+	//pDC 설정값들
+	//switch (m_shape)
+	//{
+	//case 0:
+	//	//DrawCube(pDC);
+	//	//if(m_drawType)
+	//	GetpointDrawCube(pDC, intputmat);
+	//	//else
+	//	//GetpointDrawCubeWire(pDC, intputmat);
+	//	break;
+	//case 1:
+	//	DrawSphere(pDC);
+	//	break;
+	//case 2:
+	//	DrawTorus(pDC);
+	//	break;
+	//default:
+	//	break;
+	//}
+
+	//Invalidate(); //나중에 마우스클릭 이벤트 구현하고나면 지워야함
 }//DrawFigure
 
 
@@ -670,7 +680,7 @@ void CMFCApplication1View::DrawSphere(CDC* pDC)
 				vInputmat[i][0] = Resultmat[i][0];
 			}
 			//sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 5); // 회전
-			sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 5); // 회전
+			sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500); // 회전
 
 
 			for (int i = 0; i < COL; i++)
@@ -705,7 +715,7 @@ void CMFCApplication1View::DrawSphere(CDC* pDC)
 			{
 				vInputmat[i][0] = Resultmat[i][0];
 			}
-			sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 5); // 회전
+			sphereviewresult = matfun.ViewMat(vInputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500); // 회전
 
 			for (int i = 0; i < COL; i++)
 			{
@@ -1208,7 +1218,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	float width = (float)winrect.Width() / 2;
 	float height = (float)winrect.Height() / 2;
-		
+
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500, inputratio, m_viewAngle, width, height); //월드의 좌표
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, width/100, height/100, 5, inputratio, m_viewAngle, width, height); //월드의 좌표
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, width, height, 500, inputratio, m_viewAngle, width, height); //월드의 좌표
@@ -1221,8 +1231,219 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 
 
+	//큐브
+#pragma region Cube
+	if (m_shape == 0)
+	{
+		MyCube.isClicked = FALSE;
+		MyCube.Cube_Size = m_CubeSize;
+		MyCube.Cube_xMove = Figure_xMove;
+		MyCube.Cube_yMove = Figure_yMove;
+		MyCube.Cube_xRotate = rxvalue;
+		MyCube.Cube_yRotate = ryvalue;
+		MyCube.Cube_zRotate = rzvalue;
 
-	
+		// 구조체에 값 집어넣고 pushback
+		float CubeVertex[8][4] = { { intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 } };
+
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				MyCube.Cube_Vertex[i][j] = CubeVertex[i][j];
+			}
+		}
+
+		m_vCube.push_back(MyCube);
+	}//end Cube
+#pragma endregion 큐브
+
+	//구
+#pragma region Sphere
+	else if (m_shape == 1)
+	{
+		float Spherenode[4][1] = { { 0 },{ 0 },{ 0 },{ 1 } };
+		float SphereInput[4][1] = { { 0 },{ 0 },{ 0 },{ 1 } };
+		for (int i = 0; i < 4; i++)
+		{
+			//Spherenode[i][0] = intputmat[i][0];
+			SphereInput[i][0] = intputmat[i][0];
+		}
+		str123456.Format(_T("구체의 중점 : %.1f, %.1f, %.1f, %.1f"), SphereInput[0][0], SphereInput[0][1], SphereInput[0][2], SphereInput[0][3]);
+		MySphere.isClicked = FALSE;
+		MySphere.Sphere_Size = m_SphereRadius;
+		MySphere.Sphere_xRotate = rxvalue;
+		MySphere.Sphere_yRotate = ryvalue;
+		MySphere.Sphere_zRotate = rzvalue;
+		MySphere.Sphere_xMove = Figure_xMove;
+		MySphere.Sphere_yMove = Figure_yMove;
+
+		// 구조체에 값 집어넣고 pushback
+		float zFocusDot[9][4] = {};
+		float SphereVertex[83][4];
+
+		SphereVertex[0][0] = Spherenode[0][0];
+		SphereVertex[0][1] = Spherenode[1][0];
+		SphereVertex[0][2] = Spherenode[2][0] + MySphere.Sphere_Size;
+		//SphereVertex[0][2] = Spherenode[2][0] + m_SphereRadius;
+		SphereVertex[0][3] = 1;
+
+		SphereVertex[82][0] = Spherenode[0][0];
+		SphereVertex[82][1] = Spherenode[1][0];
+		SphereVertex[82][2] = Spherenode[2][0] - MySphere.Sphere_Size;
+		//SphereVertex[82][2] = Spherenode[2][0] - m_SphereRadius;
+		SphereVertex[82][3] = 1;
+
+		float radiusPow = pow(MySphere.Sphere_Size, 2);//제곱
+		//float radiusPow = pow(m_SphereRadius, 2);
+		float bottomPow;
+
+		int cut = 5;
+		int j = 0;
+		for (int i = (1 - cut); i < cut; i++)
+		{
+			bottomPow = pow((i * MySphere.Sphere_Size / cut), 2);
+			//bottomPow = pow((i * m_SphereRadius / cut), 2);
+
+			zFocusDot[j][0] = { Spherenode[0][0] };
+			zFocusDot[j][1] = { Spherenode[1][0] + sqrtf((radiusPow - bottomPow)) };
+			zFocusDot[j][2] = { Spherenode[2][0] - (i * MySphere.Sphere_Size / cut) };
+			//zFocusDot[j][2] = { Spherenode[2][0] - (i * m_SphereRadius / cut) };
+			zFocusDot[j][3] = { Spherenode[3][0] };
+
+			if (i == 0)
+			{
+				zFocusDot[j][0] = { Spherenode[0][0] };
+				zFocusDot[j][1] = { Spherenode[1][0] + MySphere.Sphere_Size };
+				//zFocusDot[j][1] = { Spherenode[1][0] + m_SphereRadius };
+				zFocusDot[j][2] = { Spherenode[2][0] };
+				zFocusDot[j][3] = { Spherenode[3][0] };
+			}
+			j++;
+		}
+
+		float MySphereInputmat[4][1];
+		float** Resultmat = new float*[9];
+		for (int i = 0; i < COL; i++) {
+			Resultmat[i] = new float[ROW];
+		}
+
+		int count = 1;
+		for (int r = 0; r < 9; r++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				MySphereInputmat[i][0] = zFocusDot[r][i];
+			}
+			for (int ver = 0; ver < 9; ver++)
+			{
+				//Resultmat = matfun.ZRotationreturn(Spherenode[0][0], Spherenode[1][0], Spherenode[2][0], MySphereInputmat, ver * 40);
+				//Resultmat = matfun.ZRotationreturn(Spherenode[0][0], Spherenode[1][0], MySphereInputmat, ver * 40);
+				Resultmat = matfun.ZRotationreturn(MySphereInputmat, ver * 40);
+
+				MySphere.Sphere_Vertex[count][0] = Resultmat[0][0] + SphereInput[0][0];
+				MySphere.Sphere_Vertex[count][1] = Resultmat[1][0] + SphereInput[1][0];
+				MySphere.Sphere_Vertex[count][2] = Resultmat[2][0] + SphereInput[2][0];
+				MySphere.Sphere_Vertex[count][3] = Resultmat[3][0];
+				count++;
+			}
+		}
+
+		count = 0;
+		for (int r = 0; r < 9; r++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				MySphereInputmat[i][0] = SphereVertex[count][i];
+			}
+			for (int ver = 0; ver < 9; ver++)
+			{
+				Resultmat = matfun.ZRotationreturn(Spherenode[0][0], Spherenode[1][0], MySphereInputmat, ver * 40);
+
+				MySphere.Sphere_Vertex[count][0] = Resultmat[0][0] + SphereInput[0][0];
+				MySphere.Sphere_Vertex[count][1] = Resultmat[1][0] + SphereInput[1][0];
+				MySphere.Sphere_Vertex[count][2] = Resultmat[2][0] + SphereInput[2][0];
+				MySphere.Sphere_Vertex[count][3] = Resultmat[3][0];
+				count = 82;
+			}
+		}
+
+		for (int i = 0; i < COL; i++) {
+			delete[] Resultmat[i];
+		}
+		delete[] Resultmat;
+
+		m_vSphere.push_back(MySphere);
+
+	}//end Sphere
+#pragma endregion 구
+
+	//원환면
+#pragma region Torus
+	else if (m_shape == 2)
+	{
+		float Torusnode[4][1] = { { 0 },{ 0 },{ 500 },{ 1 } };
+
+		float TorusInput[4][1];
+		for (int i = 0; i < 4; i++)
+		{
+			TorusInput[i][0] = intputmat[i][0];
+		}
+
+		MyTorus.Torus_Radius = m_TorusRadius;
+		MyTorus.Torus_nCirclSize = m_nCircleRadius;
+		MyTorus.Torus_xRotate = rxvalue;
+		MyTorus.Torus_xRotate = rxvalue;
+		MyTorus.Torus_xRotate = rxvalue;
+		MyTorus.Torus_xMove = xMove;
+		MyTorus.Torus_yMove = yMove;
+
+		//float TorusRadius = 100;
+		//float InCircleRadius = 50;
+		//float TorusVertex[64][4];
+		//float TorusInputmat[4][1] = { 0 };
+
+		int cutcount = 8;
+		float theta, gamma;
+		int tcount = 0;
+
+		for (int i = 0; i < cutcount; i++)
+		{
+			gamma = i * 360 / cutcount * (PI / 180);
+			for (int j = 0; j < cutcount; j++)
+			{
+				theta = j * 360 / cutcount * (PI / 180);
+
+				//TorusInputmat[0][0] = { (TorusRadius + InCircleRadius * (float)cos(theta))*(float)cos(gamma) };
+				//TorusInputmat[1][0] = { (TorusRadius + InCircleRadius * (float)cos(theta))*(float)sin(gamma) };
+				//TorusInputmat[2][0] = { InCircleRadius * sin(theta) + 500 };
+				//TorusInputmat[3][0] = { 1 };
+				//TorusVertex[tcount][0] = TorusInputmat[0][0]+TorusInput[0][0];
+				//TorusVertex[tcount][1] = TorusInputmat[1][0]+TorusInput[1][0];
+				//TorusVertex[tcount][2] = TorusInputmat[2][0]+TorusInput[2][0];
+				//TorusVertex[tcount][3] = TorusInputmat[3][0];
+
+				MyTorus.Torus_Vertex[tcount][0] = (MyTorus.Torus_Radius + MyTorus.Torus_nCirclSize * (float)cos(theta))*(float)cos(gamma) + TorusInput[0][0];
+				MyTorus.Torus_Vertex[tcount][1] = (MyTorus.Torus_Radius + MyTorus.Torus_nCirclSize * (float)cos(theta))*(float)sin(gamma) + TorusInput[1][0];
+				MyTorus.Torus_Vertex[tcount][2] = MyTorus.Torus_nCirclSize * sin(theta) + TorusInput[2][0]; // 원래는 500을 더했었음(이유 기억안남)
+				MyTorus.Torus_Vertex[tcount][3] = 1;
+
+				tcount++;
+			}
+		}
+
+		m_vTorus.push_back(MyTorus);
+
+	}//end Torus
+#pragma endregion 원환면
+
 
 
 	for (int i = 0; i < COL; i++) {
@@ -1232,7 +1453,6 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	delete[] resultmat;
 	delete[] resultmatc;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//str123456.Format(_T("2번 스크린좌표 : %.1f, %.1f, %.1f, %.1f"), curPoint[0][0], curPoint[0][1], curPoint[0][2], curPoint[0][3]);
 	str12345.Format(_T("월드좌표 : %.1f, %.1f, %.1f, %.1f"), intputmat[0][0], intputmat[0][1], intputmat[0][2], intputmat[0][3]);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1374,10 +1594,10 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		//도형 이동
 	case VK_LEFT:
-		xMove -= 20;
+		xMove += 20;
 		break;
 	case VK_RIGHT:
-		xMove += 20;
+		xMove -= 20;
 		break;
 	case VK_UP:
 		yMove += 20;
@@ -1477,161 +1697,19 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-#pragma region 배열함수 테스트용
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//배열 함수 테스트용
-//CString str;
-//float num = 0;
-//
-//for (int i = 0; i < ROW; i++)
-//{
-//	for (int j = 0; j < COL; j++)
-//	{
-//		Matrix[i][j] = num++;
-//		//resultmat1[i][j] = 1;
-//		resultmat1[i][j] = num++;
-//	}
-//}
-//resultmat1[0][0] = 2;
-//resultmat1[0][1] = 3;
-//resultmat1[0][2] = 3;
-//resultmat1[0][3] = 2;
-//
-//resultmat1[1][0] = 4;
-//resultmat1[1][1] = 5;
-//resultmat1[1][2] = 7;
-//resultmat1[1][3] = 3;
-//
-//resultmat1[2][0] = 2;
-//resultmat1[2][1] = 3;
-//resultmat1[2][2] = 4;
-//resultmat1[2][3] = 1;
-//
-//resultmat1[3][0] = 5;
-//resultmat1[3][1] = 5;
-//resultmat1[3][2] = 6;
-//resultmat1[3][3] = 4;
-//
-////Matrix = matfun.MatrixAdd(resultmat1, resultmat2);
-////Matrix = matfun.MatrixSub(Matrix, Matrix);
-////Matrix = matfun.MatrixMul(Matrix, Matrix);
-//Matrix = matfun.MatrixInverse(resultmat1);
-//
-//for (int i = 0; i < ROW; i++)
-//{
-//	for (int j = 0; j < COL; j++)
-//	{
-//		str.Format(L"Matrix[%d][%d] = %.2f", i, j, Matrix[i][j]);
-//		AfxMessageBox(str);
-//	}
-//}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-#pragma endregion
-
-
-
 void CMFCApplication1View::GetpointDrawCube(CDC* pDC, float Intputmat[][1])
 //void CMFCApplication1View::GetpointDrawCube(float Inputmat[][1])
 {
 	//CDC* pDC;
 	CPen whitePen(PS_SOLID, 2, RGB(255, 255, 255));
 	pDC->SelectObject(whitePen);
-#pragma region Cube그리기
-	//Cube 그리기
+
 	float width = (float)winrect.Width() / 2;
 	float height = (float)winrect.Height() / 2;
-	inputratio = (float)(winrect.right / (float)winrect.bottom); // 종횡비
-	//inputratio = (float)winrect.bottom / (float)(winrect.right); // 종횡비 반대로
+	inputratio = (float)(winrect.right / (float)winrect.bottom);
 
-	//float cubepoint[4][1] = { { -2800 },{ 900 },{ 501 },{ 1 } };
-
-	float cubepoint[4][1];
-	for (int i = 0; i < COL; i++)
-	{
-		//if(i==0)
-		//	cubepoint[i][0] = intputmat[i][0]/width; //월드의 좌표		
-		//else if(i==1)
-		//	cubepoint[i][0] = intputmat[i][0]/height; //월드의 좌표		
-		cubepoint[i][0] = intputmat[i][0]; //월드의 좌표		
-	}
-	str.Format(_T("가져온 월드좌표 : %.1f, %.1f, %.1f, %.1f"), cubepoint[0][0], cubepoint[1][0], cubepoint[2][0], cubepoint[3][0]);
-	pDC->TextOut(winrect.right - 330, winrect.bottom - 90, str);
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//intputmatc
-	//float CubeVertex[8][4];
-	//for (int i = 0; i < 8; i++) {
-	//	for (int j = 0; j < 4; j++)
-	//	{
-	//		CubeVertex[i][j] = intputmatc[i][j];
-	//	}
-	//}
-
-	//MyCube.m_Size = m_CubeSize;
-	//MyCube.xMove = xMove;
-	//MyCube.yMove = yMove;
-	//MyCube.xRotate = xvalue;
-	//MyCube.yRotate = yvalue;
-	//MyCube.zRotate = zvalue;
-	//for (int i = 0; i < 8; i++) {
-	//	for (int j = 0; j < 4; j++)
-	//	{
-	//		MyCube.Vertex[i][j] = intputmatc[i][j];
-	//	}
-	//}
-	
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//외적
-	//float crossinput[4][1];
-	//float **dotproresult = new float*[COL];
-	//float **dotviewresult = new float*[COL];
-	//float **dotrotateresult = new float*[COL];//
-
-	//for (int i = 0; i < COL; i++)
-	//{
-	//	crossinput[i][0] = intputmat[i][0]; //월드의 좌표
-	//	dotviewresult = matfun.ViewMat(crossinput, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
-	//	for (int i = 0; i < 4; i++)
-	//	{
-	//		crossinput[i][0] = dotviewresult[i][0];
-	//	}
-	//	dotproresult = matfun.ProjectionMat(crossinput, inputratio, m_viewAngle, width, height);
-	//	for (int i = 0; i < 4; i++)
-	//	{
-	//		crossinput[i][0] = dotproresult[i][0];
-	//	}
-	//}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-	float CubeVertex[8][4] = { { cubepoint[0][0] - m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 },
-	{ cubepoint[0][0] - m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
-	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
-	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 },
-	{ cubepoint[0][0] - m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 },
-	{ cubepoint[0][0] - m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
-	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
-	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 } };
-
-	str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[0][0], CubeVertex[0][1], CubeVertex[0][2], CubeVertex[0][3]);
-	pDC->TextOut(500, 40, str);
-	str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[1][0], CubeVertex[1][1], CubeVertex[1][2], CubeVertex[1][3]);
-	pDC->TextOut(500, 60, str);
-	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[2][0], CubeVertex[2][1], CubeVertex[2][2], CubeVertex[2][3]);
-	//pDC->TextOut(500, 80, str);
-	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[3][0], CubeVertex[3][1], CubeVertex[3][2], CubeVertex[3][3]);
-	//pDC->TextOut(500, 100, str);
-	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[4][0], CubeVertex[4][1], CubeVertex[4][2], CubeVertex[4][3]);
-	//pDC->TextOut(500, 80, str);
-	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[5][0], CubeVertex[5][1], CubeVertex[5][2], CubeVertex[5][3]);
-	//pDC->TextOut(500, 100, str);
-	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[6][0], CubeVertex[6][1], CubeVertex[6][2], CubeVertex[6][3]);
-	//pDC->TextOut(500, 160, str);
-	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[7][0], CubeVertex[7][1], CubeVertex[7][2], CubeVertex[7][3]);
-	//pDC->TextOut(500, 180, str);
-
+#pragma region Cube그리기
+	//Cube 그리기
 	float inputmat[4][1] = { 0 };
 	float **cubeproresult = new float*[COL];
 	float **cubeviewresult = new float*[COL];
@@ -1642,419 +1720,1537 @@ void CMFCApplication1View::GetpointDrawCube(CDC* pDC, float Intputmat[][1])
 		cuberotateresult[i] = new float[1];//
 	}
 
-	for (int j = 0; j < 8; j++)
+	//if (m_shape == 0) 
 	{
-		for (int i = 0; i < COL; i++)
+
+		for (auto cv : m_vCube)
 		{
-			inputmat[i][0] = CubeVertex[j][i];
-			//inputmat[i][0] = MyCube.Vertex[j][i];
-		}
-		//회전
-		//cuberotateresult = matfun.SelectRotationreturn(inputmat[0][0], inputmat[1][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);//기존코드
-		//cuberotateresult = matfun.SelectRotationreturn(cubepoint[0][0], cubepoint[1][0], cubepoint[2][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);
-		//cuberotateresult = matfun.SelectRotationreturn(inputmat[0][0], inputmat[1][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);
-		//cuberotateresult = matfun.Affinereturn(inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10, m_CubeSize, xMove, yMove);
-		//for (int i = 0; i < COL; i++)
-		//{
-		//	inputmat[i][0] = cuberotateresult[i][0];
-		//}
+			for (int j = 0; j < 8; j++)
+			{
+				for (int i = 0; i < COL; i++)
+				{
+					inputmat[i][0] = cv.Cube_Vertex[j][i];
+				}
+				//회전
+				//cuberotateresult = matfun.SelectRotationreturn(inputmat[0][0], inputmat[1][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);//기존코드
+				//cuberotateresult = matfun.SelectRotationreturn(cubepoint[0][0], cubepoint[1][0], cubepoint[2][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);
+				//cuberotateresult = matfun.SelectRotationreturn(inputmat[0][0], inputmat[1][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);
+				//cuberotateresult = matfun.Affinereturn(inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10, m_CubeSize, Figure_xMove, Figure_yMove);
+				//for (int i = 0; i < COL; i++)
+				//{
+				//	inputmat[i][0] = cuberotateresult[i][0];
+				//}
 
-		//뷰변환
-		//cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500);//기존코드
-		//cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, width, height, 500);
-		//cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500);
-		cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
+				//뷰변환
+				cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
 
-		for (int i = 0; i < COL; i++)
-		{
-			inputmat[i][0] = cubeviewresult[i][0];
-		}
+				for (int i = 0; i < COL; i++)
+				{
+					inputmat[i][0] = cubeviewresult[i][0];
+				}
 
-		//투영변환
-		cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
-		//cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle);
+				//여기서 회전+스케일+이동
 
-		////// 이부분 수정해야함
-		//cubeproresult[0][0] = ((cubeproresult[0][0] * width) + width);
-		//cubeproresult[1][0] = ((-cubeproresult[1][0] * height)) + height;
+				//투영변환
+				cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
 
-		for (int i = 0; i < COL; i++)
-		{
-			//if (i == 0)
-			//	CubeVertex[j][i] = cubeproresult[i][0];
-			//else if (i == 1)
-			//	CubeVertex[j][i] = cubeproresult[i][0];
-				CubeVertex[j][i] = cubeproresult[i][0];
-		}
-	}
+				for (int i = 0; i < COL; i++)
+				{
+					cv.Cube_Vertex[j][i] = cubeproresult[i][0];
+				}
+			}
 
-	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[0][0], CubeVertex[0][1], CubeVertex[0][2], CubeVertex[0][3]);
-	//pDC->TextOut(500, 40, str);
-	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[1][0], CubeVertex[1][1], CubeVertex[1][2], CubeVertex[1][3]);
-	//pDC->TextOut(500, 60, str);
-	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[2][0], CubeVertex[2][1], CubeVertex[2][2], CubeVertex[2][3]);
-	//pDC->TextOut(500, 80, str);
-	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[3][0], CubeVertex[3][1], CubeVertex[3][2], CubeVertex[3][3]);
-	//pDC->TextOut(500, 100, str);
-	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[4][0], CubeVertex[4][1], CubeVertex[4][2], CubeVertex[4][3]);
-	pDC->TextOut(500, 120, str);
-	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[5][0], CubeVertex[5][1], CubeVertex[5][2], CubeVertex[5][3]);
-	pDC->TextOut(500, 140, str);
-	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[6][0], CubeVertex[6][1], CubeVertex[6][2], CubeVertex[6][3]);
-	pDC->TextOut(500, 160, str);
-	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[7][0], CubeVertex[7][1], CubeVertex[7][2], CubeVertex[7][3]);
-	pDC->TextOut(500, 180, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[0][0], CubeVertex[0][1], CubeVertex[0][2], CubeVertex[0][3]);
+			//pDC->TextOut(500, 40, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[1][0], CubeVertex[1][1], CubeVertex[1][2], CubeVertex[1][3]);
+			//pDC->TextOut(500, 60, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[2][0], CubeVertex[2][1], CubeVertex[2][2], CubeVertex[2][3]);
+			//pDC->TextOut(500, 80, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[3][0], CubeVertex[3][1], CubeVertex[3][2], CubeVertex[3][3]);
+			//pDC->TextOut(500, 100, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[4][0], CubeVertex[4][1], CubeVertex[4][2], CubeVertex[4][3]);
+			//pDC->TextOut(500, 120, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[5][0], CubeVertex[5][1], CubeVertex[5][2], CubeVertex[5][3]);
+			//pDC->TextOut(500, 140, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[6][0], CubeVertex[6][1], CubeVertex[6][2], CubeVertex[6][3]);
+			//pDC->TextOut(500, 160, str);
+			//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1], cv.Cube_Vertex[7][2], cv.Cube_Vertex[7][3]);
+			//pDC->TextOut(500, 180, str);
 
-	str.Format(_T("최종수정 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[7][0], CubeVertex[7][1], CubeVertex[7][2], CubeVertex[7][3]);
-	pDC->TextOut(500, 200, str);
+			//str.Format(_T("최종수정 : %.1f, %.1f, %.1f, %.1f"), cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1], cv.Cube_Vertex[7][2], cv.Cube_Vertex[7][3]);
+			//pDC->TextOut(500, 200, str);
 
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma region 외적
 	////외적
 	//float crossresult1[4][1] = {
-	//	{ round((crossinput[1][0] * CubeVertex[0][2]) - (crossinput[2][0] * CubeVertex[0][1])) },
-	//	{ round((crossinput[2][0] * CubeVertex[0][0]) - (crossinput[0][0] * CubeVertex[0][2])) },
-	//	{ round((crossinput[0][0] * CubeVertex[0][1]) - (crossinput[1][0] * CubeVertex[0][0])) },
+	//	{ 0 },
+	//	{ 0 },
+	//	{ round((CubeVertex[6][0]- clickedPoint[0][0])*(CubeVertex[6][1]- CubeVertex[3][1])-
+	//	(CubeVertex[6][0]- CubeVertex[3][0])*(CubeVertex[6][1]-clickedPoint[1][0])) },
 	//	{ 1 } };
 	//
 	//str.Format(_T("외적1 : %.1f, %.1f, %.1f, %.1f"), crossresult1[0][0], crossresult1[1][0], crossresult1[2][0], crossresult1[3][0]);
 	//pDC->TextOut(1000, 200, str);
 	//
 	//float crossresult2[4][1] = {
-	//	{ round((crossinput[1][0] * CubeVertex[1][2]) - (crossinput[2][0] * CubeVertex[1][1])) },
-	//	{ round((crossinput[2][0] * CubeVertex[1][0]) - (crossinput[0][0] * CubeVertex[1][2])) },
-	//	{ round((crossinput[0][0] * CubeVertex[1][1]) - (crossinput[1][0] * CubeVertex[1][0])) },
+	//	{ 0 },
+	//	{ 0 },
+	//	{ round((CubeVertex[3][0] - clickedPoint[0][0])*(CubeVertex[3][1] - CubeVertex[7][1]) -
+	//	(CubeVertex[3][0] - CubeVertex[7][0])*(CubeVertex[3][1] - clickedPoint[1][0])) },
 	//	{ 1 } };
 	//
 	//str.Format(_T("외적2 : %.1f, %.1f, %.1f, %.1f"), crossresult2[0][0], crossresult2[1][0], crossresult2[2][0], crossresult2[3][0]);
 	//pDC->TextOut(1000, 220, str);
 	//
 	//float crossresult3[4][1] = {
-	//	{ round((crossinput[1][0] * CubeVertex[5][2]) - (crossinput[2][0] * CubeVertex[5][1])) },
-	//	{ round((crossinput[2][0] * CubeVertex[5][0]) - (crossinput[0][0] * CubeVertex[5][2])) },
-	//	{ round((crossinput[0][0] * CubeVertex[5][1]) - (crossinput[1][0] * CubeVertex[5][0])) },
+	//	{ 0 },
+	//	{ 0 },
+	//	{ round((CubeVertex[7][0] - clickedPoint[0][0])*(CubeVertex[7][1] - CubeVertex[6][1]) -
+	//	(CubeVertex[7][0] - CubeVertex[6][0])*(CubeVertex[7][1] - clickedPoint[1][0])) },
 	//	{ 1 } };
 	//
 	//str.Format(_T("외적3 : %.1f, %.1f, %.1f, %.1f"), crossresult3[0][0], crossresult3[1][0], crossresult3[2][0], crossresult3[3][0]);
 	//pDC->TextOut(1000, 240, str);
 	//
-	//if (/*-crossresult1[0][0] == crossresult3[0][0] &&*/ round(crossresult2[1][0]) == round(crossresult3[1][0]) && round(-crossresult1[2][0]) == round(crossresult2[2][0]))
-	////if (crossresult1[3][0]== crossresult2[3][0])
+	////if (/*-crossresult1[0][0] == crossresult3[0][0] &&*/ round(crossresult2[1][0]) == round(crossresult3[1][0]) && round(-crossresult1[2][0]) == round(crossresult2[2][0]))
+	//if (crossresult1[2][0] > 0 && crossresult2[2][0] > 0 && crossresult3[2][0] > 0)
 	//{
 	//	str.Format(_T("일치"));
 	//	pDC->TextOut(1000, 260, str);
+	//	m_drawType = TRUE;
+	//}
+	//else if (crossresult1[2][0] < 0 && crossresult2[2][0] < 0 && crossresult3[2][0] < 0)
+	//{
+	//	str.Format(_T("일치"));
+	//	pDC->TextOut(1000, 260, str);
+	//	m_drawType = TRUE;
 	//}
 	//else
 	//{
 	//	str.Format(_T("불일치"));
 	//	pDC->TextOut(1000, 280, str);
+	//	m_drawType = FALSE;
 	//}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma region 외적
-	//외적
-	float crossresult1[4][1] = {
-		{ 0 },
-		{ 0 },
-		{ round((CubeVertex[6][0]- clickedPoint[0][0])*(CubeVertex[6][1]- CubeVertex[3][1])-
-		(CubeVertex[6][0]- CubeVertex[3][0])*(CubeVertex[6][1]-clickedPoint[1][0])) },
-		{ 1 } };
-	
-	str.Format(_T("외적1 : %.1f, %.1f, %.1f, %.1f"), crossresult1[0][0], crossresult1[1][0], crossresult1[2][0], crossresult1[3][0]);
-	pDC->TextOut(1000, 200, str);
-	
-	float crossresult2[4][1] = {
-		{ 0 },
-		{ 0 },
-		{ round((CubeVertex[3][0] - clickedPoint[0][0])*(CubeVertex[3][1] - CubeVertex[7][1]) -
-		(CubeVertex[3][0] - CubeVertex[7][0])*(CubeVertex[3][1] - clickedPoint[1][0])) },
-		{ 1 } };
-	
-	str.Format(_T("외적2 : %.1f, %.1f, %.1f, %.1f"), crossresult2[0][0], crossresult2[1][0], crossresult2[2][0], crossresult2[3][0]);
-	pDC->TextOut(1000, 220, str);
-	
-	float crossresult3[4][1] = {
-		{ 0 },
-		{ 0 },
-		{ round((CubeVertex[7][0] - clickedPoint[0][0])*(CubeVertex[7][1] - CubeVertex[6][1]) -
-		(CubeVertex[7][0] - CubeVertex[6][0])*(CubeVertex[7][1] - clickedPoint[1][0])) },
-		{ 1 } };
-	
-	str.Format(_T("외적3 : %.1f, %.1f, %.1f, %.1f"), crossresult3[0][0], crossresult3[1][0], crossresult3[2][0], crossresult3[3][0]);
-	pDC->TextOut(1000, 240, str);
-	
-	//if (/*-crossresult1[0][0] == crossresult3[0][0] &&*/ round(crossresult2[1][0]) == round(crossresult3[1][0]) && round(-crossresult1[2][0]) == round(crossresult2[2][0]))
-	if (crossresult1[2][0] > 0 && crossresult2[2][0] > 0 && crossresult3[2][0] > 0)
-	{
-		str.Format(_T("일치"));
-		pDC->TextOut(1000, 260, str);
-		m_drawType = TRUE;
-	}
-	else if (crossresult1[2][0] < 0 && crossresult2[2][0] < 0 && crossresult3[2][0] < 0)
-	{
-		str.Format(_T("일치"));
-		pDC->TextOut(1000, 260, str);
-		m_drawType = TRUE;
-	}
-	else
-	{
-		str.Format(_T("불일치"));
-		pDC->TextOut(1000, 280, str);
-		m_drawType = FALSE;
-	}
 
 
 #pragma endregion
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//m_vCube.push_back(MyCube);
-	//for (auto vc : m_vCube)
-	//{
-	//		//xMove = 0;
-	//		//yMove = 0;
-	//		str.Format(_T("최종수정 : %.1f, %.1f, %.1f, %.1f"), vc.Vertex[7][0], vc.Vertex[7][1], vc.Vertex[7][2], vc.Vertex[7][3]);
-	//		pDC->TextOut(500, 200, str);
-	//	
-	//	#pragma region 큐브그리는부분
-	//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
-	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
-	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
-	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
-	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
-	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
-	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
-	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
-	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
-	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
-	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//	
-	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
-	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
-	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
-	//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
-	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
-	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
-	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
-	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
-	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
-	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
-	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
-	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
-	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
-	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//	
-	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
-	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
-	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
-	//	#pragma endregion
-	//}
-
-
-	if (m_drawType)
-	{
+			if (m_drawType)
+			{
 #pragma region 큐브그리는부분(채우기)
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 
-		pDC->BeginPath();
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->EndPath();
-		pDC->StrokeAndFillPath();
+				pDC->BeginPath();
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
 #pragma endregion
-	}
-	else
-	{
+			}
+			else
+			{
 #pragma region 큐브그리는부분
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 
-		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+				pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 
-		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
-		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
-		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
-		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+				pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
+				pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
+				pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
+				pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 #pragma endregion
+			}
+
+		}//end for(auto cv : m_vCube)
+		for (int i = 0; i < COL; i++) {
+			delete[] cubeproresult[i];
+			delete[] cubeviewresult[i];
+			delete[] cuberotateresult[i];
+		}
+		delete[] cubeproresult;
+		delete[] cubeviewresult;
+		delete[] cuberotateresult;
 	}
+#pragma endregion
+
+#pragma region Sphere그리기
+	float Inputmat[4][1];
+	float vInputmat[4][1];
+	float** Resultmat = new float*[9];
+	float** sphereproresult = new float*[COL];
+	float** sphereviewresult = new float*[COL];
 	for (int i = 0; i < COL; i++) {
-		delete[] cubeproresult[i];
-		delete[] cubeviewresult[i];
-		delete[] cuberotateresult[i];
+		Resultmat[i] = new float[ROW];
+		sphereproresult[i] = new float[1];
+		sphereviewresult[i] = new float[1];
 	}
-	delete[] cubeproresult;
-	delete[] cubeviewresult;
-	delete[] cuberotateresult;
+
+	for (auto sp : m_vSphere)
+	{
+		int count = 1;
+		for (int r = 0; r < 81; r++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				//Inputmat[i][0] = sp.focusdot[r][i];
+				Inputmat[i][0] = sp.Sphere_Vertex[count][i];
+			}
+			//for (int ver = 0; ver < 9; ver++)
+			//{
+				//Resultmat = matfun.ZRotationreturn(Inputmat, ver * 40);
+				//for (int i = 0; i < 4; i++)
+				//{
+				//	vInputmat[i][0] = Resultmat[i][0];
+				//}					
+			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
+
+			for (int i = 0; i < COL; i++)
+			{
+				vInputmat[i][0] = sphereviewresult[i][0];
+			}
+			sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+
+			for (int i = 0; i < 4; i++)
+			{
+				sp.Sphere_Vertex[count][i] = sphereproresult[i][0];
+			}
+			count++;
+			//}
+		}
+
+		count = 0;
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				Inputmat[i][0] = sp.Sphere_Vertex[count][i];
+			}
+			//for (int ver = 0; ver < 9; ver++)
+			//{
+				//Resultmat = matfun.ZRotationreturn(Inputmat, ver * 40);
+				//for (int i = 0; i < 4; i++)
+				//{
+				//	vInputmat[i][0] = Resultmat[i][0];
+				//}					
+			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
+
+			for (int i = 0; i < COL; i++)
+			{
+				vInputmat[i][0] = sphereviewresult[i][0];
+			}
+			sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+
+			for (int i = 0; i < 4; i++)
+			{
+				sp.Sphere_Vertex[count][i] = sphereproresult[i][0];
+			}
+			//}
+			count = 82;
+		}
+
+		//str.Format(_T("끝점1 : %.1f, %.1f, %.1f, %.1f"), sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1], sp.Sphere_Vertex[0][2], sp.Sphere_Vertex[0][3]);
+		//pDC->TextOut(500, 200, str);
+		//str.Format(_T("끝점2 : %.1f, %.1f, %.1f, %.1f"), sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1], sp.Sphere_Vertex[82][2], sp.Sphere_Vertex[82][3]);
+		//pDC->TextOut(500, 220, str);
+
+
+		////구 그리기 for문으로 해결해보기
+		//int vcount = 0;
+		//for (int i = 0; i < 9; i++)
+		//{
+		//	for (int j = 0; j < 9; j++)
+		//	{
+		//		if (vcount%8 == 7)
+		//		{
+		//			pDC->MoveTo(SphereVertex[vcount][0], SphereVertex[vcount][1]);
+		//			pDC->LineTo(SphereVertex[vcount-7][0], SphereVertex[vcount-7][1]);
+		//		}
+		//		else
+		//		{
+		//			pDC->MoveTo(SphereVertex[vcount][0], SphereVertex[vcount][1]);
+		//			pDC->LineTo(SphereVertex[vcount + 1][0], SphereVertex[vcount + 1][1]);
+		//		}
+		//		vcount++;
+		//	}
+		//}
+
+		if (m_drawType)
+		{
+#pragma region 구체그리기(채우기)
+			int num = 10;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+				pDC->EndPath();
+				if (i == 9)
+				{
+					pDC->BeginPath();
+					pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+					pDC->EndPath();
+				}
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				pDC->EndPath();
+				if (i == 81)
+				{
+					pDC->BeginPath();
+					pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+					pDC->EndPath();
+				}
+
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+
+				pDC->BeginPath();
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->EndPath();
+				pDC->StrokeAndFillPath();
+			}
 #pragma endregion
+		}
+		else
+		{
+#pragma region 구체그리기
+			int num = 10;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+				if (i == 9)
+				{
+					pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+
+				}
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+			num = num + 9;
+			for (int i = num - 9; i < num; i++)
+			{
+				pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				if (i == 81)
+				{
+					pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				}
+
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+
+				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			}
+#pragma endregion
+		}
+
+		for (int i = 0; i < COL; i++) {
+			delete[] Resultmat[i];
+			delete[] sphereproresult[i];
+			delete[] sphereviewresult[i];
+		}
+		delete[] Resultmat;
+		delete[] sphereproresult;
+		delete[] sphereviewresult;
+	}//end for(auto sp : m_vSphere)
+#pragma endregion
+
+#pragma region Torus그리기
+	float Inputmat[4][1] = { 0 };
+	float tvInputmat[4][1] = { 0 };
+	float** torusproresult = new float*[COL];
+	float** torusviewresult = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		torusproresult[i] = new float[1];
+		torusviewresult[i] = new float[1];
+	}
+
+
+	for (auto tr : m_vTorus)
+	{
+
+		int count = 0;
+		for (int j = 0; j < 64; j++)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				Inputmat[i][0] = tr.Torus_Vertex[count][i];
+			}
+
+			torusviewresult = matfun.ViewMat(Inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10, 0, 0, 500);
+
+			for (int i = 0; i < COL; i++)
+			{
+				tvInputmat[i][0] = torusviewresult[i][0];
+			}
+			torusproresult = matfun.ProjectionMat(tvInputmat, inputratio, m_viewAngle);
+
+			count++;
+		}
+
+
+		if (m_drawType)
+		{
+#pragma region 원환면그리기(채우기)
+			for (int i = 0; i < 64; i++)
+			{
+				if (i < 8)
+				{
+					if (i % 8 == 7)
+					{
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 49][0], TorusVertex[i - 49][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+					else
+					{
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 57][0], TorusVertex[i + 57][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+				}
+				else if (i > 55)
+				{
+					if (i % 8 == 7)
+					{
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 56][0], TorusVertex[i - 56][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 15][0], TorusVertex[i - 15][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+					else
+					{
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 56][0], TorusVertex[i - 56][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+				}
+
+				else
+				{
+					if (i % 8 == 7)
+					{
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 15][0], TorusVertex[i - 15][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+					else
+					{
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+
+						pDC->BeginPath();
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+				}
+			}
+#pragma endregion
+		}
+		else
+		{
+#pragma region 원환면그리기
+			for (int i = 0; i < 64; i++)
+			{
+				if (i < 8)
+				{
+					if (i % 8 == 7)
+					{
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 49][0], TorusVertex[i - 49][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+					}
+					else
+					{
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+						pDC->LineTo(TorusVertex[i + 57][0], TorusVertex[i + 57][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->EndPath();
+						pDC->StrokeAndFillPath();
+					}
+				}
+				else if (i > 55)
+				{
+					if (i % 8 == 7)
+					{
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 56][0], TorusVertex[i - 56][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 15][0], TorusVertex[i - 15][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+					}
+					else
+					{
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 56][0], TorusVertex[i - 56][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+					}
+				}
+
+				else
+				{
+					if (i % 8 == 7)
+					{
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 15][0], TorusVertex[i - 15][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+					}
+					else
+					{
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i + 8][0], TorusVertex[i + 8][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+
+						pDC->MoveTo(TorusVertex[i][0], TorusVertex[i][1]);
+						pDC->LineTo(TorusVertex[i - 7][0], TorusVertex[i - 7][1]);
+						pDC->LineTo(TorusVertex[i + 1][0], TorusVertex[i + 1][1]);
+						pDC->LineTo(TorusVertex[i][0], TorusVertex[i][1]);
+					}
+				}
+			}
+#pragma endregion
+		}
+
+	}// for (auto sp : m_vSphere)
+#pragma endregion
+
+
+
+
 }//DrawCube
+
+
+
+
+//void CMFCApplication1View::GetpointDrawCube(CDC* pDC, float Intputmat[][1])
+////void CMFCApplication1View::GetpointDrawCube(float Inputmat[][1])
+//{
+//	//CDC* pDC;
+//	CPen whitePen(PS_SOLID, 2, RGB(255, 255, 255));
+//	pDC->SelectObject(whitePen);
+//#pragma region Cube그리기
+//	//Cube 그리기
+//	float width = (float)winrect.Width() / 2;
+//	float height = (float)winrect.Height() / 2;
+//	inputratio = (float)(winrect.right / (float)winrect.bottom); // 종횡비
+//																 //inputratio = (float)winrect.bottom / (float)(winrect.right); // 종횡비 반대로
+//
+//																 //float cubepoint[4][1] = { { -2800 },{ 900 },{ 501 },{ 1 } };
+//
+//	float cubepoint[4][1];
+//	for (int i = 0; i < COL; i++)
+//	{
+//		//if(i==0)
+//		//	cubepoint[i][0] = intputmat[i][0]/width; //월드의 좌표		
+//		//else if(i==1)
+//		//	cubepoint[i][0] = intputmat[i][0]/height; //월드의 좌표		
+//		cubepoint[i][0] = intputmat[i][0]; //월드의 좌표		
+//	}
+//	str.Format(_T("가져온 월드좌표 : %.1f, %.1f, %.1f, %.1f"), cubepoint[0][0], cubepoint[1][0], cubepoint[2][0], cubepoint[3][0]);
+//	pDC->TextOut(winrect.right - 330, winrect.bottom - 90, str);
+//
+//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	//intputmatc
+//	//float CubeVertex[8][4];
+//	//for (int i = 0; i < 8; i++) {
+//	//	for (int j = 0; j < 4; j++)
+//	//	{
+//	//		CubeVertex[i][j] = intputmatc[i][j];
+//	//	}
+//	//}
+//
+//	//MyCube.m_Size = m_CubeSize;
+//	//MyCube.xMove = xMove;
+//	//MyCube.yMove = yMove;
+//	//MyCube.xRotate = xvalue;
+//	//MyCube.yRotate = yvalue;
+//	//MyCube.zRotate = zvalue;
+//	//for (int i = 0; i < 8; i++) {
+//	//	for (int j = 0; j < 4; j++)
+//	//	{
+//	//		MyCube.Vertex[i][j] = intputmatc[i][j];
+//	//	}
+//	//}
+//
+//	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	//외적
+//	//float crossinput[4][1];
+//	//float **dotproresult = new float*[COL];
+//	//float **dotviewresult = new float*[COL];
+//	//float **dotrotateresult = new float*[COL];//
+//
+//	//for (int i = 0; i < COL; i++)
+//	//{
+//	//	crossinput[i][0] = intputmat[i][0]; //월드의 좌표
+//	//	dotviewresult = matfun.ViewMat(crossinput, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
+//	//	for (int i = 0; i < 4; i++)
+//	//	{
+//	//		crossinput[i][0] = dotviewresult[i][0];
+//	//	}
+//	//	dotproresult = matfun.ProjectionMat(crossinput, inputratio, m_viewAngle, width, height);
+//	//	for (int i = 0; i < 4; i++)
+//	//	{
+//	//		crossinput[i][0] = dotproresult[i][0];
+//	//	}
+//	//}
+//	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//	float CubeVertex[8][4] = { { cubepoint[0][0] - m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 },
+//	{ cubepoint[0][0] - m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
+//	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
+//	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] + m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 },
+//	{ cubepoint[0][0] - m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 },
+//	{ cubepoint[0][0] - m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
+//	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] + m_CubeSize, 1 },
+//	{ cubepoint[0][0] + m_CubeSize, cubepoint[1][0] - m_CubeSize, cubepoint[2][0] - m_CubeSize, 1 } };
+//
+//	str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[0][0], CubeVertex[0][1], CubeVertex[0][2], CubeVertex[0][3]);
+//	pDC->TextOut(500, 40, str);
+//	str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[1][0], CubeVertex[1][1], CubeVertex[1][2], CubeVertex[1][3]);
+//	pDC->TextOut(500, 60, str);
+//	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[2][0], CubeVertex[2][1], CubeVertex[2][2], CubeVertex[2][3]);
+//	//pDC->TextOut(500, 80, str);
+//	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[3][0], CubeVertex[3][1], CubeVertex[3][2], CubeVertex[3][3]);
+//	//pDC->TextOut(500, 100, str);
+//	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[4][0], CubeVertex[4][1], CubeVertex[4][2], CubeVertex[4][3]);
+//	//pDC->TextOut(500, 80, str);
+//	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[5][0], CubeVertex[5][1], CubeVertex[5][2], CubeVertex[5][3]);
+//	//pDC->TextOut(500, 100, str);
+//	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[6][0], CubeVertex[6][1], CubeVertex[6][2], CubeVertex[6][3]);
+//	//pDC->TextOut(500, 160, str);
+//	//str.Format(_T("수정본 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[7][0], CubeVertex[7][1], CubeVertex[7][2], CubeVertex[7][3]);
+//	//pDC->TextOut(500, 180, str);
+//
+//	float inputmat[4][1] = { 0 };
+//	float **cubeproresult = new float*[COL];
+//	float **cubeviewresult = new float*[COL];
+//	float **cuberotateresult = new float*[COL];//
+//	for (int i = 0; i < COL; i++) {
+//		cubeproresult[i] = new float[1];
+//		cubeviewresult[i] = new float[1];
+//		cuberotateresult[i] = new float[1];//
+//	}
+//
+//	for (int j = 0; j < 8; j++)
+//	{
+//		for (int i = 0; i < COL; i++)
+//		{
+//			inputmat[i][0] = CubeVertex[j][i];
+//			//inputmat[i][0] = MyCube.Vertex[j][i];
+//		}
+//		//회전
+//		//cuberotateresult = matfun.SelectRotationreturn(inputmat[0][0], inputmat[1][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);//기존코드
+//		//cuberotateresult = matfun.SelectRotationreturn(cubepoint[0][0], cubepoint[1][0], cubepoint[2][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);
+//		//cuberotateresult = matfun.SelectRotationreturn(inputmat[0][0], inputmat[1][0], inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10);
+//		//cuberotateresult = matfun.Affinereturn(inputmat, rxvalue * 10, ryvalue * 10, rzvalue * 10, m_CubeSize, xMove, yMove);
+//		//for (int i = 0; i < COL; i++)
+//		//{
+//		//	inputmat[i][0] = cuberotateresult[i][0];
+//		//}
+//
+//		//뷰변환
+//		//cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500);//기존코드
+//		//cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, width, height, 500);
+//		//cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500);
+//		cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
+//
+//		for (int i = 0; i < COL; i++)
+//		{
+//			inputmat[i][0] = cubeviewresult[i][0];
+//		}
+//
+//		//투영변환
+//		cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+//		//cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle);
+//
+//		////// 이부분 수정해야함
+//		//cubeproresult[0][0] = ((cubeproresult[0][0] * width) + width);
+//		//cubeproresult[1][0] = ((-cubeproresult[1][0] * height)) + height;
+//
+//		for (int i = 0; i < COL; i++)
+//		{
+//			//if (i == 0)
+//			//	CubeVertex[j][i] = cubeproresult[i][0];
+//			//else if (i == 1)
+//			//	CubeVertex[j][i] = cubeproresult[i][0];
+//			CubeVertex[j][i] = cubeproresult[i][0];
+//		}
+//	}
+//
+//	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[0][0], CubeVertex[0][1], CubeVertex[0][2], CubeVertex[0][3]);
+//	//pDC->TextOut(500, 40, str);
+//	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[1][0], CubeVertex[1][1], CubeVertex[1][2], CubeVertex[1][3]);
+//	//pDC->TextOut(500, 60, str);
+//	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[2][0], CubeVertex[2][1], CubeVertex[2][2], CubeVertex[2][3]);
+//	//pDC->TextOut(500, 80, str);
+//	//str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[3][0], CubeVertex[3][1], CubeVertex[3][2], CubeVertex[3][3]);
+//	//pDC->TextOut(500, 100, str);
+//	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[4][0], CubeVertex[4][1], CubeVertex[4][2], CubeVertex[4][3]);
+//	pDC->TextOut(500, 120, str);
+//	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[5][0], CubeVertex[5][1], CubeVertex[5][2], CubeVertex[5][3]);
+//	pDC->TextOut(500, 140, str);
+//	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[6][0], CubeVertex[6][1], CubeVertex[6][2], CubeVertex[6][3]);
+//	pDC->TextOut(500, 160, str);
+//	str.Format(_T("결과 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[7][0], CubeVertex[7][1], CubeVertex[7][2], CubeVertex[7][3]);
+//	pDC->TextOut(500, 180, str);
+//
+//	str.Format(_T("최종수정 : %.1f, %.1f, %.1f, %.1f"), CubeVertex[7][0], CubeVertex[7][1], CubeVertex[7][2], CubeVertex[7][3]);
+//	pDC->TextOut(500, 200, str);
+//
+//
+//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	////외적
+//	//float crossresult1[4][1] = {
+//	//	{ round((crossinput[1][0] * CubeVertex[0][2]) - (crossinput[2][0] * CubeVertex[0][1])) },
+//	//	{ round((crossinput[2][0] * CubeVertex[0][0]) - (crossinput[0][0] * CubeVertex[0][2])) },
+//	//	{ round((crossinput[0][0] * CubeVertex[0][1]) - (crossinput[1][0] * CubeVertex[0][0])) },
+//	//	{ 1 } };
+//	//
+//	//str.Format(_T("외적1 : %.1f, %.1f, %.1f, %.1f"), crossresult1[0][0], crossresult1[1][0], crossresult1[2][0], crossresult1[3][0]);
+//	//pDC->TextOut(1000, 200, str);
+//	//
+//	//float crossresult2[4][1] = {
+//	//	{ round((crossinput[1][0] * CubeVertex[1][2]) - (crossinput[2][0] * CubeVertex[1][1])) },
+//	//	{ round((crossinput[2][0] * CubeVertex[1][0]) - (crossinput[0][0] * CubeVertex[1][2])) },
+//	//	{ round((crossinput[0][0] * CubeVertex[1][1]) - (crossinput[1][0] * CubeVertex[1][0])) },
+//	//	{ 1 } };
+//	//
+//	//str.Format(_T("외적2 : %.1f, %.1f, %.1f, %.1f"), crossresult2[0][0], crossresult2[1][0], crossresult2[2][0], crossresult2[3][0]);
+//	//pDC->TextOut(1000, 220, str);
+//	//
+//	//float crossresult3[4][1] = {
+//	//	{ round((crossinput[1][0] * CubeVertex[5][2]) - (crossinput[2][0] * CubeVertex[5][1])) },
+//	//	{ round((crossinput[2][0] * CubeVertex[5][0]) - (crossinput[0][0] * CubeVertex[5][2])) },
+//	//	{ round((crossinput[0][0] * CubeVertex[5][1]) - (crossinput[1][0] * CubeVertex[5][0])) },
+//	//	{ 1 } };
+//	//
+//	//str.Format(_T("외적3 : %.1f, %.1f, %.1f, %.1f"), crossresult3[0][0], crossresult3[1][0], crossresult3[2][0], crossresult3[3][0]);
+//	//pDC->TextOut(1000, 240, str);
+//	//
+//	//if (/*-crossresult1[0][0] == crossresult3[0][0] &&*/ round(crossresult2[1][0]) == round(crossresult3[1][0]) && round(-crossresult1[2][0]) == round(crossresult2[2][0]))
+//	////if (crossresult1[3][0]== crossresult2[3][0])
+//	//{
+//	//	str.Format(_T("일치"));
+//	//	pDC->TextOut(1000, 260, str);
+//	//}
+//	//else
+//	//{
+//	//	str.Format(_T("불일치"));
+//	//	pDC->TextOut(1000, 280, str);
+//	//}
+//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//#pragma region 외적
+//	//외적
+//	float crossresult1[4][1] = {
+//		{ 0 },
+//		{ 0 },
+//		{ round((CubeVertex[6][0] - clickedPoint[0][0])*(CubeVertex[6][1] - CubeVertex[3][1]) -
+//		(CubeVertex[6][0] - CubeVertex[3][0])*(CubeVertex[6][1] - clickedPoint[1][0])) },
+//		{ 1 } };
+//
+//	str.Format(_T("외적1 : %.1f, %.1f, %.1f, %.1f"), crossresult1[0][0], crossresult1[1][0], crossresult1[2][0], crossresult1[3][0]);
+//	pDC->TextOut(1000, 200, str);
+//
+//	float crossresult2[4][1] = {
+//		{ 0 },
+//		{ 0 },
+//		{ round((CubeVertex[3][0] - clickedPoint[0][0])*(CubeVertex[3][1] - CubeVertex[7][1]) -
+//		(CubeVertex[3][0] - CubeVertex[7][0])*(CubeVertex[3][1] - clickedPoint[1][0])) },
+//		{ 1 } };
+//
+//	str.Format(_T("외적2 : %.1f, %.1f, %.1f, %.1f"), crossresult2[0][0], crossresult2[1][0], crossresult2[2][0], crossresult2[3][0]);
+//	pDC->TextOut(1000, 220, str);
+//
+//	float crossresult3[4][1] = {
+//		{ 0 },
+//		{ 0 },
+//		{ round((CubeVertex[7][0] - clickedPoint[0][0])*(CubeVertex[7][1] - CubeVertex[6][1]) -
+//		(CubeVertex[7][0] - CubeVertex[6][0])*(CubeVertex[7][1] - clickedPoint[1][0])) },
+//		{ 1 } };
+//
+//	str.Format(_T("외적3 : %.1f, %.1f, %.1f, %.1f"), crossresult3[0][0], crossresult3[1][0], crossresult3[2][0], crossresult3[3][0]);
+//	pDC->TextOut(1000, 240, str);
+//
+//	//if (/*-crossresult1[0][0] == crossresult3[0][0] &&*/ round(crossresult2[1][0]) == round(crossresult3[1][0]) && round(-crossresult1[2][0]) == round(crossresult2[2][0]))
+//	if (crossresult1[2][0] > 0 && crossresult2[2][0] > 0 && crossresult3[2][0] > 0)
+//	{
+//		str.Format(_T("일치"));
+//		pDC->TextOut(1000, 260, str);
+//		m_drawType = TRUE;
+//	}
+//	else if (crossresult1[2][0] < 0 && crossresult2[2][0] < 0 && crossresult3[2][0] < 0)
+//	{
+//		str.Format(_T("일치"));
+//		pDC->TextOut(1000, 260, str);
+//		m_drawType = TRUE;
+//	}
+//	else
+//	{
+//		str.Format(_T("불일치"));
+//		pDC->TextOut(1000, 280, str);
+//		m_drawType = FALSE;
+//	}
+//
+//
+//#pragma endregion
+//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//	//m_vCube.push_back(MyCube);
+//	//for (auto vc : m_vCube)
+//	//{
+//	//		//xMove = 0;
+//	//		//yMove = 0;
+//	//		str.Format(_T("최종수정 : %.1f, %.1f, %.1f, %.1f"), vc.Vertex[7][0], vc.Vertex[7][1], vc.Vertex[7][2], vc.Vertex[7][3]);
+//	//		pDC->TextOut(500, 200, str);
+//	//	
+//	//	#pragma region 큐브그리는부분
+//	//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
+//	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
+//	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
+//	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
+//	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
+//	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
+//	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
+//	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
+//	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
+//	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
+//	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//	
+//	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
+//	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
+//	//		pDC->LineTo(vc.Vertex[0][0], vc.Vertex[0][1]);
+//	//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+//	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
+//	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
+//	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//		pDC->LineTo(vc.Vertex[1][0], vc.Vertex[1][1]);
+//	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
+//	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//		pDC->LineTo(vc.Vertex[2][0], vc.Vertex[2][1]);
+//	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
+//	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//		pDC->LineTo(vc.Vertex[3][0], vc.Vertex[3][1]);
+//	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
+//	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
+//	//		pDC->LineTo(vc.Vertex[5][0], vc.Vertex[5][1]);
+//	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//	
+//	//		pDC->MoveTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//		pDC->LineTo(vc.Vertex[4][0], vc.Vertex[4][1]);
+//	//		pDC->LineTo(vc.Vertex[7][0], vc.Vertex[7][1]);
+//	//		pDC->LineTo(vc.Vertex[6][0], vc.Vertex[6][1]);
+//	//	#pragma endregion
+//	//}
+//
+//
+//	if (m_drawType)
+//	{
+//#pragma region 큐브그리는부분(채우기)
+//		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//
+//		pDC->BeginPath();
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->EndPath();
+//		pDC->StrokeAndFillPath();
+//#pragma endregion
+//	}
+//	else
+//	{
+//#pragma region 큐브그리는부분
+//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//
+//		pDC->MoveTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[0][0], CubeVertex[0][1]);
+//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[1][0], CubeVertex[1][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[2][0], CubeVertex[2][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[3][0], CubeVertex[3][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[5][0], CubeVertex[5][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//
+//		pDC->MoveTo(CubeVertex[6][0], CubeVertex[6][1]);
+//		pDC->LineTo(CubeVertex[4][0], CubeVertex[4][1]);
+//		pDC->LineTo(CubeVertex[7][0], CubeVertex[7][1]);
+//		pDC->LineTo(CubeVertex[6][0], CubeVertex[6][1]);
+//#pragma endregion
+//	}
+//	for (int i = 0; i < COL; i++) {
+//		delete[] cubeproresult[i];
+//		delete[] cubeviewresult[i];
+//		delete[] cuberotateresult[i];
+//	}
+//	delete[] cubeproresult;
+//	delete[] cubeviewresult;
+//	delete[] cuberotateresult;
+//#pragma endregion
+//}//DrawCube
+
+
 
 
 
