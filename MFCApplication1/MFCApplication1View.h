@@ -10,9 +10,8 @@
 using namespace std;
 struct Cube
 {
-	float vDrawPoint[4][1]; // 중점
 	float Vertex[8][4]; // 정점의 배열
-	//bool m_drawType;// 솔리드, 와이어프레임
+	BOOL isClicked=FALSE;
 	float m_Size;	// 크기
 	float xRotate;	// 회전
 	float yRotate;	// 회전
@@ -21,16 +20,6 @@ struct Cube
 	float yMove;	// 이동
 };
 
-//MyCube.vDrawPoint = m_DrawPoint;
-//MyCube.m_drawType = TRUE;
-//for (int i = 0; i < 8; i++)
-//{
-//	for (int j = 0; j < 4; j++)
-//	{
-//		MyCube.Vertex[i][j] = CubeVertex[i][j];
-//	}
-//}
-//m_vCube.push_back(MyCube);
 
 class CMFCApplication1View : public CView
 {
@@ -67,9 +56,10 @@ public:
 	float intputmat[4][1] = { 0 };
 	float intputmatc[8][4] = { 0 };
 	float campos[4][1];
+	float clickedPoint[4][1];
 
 	//도형 크기
-	float m_CubeSize = 30;
+	float m_CubeSize = 100;
 	float m_SphereRadius = 80;
 	float m_TorusRadius = 50;
 	float m_nCircleRadius = 25;
@@ -89,7 +79,7 @@ public:
 	float yMove = 0;
 	
 	float inputratio; //종횡비
-	float m_viewAngle = 60; //시야각
+	float m_viewAngle = 90; //시야각
 	//float m_viewAngle = 5; //시야각
 
 	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
