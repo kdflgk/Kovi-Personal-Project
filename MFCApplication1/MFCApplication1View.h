@@ -10,7 +10,8 @@
 using namespace std;
 struct Cube
 {
-	float Cube_Center[4][1];
+	int index=456231567;
+	float Cube_Center[4][1]; //도형의 원점(월드좌표)
 	float Cube_Vertex[8][4]; // 정점의 배열
 	BOOL isClicked=FALSE;
 	float Cube_Size;	// 크기
@@ -23,6 +24,7 @@ struct Cube
 
 struct Sphere
 {
+	int index = 456231567;
 	//float focusdot[9][4];
 	float Sphere_Center[4][1];
 	float Sphere_Vertex[83][4]; // 정점의 배열
@@ -37,6 +39,7 @@ struct Sphere
 
 struct Torus
 {
+	int index = 456231567;
 	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
 	BOOL isClicked = FALSE;
@@ -93,7 +96,7 @@ public:
 	float clickedPoint[4][1];
 
 	//도형 크기
-	float m_CubeSize = 100;
+	float m_CubeSize = 10;
 	float m_SphereRadius = 200;
 	float m_TorusRadius = 200;
 	float m_nCircleRadius = 70;

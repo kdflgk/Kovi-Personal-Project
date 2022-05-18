@@ -245,21 +245,16 @@ float** Matrixfun::Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], f
 //float** Matrixfun::AffineScalereturn(CPoint cpoint, float resultmat1[][1], float scale)
 float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 {
-	float smat[4][4] = { { scale,0,0,0 },{ 0,scale,0,0 },{ 0,0,scale,0 },{ 0,0,0,1 } };
+	float smat[4][4] = { { scale/10, 0, 0, 0 },{ 0, scale/10, 0, 0 },{ 0, 0, scale/10, 0 },{ 0, 0, 0, 1 } };
 	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[1];
 	}
-	float x= resultmat1[0][0], y= resultmat1[1][0], z = resultmat1[2][0];
-	resultmat1[0][0] -= x; resultmat1[1][0] -= y, resultmat1[2][0] -= z;
-	//resultmat1[0][0] -= cpoint.x; resultmat1[1][0] -= cpoint.y;
 
 	for (int i = 0; i < COL; i++)
 	{
 		Resultmat[i][0] = (smat[i][0] * resultmat1[0][0]) + (smat[i][1] * resultmat1[1][0]) + (smat[i][2] * resultmat1[2][0]) + (smat[i][3] * resultmat1[3][0]);
 	}
-	//Resultmat[0][0] += cpoint.x; Resultmat[1][0] += cpoint.y;
-	Resultmat[0][0] += x; Resultmat[1][0] += y, Resultmat[2][0] += z;
 
 	return Resultmat;
 }
@@ -345,7 +340,25 @@ float** Matrixfun::Translatereturn(CDC* pDC, float resultmat1[][1], float result
 float** Matrixfun::AffineTranslatereturn(float resultmat1[][1], float xtrans, float ytrans, float ztrans)
 {
 	//float tmat[4][4] = { { 1,0,0,100 * xtrans },{ 0,1,0,100 * ytrans },{ 0,0,1,100 * ztrans },{ 0,0,0,1 } };
-	float tmat[4][4] = { { 1,0,0,xtrans },{ 0,1,0,ytrans },{ 0,0,1,ztrans },{ 0,0,0,1 } };;
+	float tmat[4][4] = { { 1,0,0,xtrans + resultmat1[0][0] },{ 0,1,0,ytrans + resultmat1[1][0] },{ 0,0,1,ztrans },{ 0,0,0,1 } };;
+	float** Resultmat = new float*[COL];
+
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[1];
+	}
+
+	for (int i = 0; i < COL; i++)
+	{
+		Resultmat[i][0] = (tmat[i][0] * resultmat1[0][0]) + (tmat[i][1] * resultmat1[1][0]) + (tmat[i][2] * resultmat1[2][0]) + (tmat[i][3] * resultmat1[3][0]);
+	}
+
+	return Resultmat;
+}
+
+float** Matrixfun::AffineTranslatereturn(float inputmat[][1],float resultmat1[][1], float xtrans, float ytrans, float ztrans)
+{
+	//float tmat[4][4] = { { 1,0,0,100 * xtrans },{ 0,1,0,100 * ytrans },{ 0,0,1,100 * ztrans },{ 0,0,0,1 } };
+	float tmat[4][4] = { { 1,0,0,xtrans + inputmat[0][0] },{ 0,1,0,ytrans + inputmat[1][0] },{ 0,0,1,ztrans },{ 0,0,0,1 } };
 	float** Resultmat = new float* [COL];
 
 	for (int i = 0; i < COL; i++) {
@@ -1123,11 +1136,10 @@ float** Matrixfun::Affinereturn(float resultmat[][1], float xradian, float yradi
 		Inputmat[i][0] = ScaleResultmat[i][0];
 	}
 
-	//RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
-	//for (int i = 0; i < COL; i++) {
-	//	Inputmat[i][0] = RotateResultmat[i][0];
-	//}
-
+	RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
+	for (int i = 0; i < COL; i++) {
+		Inputmat[i][0] = RotateResultmat[i][0];
+	}
 	Resultmat = AffineTranslatereturn(Inputmat, xtrans, ytrans, ztrans);
 
 	return Resultmat;
@@ -1145,25 +1157,25 @@ float** Matrixfun::Affinereturn(float centerpoint[][1], float resultmat[][1], fl
 		RotateResultmat[i] = new float[1];		
 	}
 	
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	Inputmat[i][0] = resultmat[i][0];
-	//}
+	for (int i = 0; i < 4; i++)
+	{
+		Inputmat[i][0] = resultmat[i][0];
+	}
 
-	//ScaleResultmat = AffineScalereturn(Inputmat, scale);
+	ScaleResultmat = AffineScalereturn(Inputmat, scale);
 	//ScaleResultmat = AffineScalereturn(centerpoint, resultmat, scale);
-	ScaleResultmat = AffineScalereturn(centerpoint, resultmat, scale);
+	//ScaleResultmat = AffineScalereturn(centerpoint, resultmat, scale);
 	for (int i = 0; i < COL; i++) {
 		Inputmat[i][0] = ScaleResultmat[i][0];
 	}
 
-	//RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
-	RotateResultmat = AffineRotationreturn(centerpoint,Inputmat, xradian, yradian, zradian);
+	RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
+	//RotateResultmat = AffineRotationreturn(centerpoint,Inputmat, xradian, yradian, zradian);
 	for (int i = 0; i < COL; i++) {
 		Inputmat[i][0] = RotateResultmat[i][0];
 	}
 
-	Resultmat = AffineTranslatereturn(Inputmat, xtrans, ytrans, ztrans);
+	Resultmat = AffineTranslatereturn(centerpoint, Inputmat, xtrans, ytrans, ztrans);
 
 	return Resultmat;
 }

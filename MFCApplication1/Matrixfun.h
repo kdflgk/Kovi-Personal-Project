@@ -50,6 +50,7 @@ public:
 	float **AffineRotationreturn(float resultmat1[][1], float xradian, float yradian, float zradian);
 	float **AffineRotationreturn(float intputmat1[][1], float resultmat1[][1], float xradian, float yradian, float zradian);
 	float **AffineTranslatereturn(float resultmat1[][1], float xtrans, float ytrans, float ztrans);
+	float **AffineTranslatereturn(float intputmat1[][1], float resultmat1[][1], float xtrans, float ytrans, float ztrans);
 	//float **Affinereturn(float xradian, float yradian, float zradian, float xscale, float yscale, float zscale, float xtrans, float ytrans, float ztrans = 1);
 	//float **Affinereturn(CPoint cpoint, float resultmat1[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans = 1);
 	float **Affinereturn(float resultmat1[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans = 1);
