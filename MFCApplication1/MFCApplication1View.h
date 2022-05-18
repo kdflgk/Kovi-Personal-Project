@@ -10,6 +10,7 @@
 using namespace std;
 struct Cube
 {
+	float Cube_Center[4][1];
 	float Cube_Vertex[8][4]; // 정점의 배열
 	BOOL isClicked=FALSE;
 	float Cube_Size;	// 크기
@@ -23,6 +24,7 @@ struct Cube
 struct Sphere
 {
 	//float focusdot[9][4];
+	float Sphere_Center[4][1];
 	float Sphere_Vertex[83][4]; // 정점의 배열
 	BOOL isClicked = FALSE;
 	float Sphere_Size;	// 크기
@@ -35,6 +37,7 @@ struct Sphere
 
 struct Torus
 {
+	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
 	BOOL isClicked = FALSE;
 	float Torus_Radius;	// 크기
@@ -69,9 +72,10 @@ public:
 	CString str1234;
 	CString str12345;
 	CString str123456;
+	CString str1234567;
 
 	CRect winrect;
-	CPoint prevpoint = (0, 0);
+	CPoint prevpoint = (0, 0); //Move에서 사용
 
 	//여러개의 도형을 찍기위해
 	Cube MyCube;
@@ -90,9 +94,9 @@ public:
 
 	//도형 크기
 	float m_CubeSize = 100;
-	float m_SphereRadius = 90;
-	float m_TorusRadius = 70;
-	float m_nCircleRadius = 40;
+	float m_SphereRadius = 200;
+	float m_TorusRadius = 200;
+	float m_nCircleRadius = 70;
 
 	//도형 회전
 	float rxvalue = 0;
@@ -119,6 +123,8 @@ public:
 	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	BOOL m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 
+
+	int count = 0;
 
 	// 재정의입니다.
 public:
@@ -156,15 +162,15 @@ public:
 	afx_msg void OnPerspective();
 	afx_msg void OnParallel();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	void DrawFigure(CDC* pDC);
-	void DrawCube(CDC* pDC);
-	void DrawSphere(CDC* pDC);
-	void DrawTorus(CDC* pDC);
+	//void DrawFigure(CDC* pDC);
+	//void DrawCube(CDC* pDC);
+	//void DrawSphere(CDC* pDC);
+	//void DrawTorus(CDC* pDC);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	void GetpointDrawCube(CDC* pDC, float Inputmat[][1]);
-	void GetpointDrawCube(float Inputmat[][1]);
+	void GetpointDrawFigure(CDC* pDC, float Inputmat[][1]);
+	//void GetpointDrawCube(float Inputmat[][1]);
 };
 
 #ifndef _DEBUG  // MFCApplication1View.cpp의 디버그 버전

@@ -259,7 +259,27 @@ float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 		Resultmat[i][0] = (smat[i][0] * resultmat1[0][0]) + (smat[i][1] * resultmat1[1][0]) + (smat[i][2] * resultmat1[2][0]) + (smat[i][3] * resultmat1[3][0]);
 	}
 	//Resultmat[0][0] += cpoint.x; Resultmat[1][0] += cpoint.y;
-	Resultmat[0][0] += x; Resultmat[1][0] += y, resultmat1[2][0] += z;
+	Resultmat[0][0] += x; Resultmat[1][0] += y, Resultmat[2][0] += z;
+
+	return Resultmat;
+}
+
+float** Matrixfun::AffineScalereturn(float intputmat1[][1], float resultmat1[][1], float scale)
+{
+	float smat[4][4] = { { scale,0,0,0 },{ 0,scale,0,0 },{ 0,0,scale,0 },{ 0,0,0,1 } };
+	float** Resultmat = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[1];
+	}
+	float x = intputmat1[0][0], y = intputmat1[1][0], z = intputmat1[2][0];
+	resultmat1[0][0] -= x; resultmat1[1][0] -= y, resultmat1[2][0] -= z;
+
+	for (int i = 0; i < COL; i++)
+	{
+		Resultmat[i][0] = (smat[i][0] * resultmat1[0][0]) + (smat[i][1] * resultmat1[1][0]) + (smat[i][2] * resultmat1[2][0]) + (smat[i][3] * resultmat1[3][0]);
+	}
+	//Resultmat[0][0] += cpoint.x; Resultmat[1][0] += cpoint.y;	
+	Resultmat[0][0] += x; Resultmat[1][0] += y, Resultmat[2][0] += z;
 
 	return Resultmat;
 }
@@ -324,7 +344,8 @@ float** Matrixfun::Translatereturn(CDC* pDC, float resultmat1[][1], float result
 
 float** Matrixfun::AffineTranslatereturn(float resultmat1[][1], float xtrans, float ytrans, float ztrans)
 {
-	float tmat[4][4] = { { 1,0,0,100 * xtrans },{ 0,1,0,100 * ytrans },{ 0,0,1,100 * ztrans },{ 0,0,0,1 } };
+	//float tmat[4][4] = { { 1,0,0,100 * xtrans },{ 0,1,0,100 * ytrans },{ 0,0,1,100 * ztrans },{ 0,0,0,1 } };
+	float tmat[4][4] = { { 1,0,0,xtrans },{ 0,1,0,ytrans },{ 0,0,1,ztrans },{ 0,0,0,1 } };;
 	float** Resultmat = new float* [COL];
 
 	for (int i = 0; i < COL; i++) {
@@ -909,6 +930,69 @@ float** Matrixfun::AffineRotationreturn(float resultmat1[][1], float xradian, fl
 	return Resultmat;
 }
 
+float** Matrixfun::AffineRotationreturn(float intputmat1[][1], float resultmat1[][1], float xradian, float yradian, float zradian)
+{
+	double sinx = sin(xradian * (PI / 180));
+	double cosx = cos(xradian * (PI / 180));
+	double siny = sin(yradian * (PI / 180));
+	double cosy = cos(yradian * (PI / 180));
+	double sinz = sin(zradian * (PI / 180));
+	double cosz = cos(zradian * (PI / 180));
+
+	float rmatx[4][4] = { { 1, 0, 0, 0 },{ 0, (float)cosx, (float)-sinx, 0 },{ 0, (float)sinx, (float)cosx, 0 },{ 0, 0, 0, 1 } }; //X
+	float rmaty[4][4] = { { (float)cosy, 0, (float)siny, 0 },{ 0, 1, 0, 0 },{ (float)-siny, 0, (float)cosy, 0 },{ 0, 0, 0, 1 } }; //Y
+	float rmatz[4][4] = { { (float)cosz, (float)-sinz, 0, 0 },{ (float)sinz, (float)cosz, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
+
+	float** Resultmat = new float*[COL];
+	float** xresult = new float*[COL];
+	float** yresult = new float*[COL];
+	float** zresult = new float*[COL];
+
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[1];
+		xresult[i] = new float[1];
+		yresult[i] = new float[1];
+		zresult[i] = new float[1];
+	}
+
+	float x = intputmat1[0][0], y = intputmat1[1][0], z = intputmat1[2][0];
+	resultmat1[0][0] -= x; resultmat1[1][0] -= y, resultmat1[2][0] -= z;
+
+	for (int i = 0; i < COL; i++)
+	{
+		xresult[i][0] = (rmatx[i][0] * resultmat1[0][0]) + (rmatx[i][1] * resultmat1[1][0]) + (rmatx[i][2] * resultmat1[2][0]) + (rmatx[i][3] * resultmat1[3][0]);
+	}
+	for (int i = 0; i < COL; i++)
+	{
+		yresult[i][0] = (rmaty[i][0] * xresult[0][0]) + (rmaty[i][1] * xresult[1][0]) + (rmaty[i][2] * xresult[2][0]) + (rmaty[i][3] * xresult[3][0]);
+	}
+	for (int i = 0; i < COL; i++)
+	{
+		zresult[i][0] = (rmatz[i][0] * yresult[0][0]) + (rmatz[i][1] * yresult[1][0]) + (rmatz[i][2] * yresult[2][0]) + (rmatz[i][3] * yresult[3][0]);
+	}
+
+	for (int i = 0; i < ROW; i++)
+	{
+		Resultmat[i][0] = zresult[i][0];
+	}
+
+	Resultmat[0][0] += x; Resultmat[1][0] += y, Resultmat[2][0] += z;
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//할당해제
+	for (int i = 0; i < COL; i++) {
+		delete[] xresult[i];
+		delete[] yresult[i];
+		delete[] zresult[i];
+	}
+	delete[] xresult;
+	delete[] yresult;
+	delete[] zresult;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	return Resultmat;
+}
+
 float** Matrixfun::ViewRotationreturn(float xradian, float yradian, float zradian)
 {
 	double sinx = sin(xradian * (PI / 180));
@@ -991,35 +1075,35 @@ float** Matrixfun::ViewRotationreturn(float xradian, float yradian, float zradia
 	return Resultmat;
 }
 
-float** Matrixfun::Affinereturn(CPoint cpoint, float resultmat[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans)
-{
-	float Inputmat[4][1];
-	float** Resultmat = new float* [COL];
-	float** RotateResultmat = new float* [COL];
-	float** ScaleResultmat = new float* [COL];
-	for (int i = 0; i < COL; i++) {
-		Resultmat[i] = new float[1];
-		ScaleResultmat[i] = new float[1];
-		RotateResultmat[i] = new float[1];
-		Inputmat[i][0] = resultmat[i][0];
-	}
-
-	//ScaleResultmat = AffineScalereturn(cpoint, Inputmat, scale);
-	ScaleResultmat = AffineScalereturn(Inputmat, scale);
-	for (int i = 0; i < COL; i++) {
-		Inputmat[i][0] = ScaleResultmat[i][0];
-	}
-
-	//RotateResultmat = AffineRotationreturn(cpoint, Inputmat, xradian, yradian, zradian);
-	RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
-	for (int i = 0; i < COL; i++) {
-		Inputmat[i][0] = RotateResultmat[i][0];
-	}
-
-	Resultmat = AffineTranslatereturn(Inputmat, xtrans, ytrans, ztrans);
-
-	return Resultmat;
-}
+//float** Matrixfun::Affinereturn(CPoint cpoint, float resultmat[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans)
+//{
+//	float Inputmat[4][1];
+//	float** Resultmat = new float* [COL];
+//	float** RotateResultmat = new float* [COL];
+//	float** ScaleResultmat = new float* [COL];
+//	for (int i = 0; i < COL; i++) {
+//		Resultmat[i] = new float[1];
+//		ScaleResultmat[i] = new float[1];
+//		RotateResultmat[i] = new float[1];
+//		Inputmat[i][0] = resultmat[i][0];
+//	}
+//
+//	//ScaleResultmat = AffineScalereturn(cpoint, Inputmat, scale);
+//	ScaleResultmat = AffineScalereturn(Inputmat, scale);
+//	for (int i = 0; i < COL; i++) {
+//		Inputmat[i][0] = ScaleResultmat[i][0];
+//	}
+//
+//	//RotateResultmat = AffineRotationreturn(cpoint, Inputmat, xradian, yradian, zradian);
+//	RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
+//	for (int i = 0; i < COL; i++) {
+//		Inputmat[i][0] = RotateResultmat[i][0];
+//	}
+//
+//	Resultmat = AffineTranslatereturn(Inputmat, xtrans, ytrans, ztrans);
+//
+//	return Resultmat;
+//}
 
 float** Matrixfun::Affinereturn(float resultmat[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans)
 {
@@ -1043,6 +1127,41 @@ float** Matrixfun::Affinereturn(float resultmat[][1], float xradian, float yradi
 	//for (int i = 0; i < COL; i++) {
 	//	Inputmat[i][0] = RotateResultmat[i][0];
 	//}
+
+	Resultmat = AffineTranslatereturn(Inputmat, xtrans, ytrans, ztrans);
+
+	return Resultmat;
+}
+
+float** Matrixfun::Affinereturn(float centerpoint[][1], float resultmat[][1], float xradian, float yradian, float zradian, float scale, float xtrans, float ytrans, float ztrans)
+{
+	float Inputmat[4][1];
+	float** Resultmat = new float*[COL];
+	float** RotateResultmat = new float*[COL];
+	float** ScaleResultmat = new float*[COL];
+	for (int i = 0; i < COL; i++) {
+		Resultmat[i] = new float[1];
+		ScaleResultmat[i] = new float[1];
+		RotateResultmat[i] = new float[1];		
+	}
+	
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	Inputmat[i][0] = resultmat[i][0];
+	//}
+
+	//ScaleResultmat = AffineScalereturn(Inputmat, scale);
+	//ScaleResultmat = AffineScalereturn(centerpoint, resultmat, scale);
+	ScaleResultmat = AffineScalereturn(centerpoint, resultmat, scale);
+	for (int i = 0; i < COL; i++) {
+		Inputmat[i][0] = ScaleResultmat[i][0];
+	}
+
+	//RotateResultmat = AffineRotationreturn(Inputmat, xradian, yradian, zradian);
+	RotateResultmat = AffineRotationreturn(centerpoint,Inputmat, xradian, yradian, zradian);
+	for (int i = 0; i < COL; i++) {
+		Inputmat[i][0] = RotateResultmat[i][0];
+	}
 
 	Resultmat = AffineTranslatereturn(Inputmat, xtrans, ytrans, ztrans);
 
@@ -1176,8 +1295,8 @@ float** Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, float Vi
 	float k = (2 * n * f) / (n - f);
 
 	double tanresult = tan(tanradian * PI / 180);
-	//float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 }, {0, 0, 0, 1 } };
-	float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },	{0, tanresult, 0, 0},{ 0, 0, l, k},	{0, 0, -1, 0} };
+	float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 }, {0, 0, 0, 1 } };
+	//float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },	{0, tanresult, 0, 0},{ 0, 0, l, k},	{0, 0, -1, 0} };
 
 	for (int i = 0; i < COL; i++)
 	{
@@ -1197,13 +1316,8 @@ float** Matrixfun::ProjectionMat(float Inputmat[][1], float inputratio, float Vi
 	return Resultmat;
 }
 
-float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height, float size )
+float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height )
 {
-	//float** CubeVertexResult = new float* [8];
-	//for (int i = 0; i < 8; i++) {
-	//	CubeVertexResult[i] = new float[4];
-	//}
-
 	float** Resultmat = new float* [COL];
 
 	float** RotateResultmat = new float* [COL];
@@ -1313,49 +1427,6 @@ float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, f
 		Resultmat[i][0] = Resultmat[i][0] / intW;
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//float CubeVertex[8][4] = { { Resultmat[0][0] - size, Resultmat[1][0] + size, Resultmat[2][0] - size, 1 },
-	//{ Resultmat[0][0] - size, Resultmat[1][0] + size, Resultmat[2][0] + size, 1 },
-	//{ Resultmat[0][0] + size, Resultmat[1][0] + size, Resultmat[2][0] + size, 1 },
-	//{ Resultmat[0][0] + size, Resultmat[1][0] + size, Resultmat[2][0] - size, 1 },
-	//{ Resultmat[0][0] - size, Resultmat[1][0] - size, Resultmat[2][0] - size, 1 },
-	//{ Resultmat[0][0] - size, Resultmat[1][0] - size, Resultmat[2][0] + size, 1 },
-	//{ Resultmat[0][0] + size, Resultmat[1][0] - size, Resultmat[2][0] + size, 1 },
-	//{ Resultmat[0][0] + size, Resultmat[1][0] - size, Resultmat[2][0] - size, 1 } };
-	//
-
-	//for (int i = 0; i < 8 ; i++)
-	//{
-	//	for (int j = 0; j < 4; j++)
-	//	{
-	//		CubeVertexResult[i][j] = CubeVertex[i][j];
-	//	}
-	//}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////실험용
-	//float CubeVertex[8][4] = {
-	//	{ Resultmat[0][0] - 50, Resultmat[1][0] + 50, Resultmat[2][0] - 50, 1},
-	//	{ Resultmat[0][0] - 50, Resultmat[1][0] + 50, Resultmat[2][0] + 50, 1 },
-	//	{ Resultmat[0][0] + 50, Resultmat[1][0] + 50, Resultmat[2][0] + 50, 1 },
-	//	{ Resultmat[0][0] + 50, Resultmat[1][0] + 50, Resultmat[2][0] - 50, 1 },
-	//	{ Resultmat[0][0] - 50, Resultmat[1][0] - 50, Resultmat[2][0] - 50, 1 },
-	//	{ Resultmat[0][0] - 50, Resultmat[1][0] - 50, Resultmat[2][0] + 50, 1 },
-	//	{ Resultmat[0][0] + 50, Resultmat[1][0] - 50, Resultmat[2][0] + 50, 1 },
-	//	{ Resultmat[0][0] + 50, Resultmat[1][0] - 50, Resultmat[2][0] - 50, 1 } };
-
-	//for (int i = 0; i < 8; i++)
-	//{
-	//	for (int j = 0; j < 4; j++)
-	//	{
-	//		CubeVertexResult[i][j] = CubeVertex[i][j];
-	//	}
-	//}
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//할당해제
 	for (int i = 0; i < COL; i++) {
@@ -1388,152 +1459,94 @@ float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, f
 	//return CubeVertexResult;
 }
 
-//float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height, float rx, float ry, float rz)
-//{
-//	float** CubeVertexResult = new float*[8];
-//	for (int i = 0; i < 8; i++) {
-//		CubeVertexResult[i] = new float[4];
-//	}
-//
-//	float** Resultmat = new float*[COL];
-//
-//	float** RotateResultmat = new float*[COL];
-//	float** InverseRotateResultmat = new float*[COL];
-//
-//	float** TransResultmat = new float*[COL];
-//	float** InverseTransResultmat = new float*[COL];
-//
-//	float** InverseMulmat = new float*[COL];
-//	float** YRotatemat = new float*[COL];
-//
-//	float** Viewmat = new float*[COL];
-//	float** Promat = new float*[COL];
-//
-//	float** InverseViewmatResultmat = new float*[COL];
-//	float** InversePromatResultmat = new float*[COL];
-//
-//	for (int i = 0; i < COL; i++) {
-//		Resultmat[i] = new float[1];
-//
-//		RotateResultmat[i] = new float[ROW];
-//		InverseRotateResultmat[i] = new float[ROW];
-//
-//		TransResultmat[i] = new float[ROW];
-//		InverseTransResultmat[i] = new float[ROW];
-//
-//		InverseMulmat[i] = new float[ROW];
-//		YRotatemat[i] = new float[ROW];
-//
-//		Viewmat[i] = new float[ROW];
-//		Promat[i] = new float[ROW];
-//
-//		InverseViewmatResultmat[i] = new float[ROW];
-//		InversePromatResultmat[i] = new float[ROW];
-//	}
-//
-//	RotateResultmat = ViewRotationreturn(xradian, yradian, zradian);//x,y,z회전결과 4x4
-//	InverseRotateResultmat = MatrixInverse(RotateResultmat);//RotateResultmat의 역행렬 4x4
-//
-//	TransResultmat = ViewTranslatereturn(xtrans, ytrans, ztrans);//이동결과 4x4
-//	InverseTransResultmat = MatrixInverse(TransResultmat);//TransResultmat의 역행렬 4x4
-//
-//														  //InverseMulmat = MatrixMul(InverseRotateResultmat, InverseTransResultmat); //역행렬의 곱 4x4
-//	InverseMulmat = MatrixMul(InverseTransResultmat, InverseRotateResultmat); //역행렬의 곱 4x4
-//	YRotatemat = ViewRotationreturn(0, 180, 0);//y축180도 회전결과 4x4
-//	Viewmat = MatrixMul(YRotatemat, InverseMulmat);
-//
-//	//float n = 100, f = 500;
-//	float n = 1, f = 2;
-//	float tanradian = ViewAngle / 2;
-//	float l = (n + f) / (n - f);
-//	float k = (2 * n * f) / (n - f);
-//
-//	double tanresult = tan(tanradian * PI / 180);
-//	float InputPromat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 },{ 0, 0, 0, 1 } };
-//	//float InputPromat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, l, k },{ 0, 0, -1, 0 } };
-//
-//	for (int i = 0; i < COL; i++) {
-//		for (int j = 0; j < ROW; j++) {
-//			Promat[i][j] = InputPromat[i][j];
-//		}
-//	}
-//
-//	//뷰의 역행렬
-//	InverseViewmatResultmat = MatrixInverse(Viewmat);
-//	//InverseViewmatResultmat = MatrixInverse(InverseMulmat);
-//
-//	//투영의 역행렬
-//	InversePromatResultmat = MatrixInverse(Promat);
-//
-//	InverseMulmat = MatrixMul(InverseViewmatResultmat, InversePromatResultmat);
-//
-//
-//	//Z정규화
-//	float invZ = Resultmat[2][0];
-//	for (int i = 0; i < 4; i++) {
-//		Resultmat[i][0] = Resultmat[i][0] / invZ;
-//	}
-//
-//	//Inputmat[0][0] = (Inputmat[0][0] - width) / width;
-//	//Inputmat[1][0] = (Inputmat[1][0] - height) / (-height);
-//
-//
-//	for (int i = 0; i < COL; i++)
-//	{
-//		Resultmat[i][0] = (InverseMulmat[i][0] * Inputmat[0][0]) + (InverseMulmat[i][1] * Inputmat[1][0]) + (InverseMulmat[i][2] * Inputmat[2][0]) + (InverseMulmat[i][3] * Inputmat[3][0]);
-//	}
-//
-//	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	////실험용
-//	//float CubeVertex[8][4] = {
-//	//	{ Resultmat[0][0] - 50, Resultmat[1][0] + 50, Resultmat[2][0] - 50, 1},
-//	//	{ Resultmat[0][0] - 50, Resultmat[1][0] + 50, Resultmat[2][0] + 50, 1 },
-//	//	{ Resultmat[0][0] + 50, Resultmat[1][0] + 50, Resultmat[2][0] + 50, 1 },
-//	//	{ Resultmat[0][0] + 50, Resultmat[1][0] + 50, Resultmat[2][0] - 50, 1 },
-//	//	{ Resultmat[0][0] - 50, Resultmat[1][0] - 50, Resultmat[2][0] - 50, 1 },
-//	//	{ Resultmat[0][0] - 50, Resultmat[1][0] - 50, Resultmat[2][0] + 50, 1 },
-//	//	{ Resultmat[0][0] + 50, Resultmat[1][0] - 50, Resultmat[2][0] + 50, 1 },
-//	//	{ Resultmat[0][0] + 50, Resultmat[1][0] - 50, Resultmat[2][0] - 50, 1 } };
-//
-//	//for (int i = 0; i < 8; i++)
-//	//{
-//	//	for (int j = 0; j < 4; j++)
-//	//	{
-//	//		CubeVertexResult[i][j] = CubeVertex[i][j];
-//	//	}
-//	//}
-//	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-//
-//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	//할당해제
-//	for (int i = 0; i < COL; i++) {
-//		//delete[] CubeVertexResult[i];
-//		delete[] RotateResultmat[i];
-//		delete[] InverseRotateResultmat[i];
-//		delete[] TransResultmat[i];
-//		delete[] InverseTransResultmat[i];
-//		delete[] InverseMulmat[i];
-//		delete[] YRotatemat[i];
-//		delete[] Viewmat[i];
-//		delete[] Promat[i];
-//		delete[] InverseViewmatResultmat[i];
-//		delete[] InversePromatResultmat[i];
-//	}
-//	//delete[] CubeVertexResult;
-//	delete[] RotateResultmat;
-//	delete[] InverseRotateResultmat;
-//	delete[] TransResultmat;
-//	delete[] InverseTransResultmat;
-//	delete[] InverseMulmat;
-//	delete[] YRotatemat;
-//	delete[] Viewmat;
-//	delete[] Promat;
-//	delete[] InverseViewmatResultmat;
-//	delete[] InversePromatResultmat;
-//	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//	return Resultmat;
-//	//return CubeVertexResult;
-//}
+//bool Matrixfun::Cross(float Input[][1], float Vertex1[][1], float Vertex2[][1], float Vertex3[][1])
+bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
+{
+	BOOL ischeck;
+
+	float CrossResult1[4][1] = {
+		{ 0 },
+		{ 0 },
+		{ round((Vertexmat1[0][0] - Inputmat[0][0])*(Vertexmat1[1][0] - Vertexmat2[1][0]) -
+		(Vertexmat1[0][0] - Vertexmat2[0][0])*(Vertexmat1[1][0] - Inputmat[1][0])) },
+		{ 1 } };
+
+	float CrossResult2[4][1]{
+		{ 0 },
+		{ 0 },
+		{ round((Vertexmat2[0][0] - Inputmat[0][0])*(Vertexmat2[1][0] - Vertexmat3[1][0]) -
+		(Vertexmat2[0][0] - Vertexmat3[0][0])*(Vertexmat2[1][0] - Inputmat[1][0])) },
+		{ 1 } };
+
+	float CrossResult3[4][1]{
+		{ 0 },
+		{ 0 },
+		{ round((Vertexmat3[0][0] - Inputmat[0][0])*(Vertexmat3[1][0] - Vertexmat1[1][0]) -
+		(Vertexmat3[0][0] - Vertexmat1[0][0])*(Vertexmat3[1][0] - Inputmat[1][0])) },
+		{ 1 } };
+
+	//할당
+	float** result1 = new float*[COL];
+	float** result2 = new float*[COL];
+	float** result3 = new float*[COL];
+	for (int i = 0; i < 1; i++) {
+		result1[i] = new float[1];
+		result2[i] = new float[1];
+		result3[i] = new float[1];
+	}
+
+	result1 = Normal(CrossResult1);
+	result2 = Normal(CrossResult2);
+	result3 = Normal(CrossResult3);
+
+
+	if (result1[2][0] > 0 && result2[2][0] > 0 && result3[2][0] > 0)
+	{
+		ischeck = TRUE;
+	}
+	else if (result1[2][0] < 0 && result2[2][0] < 0 && result3[2][0] < 0)
+	{
+		ischeck = TRUE;
+	}
+	else
+	{
+		ischeck = FALSE;
+	}
+
+	//해제
+	for (int i = 0; i < COL; i++) {
+		delete[] result1[i];
+		delete[] result2[i];
+		delete[] result3[i];
+	}
+	delete[] result1;
+	delete[] result2;
+	delete[] result3;
+
+	return ischeck;
+}
+
+float** Matrixfun::Normal(float Inputmat[][1])
+{
+	float** Resultmat = new float*[COL];
+	for (int i = 0; i < 4; i++)
+	{
+		Resultmat[i] = new float[1];
+	}
+
+	float x = pow(Inputmat[0][0], 2), y = pow(Inputmat[1][0], 2), z = pow(Inputmat[2][0], 2);
+	float sum = x + y + z;
+	float vsqrt = sqrtf(sum);
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (i < 3)
+		{
+			Resultmat[i][0] = Inputmat[i][0] / vsqrt;
+		}
+		else
+			Resultmat[i][0] = Inputmat[i][0];
+	}
+
+	return Resultmat;
+}
