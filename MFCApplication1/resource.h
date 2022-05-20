@@ -19,7 +19,6 @@
 #define ID_PARALLEL                     32781
 #define ID_PERSPECTIVE                  32782
 #define ID_32783                        32783
-#define ID_BUTTON32784                  32784
 #define ID_CUBESELECT                   32789
 #define ID_SPHERESELECT                 32791
 #define ID_TORUSSELECT                  32792

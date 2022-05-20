@@ -19,6 +19,7 @@ public:
 	float **result2;
 	float **result3;
 	float n = 10;
+	//float f = 318;
 	float f = 1000;
 	//const double PI = 3.141592;
 
@@ -61,13 +62,20 @@ public:
 	float **ViewMat(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans);
 	
 
-	float **ProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle);
-	float **ProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height);
+	float **PerProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle);
+	float **PerProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height);
+	float **OrthoProjectionMat(float Inputmat[][1], float width, float height);
+	float **OrthoProjectionMat(float Inputmat[][1], float inputratio, float width, float height);
+	float **OrthoProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height);
 
 	float **GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height);
 	//float **GetPoint(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans, float inputratio, float ViewAngle, float width, float height, float rx, float ry, float rz);
 	//trans는 카메라 위치값(0,0,500)
 
 	bool Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1]);
+	float **NormalVector(float Inputmat1[][1], float Inputmat2[][1], float Inputmat3[][1]);
 	float **Normal(float Inputmat[][1]);
+	//float **Dot(float Inputmat1[][1], float light[][1]);
+	int Dot(float Inputmat[][1], float light[][1]);
+	bool BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1]);
 };

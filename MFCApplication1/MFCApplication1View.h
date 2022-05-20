@@ -10,7 +10,8 @@
 using namespace std;
 struct Cube
 {
-	int index=456231567;
+	int index=456231567; //윤홍씨방법대로 할경우 인덱스초기값설정
+	int VertexIndex[12][3];
 	float Cube_Center[4][1]; //도형의 원점(월드좌표)
 	float Cube_Vertex[8][4]; // 정점의 배열
 	BOOL isClicked=FALSE;
@@ -24,8 +25,6 @@ struct Cube
 
 struct Sphere
 {
-	int index = 456231567;
-	//float focusdot[9][4];
 	float Sphere_Center[4][1];
 	float Sphere_Vertex[83][4]; // 정점의 배열
 	BOOL isClicked = FALSE;
@@ -39,7 +38,6 @@ struct Sphere
 
 struct Torus
 {
-	int index = 456231567;
 	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
 	BOOL isClicked = FALSE;
@@ -93,10 +91,13 @@ public:
 	float intputmat[4][1] = { 0 };
 	float intputmatc[8][4] = { 0 };
 	float campos[4][1];
+	float lightpos[4][1] = { { 1 },{ 1 },{ -1 },{ 1 } };
+	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
 	float clickedPoint[4][1];
+	float centerpoint[4][1];
 
 	//도형 크기
-	float m_CubeSize = 10;
+	float m_CubeSize = 50;
 	float m_SphereRadius = 200;
 	float m_TorusRadius = 200;
 	float m_nCircleRadius = 70;
@@ -125,8 +126,9 @@ public:
 
 	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	BOOL m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
+	int m_projection = 0; // 0 => 원근, 1 => 직교
 
-
+	BOOL isback = FALSE;
 	int count = 0;
 
 	// 재정의입니다.
@@ -161,9 +163,9 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void Mydraw(CDC* pDC);
-
+	
 	afx_msg void OnPerspective();
-	afx_msg void OnParallel();
+	afx_msg void OnOrthographic();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//void DrawFigure(CDC* pDC);
 	//void DrawCube(CDC* pDC);

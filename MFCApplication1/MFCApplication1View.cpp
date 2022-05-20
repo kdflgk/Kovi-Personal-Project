@@ -38,7 +38,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication1View, CView)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_COMMAND(ID_PERSPECTIVE, &CMFCApplication1View::OnPerspective)
-	ON_COMMAND(ID_PARALLEL, &CMFCApplication1View::OnParallel)
+	ON_COMMAND(ID_PARALLEL, &CMFCApplication1View::OnOrthographic)
 	ON_WM_KEYDOWN()
 	ON_WM_MOUSEWHEEL()
 	ON_WM_RBUTTONDOWN()
@@ -228,12 +228,12 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 #pragma region 현재상태UI
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	pDC->TextOut(500, winrect.bottom - 30, str123);
+	//pDC->TextOut(500, winrect.bottom - 30, str123);
 
 	pDC->TextOut(winrect.right - 330, winrect.bottom - 50, str1234); //스크린좌표[변환]
 	pDC->TextOut(winrect.right - 330, winrect.bottom - 70, str12345);//스크린좌표[초기]
 	pDC->TextOut(winrect.right - 380, winrect.bottom - 30, str123456);
-	pDC->TextOut(500, 30, str1234567);
+	//pDC->TextOut(500, 30, str1234567);
 
 	//str.Format(_T("변환값 : %.1f, %.1f, %.1f, %.1f"), intputmat[0][0], intputmat[0][1], intputmat[0][2], intputmat[0][3]);
 	//pDC->TextOut(500, winrect.bottom - 60, str);
@@ -307,7 +307,18 @@ void CMFCApplication1View::OnLButtonDown(UINT nFlags, CPoint point)
 }
 void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	//m_CubeSize = 100;
+	//m_SphereRadius = 200;
+	//m_TorusRadius = 200;
+	//m_nCircleRadius = 70;
+	//Figure_xMove=0;
+	//Figure_yMove=0;
+	//rxvalue=0;
+	//ryvalue=0;
+	//rzvalue=0;
+
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	//float curPoint[4][1]{ { point.x },{ point.y },{ 0.38 },{ 1 } };
 	float curPoint[4][1]{ { point.x },{ point.y },{ 1 },{ 1 } };
 	//float curPoint[4][1]{ { 1000 },{ 500 },{ 0 },{ 1 } };
 	str1234.Format(_T("1번 스크린좌표 : %.1f, %.1f, %.1f, %.1f"), curPoint[0][0], curPoint[0][1], curPoint[0][2], curPoint[0][3]);
@@ -323,25 +334,14 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, width/100, height/100, 5, inputratio, m_viewAngle, width, height); //월드의 좌표
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, width, height, 500, inputratio, m_viewAngle, width, height); //월드의 좌표
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500, inputratio, m_viewAngle, width, height); //월드의 좌표
+	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500, inputratio, m_viewAngle, width, height); // 가장 마지막으로 한거
 	resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500, inputratio, m_viewAngle, width, height); // 가장 마지막으로 한거
 	//resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, 0, 0, 500, inputratio, m_viewAngle, width, height, rxvalue * 10, ryvalue * 10, rzvalue * 10); //월드의 좌표
 	//resultmatc = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500, inputratio, m_viewAngle, width, height,m_CubeSize); //월드의 좌표
 	for (int i = 0; i < COL; i++) {
 		intputmat[i][0] = resultmat[i][0];
 	}
-
-
-	//test/////////////////////////////////////////////////////////////////////////
-	float OriginPoint[4][1] = { {0}, {0} ,{0}, {0} };
-	//float **testmat = new float*[COL];
-	//for (int i = 0; i < COL; i++) {
-	//	testmat[i] = new float[1];
-	//}
-	//testmat = matfun.GetPoint(OriginPoint, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500, inputratio, m_viewAngle, width, height); // 가장 마지막으로 한거
-	//for (int i = 0; i < COL; i++) {
-	//	OriginPoint[i][0] = testmat[i][0];
-	//}
-	//test/////////////////////////////////////////////////////////////////////////
+	
 	//큐브
 #pragma region Cube
 	if (m_shape == 0)
@@ -359,23 +359,23 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		MyCube.Cube_zRotate = rzvalue;
 
 		//// 구조체에 값 집어넣고 pushback
-		//float CubeVertex[8][4] = { { intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		//{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 } };
+		float CubeVertex[8][4] = { { intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
+		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 } };
 
-		float CubeVertex[8][4] = { { OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-		{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 } };
+		//float CubeVertex[8][4] = { { OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
+		//{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 } };
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -632,11 +632,15 @@ BOOL CMFCApplication1View::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 void CMFCApplication1View::OnPerspective()
 {
 	// 원근투영
+	m_projection = 0;
+	Invalidate();
 }
 
-void CMFCApplication1View::OnParallel()
+void CMFCApplication1View::OnOrthographic()
 {
 	// 평행투영
+	m_projection = 1;
+	Invalidate();
 }
 
 
@@ -648,16 +652,16 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		//도형 이동
 	case VK_LEFT:
-		xMove += 20;
+		xMove += 100;
 		break;
 	case VK_RIGHT:
-		xMove -= 20;
+		xMove -= 100;
 		break;
 	case VK_UP:
-		yMove += 20;
+		yMove += 100;
 		break;
 	case VK_DOWN:
-		yMove -= 20;
+		yMove -= 100;
 		break;
 	case 'Q':
 		rxvalue -= 1;
@@ -743,6 +747,17 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else if (m_drawType == FALSE) m_drawType = TRUE;//와이어프레임 -> 솔리드
 		break;
 	}
+	case VK_F4: {
+		if (m_projection == 0) m_projection = 1;
+		else if (m_projection == 1) m_projection = 0;
+		break;
+	}
+				
+		//초기화
+	case VK_ESCAPE:
+		m_vCube.clear();
+		m_vSphere.clear();
+		m_vTorus.clear();
 	default:
 		break;
 	}
@@ -773,6 +788,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 //void CMFCApplication1View::GetpointDrawFigure(float Inputmat[][1])
 {
 	//CDC* pDC;
+	CBrush whitebrush(RGB(255, 255, 255));
 	CPen checkPen(PS_SOLID, 2, RGB(0, 0, 0));
 	CPen whitePen(PS_SOLID, 2, RGB(255, 255, 255));
 	pDC->SelectObject(whitePen);
@@ -802,7 +818,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		clicked[i][0] = ClickViewResult[i][0];
 	}
 	//투영변환
-	ClickProResult = matfun.ProjectionMat(clicked, inputratio, m_viewAngle, width, height);
+	ClickProResult = matfun.PerProjectionMat(clicked, inputratio, m_viewAngle, width, height);
 
 	for (int i = 0; i < COL; i++)
 	{
@@ -813,8 +829,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 #pragma region Cube그리기
 	//Cube 그리기
-	float inputmat[4][1] = { 0 };
-	float centerpoint[4][1];
+	float inputmat[4][1] = { 0 };	
 	float **cubeproresult = new float*[COL];
 	float **cubeviewresult = new float*[COL];
 	float **cuberotateresult = new float*[COL];//
@@ -833,8 +848,9 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 	for (auto cv : m_vCube)
 	{
+		bool screenout = FALSE;
 		//선택 안 돼 있을 때
-		//else
+		if(cv.isClicked==FALSE)
 			for (int j = 0; j < 8; j++)
 			{
 				for (int i = 0; i < COL; i++)
@@ -842,7 +858,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					inputmat[i][0] = cv.Cube_Vertex[j][i];
 				}
 
-				cuberotateresult = matfun.Affinereturn(centerpoint, inputmat, cv.Cube_xRotate * 10, cv.Cube_yRotate * 10, cv.Cube_zRotate * 10, cv.Cube_Size, cv.Cube_xMove, cv.Cube_yMove);
+				cuberotateresult = matfun.Affinereturn(cv.Cube_Center, inputmat, cv.Cube_xRotate * 10, cv.Cube_yRotate * 10, cv.Cube_zRotate * 10, cv.Cube_Size, cv.Cube_xMove, cv.Cube_yMove);
 				for (int i = 0; i < COL; i++)
 				{
 					cv.Cube_Vertex[j][i] = cuberotateresult[i][0];
@@ -856,8 +872,19 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					inputmat[i][0] = cubeviewresult[i][0];
 				}
 
+				//카메라가 보는방향이 마이너스, 0보다 커지면 뒤쪽으로 돌아간거라서 continue;
+				if (inputmat[2][0] > 0)
+					continue;
+
 				//투영변환
-				cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+				if (m_projection == 0)
+				{
+					cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+				}
+				else if (m_projection == 1)
+				{
+					cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
+				}
 
 				for (int i = 0; i < COL; i++)
 				{
@@ -865,27 +892,27 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 			}
 
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1], cv.Cube_Vertex[0][2]);
-		pDC->TextOut(500, 10, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1], cv.Cube_Vertex[1][2]);
-		pDC->TextOut(500, 30, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1], cv.Cube_Vertex[2][2]);
-		pDC->TextOut(500, 50, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1], cv.Cube_Vertex[3][2]);
-		pDC->TextOut(500, 70, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1], cv.Cube_Vertex[4][2]);
-		pDC->TextOut(500, 90, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1], cv.Cube_Vertex[5][2]);
-		pDC->TextOut(500, 110, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1], cv.Cube_Vertex[6][2]);
-		pDC->TextOut(500, 130, str1234567);
-		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1], cv.Cube_Vertex[7][2]);
-		pDC->TextOut(500, 150, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.f"), inputmat[0][0], inputmat[0][1], inputmat[0][2]);
+		//pDC->TextOut(500, 10, str1234567);
 
-
-
+		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1], cv.Cube_Vertex[0][2]);
+		//pDC->TextOut(500, 30, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1], cv.Cube_Vertex[1][2]);
+		//pDC->TextOut(500, 50, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1], cv.Cube_Vertex[2][2]);
+		//pDC->TextOut(500, 70, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1], cv.Cube_Vertex[3][2]);
+		//pDC->TextOut(500, 90, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1], cv.Cube_Vertex[4][2]);
+		//pDC->TextOut(500, 110, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1], cv.Cube_Vertex[5][2]);
+		//pDC->TextOut(500, 130, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1], cv.Cube_Vertex[6][2]);
+		//pDC->TextOut(500, 150, str1234567);
+		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1], cv.Cube_Vertex[7][2]);
+		//pDC->TextOut(500, 170, str1234567);
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	#pragma region 도형선택(큐브)
+#pragma region 도형선택(큐브)
 		float Crossinput1[4][1];
 		float Crossinput2[4][1];
 		float Crossinput3[4][1];
@@ -906,8 +933,19 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = 0; i < 4; i++)
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[2][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[3][i];
+			}
+			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (cv.isClicked == TRUE)
+				break;
+
+
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[5][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[4][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
@@ -916,12 +954,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = 0; i < 4; i++)
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[2][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[3][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
 				break;
+	
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -933,21 +972,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			if (cv.isClicked == TRUE)
 				break;
 
-			for (int i = 0; i < 4; i++)
-			{
-				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
-			}
-			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-			if (cv.isClicked == TRUE)
-				break;
+	
 
 			for (int i = 0; i < 4; i++)
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[7][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[7][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[4][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
@@ -1027,20 +1058,21 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 #pragma endregion
 
-		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//선택돼있을 때(정점을 새로 받아와서 도형을 새로 만들기)
 		if (cv.isClicked)
 		{
 			int OriginPoint[4][1] = { 0 };
-
+		
 			cv.Cube_Size = m_CubeSize;
 			cv.Cube_xMove = Figure_xMove;
 			cv.Cube_yMove = Figure_yMove;
 			cv.Cube_xRotate = rxvalue;
 			cv.Cube_yRotate = ryvalue;
 			cv.Cube_zRotate = rzvalue;
-
+		
+			//str123456.Format(_T(" %.1f"), cv.Cube_Size);
+		
 			float CubeVertex[8][4] = { { OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
 			{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
 			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
@@ -1049,8 +1081,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
 			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
 			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 } };
-
-			//AfxMessageBox(_T("들어옴?"));	
+		
+			////AfxMessageBox(_T("들어옴?"));	
 
 			for (int i = 0; i < 8; i++)
 			{
@@ -1077,6 +1109,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					cv.Cube_Vertex[j][i] = cuberotateresult[i][0];
 				}
 			}
+
 			for (int j = 0; j < 8; j++)
 			{
 				for (int i = 0; i < COL; i++)
@@ -1086,27 +1119,105 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				//뷰변환
 				cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
 
+				////카메라가 보는방향이 마이너스, 0보다 커지면 뒤쪽으로 돌아간거라서 continue;
+				//if (inputmat[2][0] > 0)
+				//	continue;
+
 				for (int i = 0; i < COL; i++)
 				{
 					inputmat[i][0] = cubeviewresult[i][0];
 				}
 
-				//투영변환
-				cubeproresult = matfun.ProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+				if (m_projection == 0)
+				{
+					cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+				}
+				else if (m_projection == 1)
+				{
+					cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
+				}
+				////투영변환
+				//cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
 
 				for (int i = 0; i < COL; i++)
 				{
 					cv.Cube_Vertex[j][i] = cubeproresult[i][0];
 				}
+
 			}
 		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1], cv.Cube_Vertex[0][2]);
+		pDC->TextOut(500, 30, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1], cv.Cube_Vertex[1][2]);
+		pDC->TextOut(500, 50, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1], cv.Cube_Vertex[2][2]);
+		pDC->TextOut(500, 70, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1], cv.Cube_Vertex[3][2]);
+		pDC->TextOut(500, 90, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1], cv.Cube_Vertex[4][2]);
+		pDC->TextOut(500, 110, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1], cv.Cube_Vertex[5][2]);
+		pDC->TextOut(500, 130, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1], cv.Cube_Vertex[6][2]);
+		pDC->TextOut(500, 150, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1], cv.Cube_Vertex[7][2]);
+		pDC->TextOut(500, 170, str1234567);
 		
+		////////if (cv.Cube_Vertex[0][0] < 0 || cv.Cube_Vertex[0][0] > width * 2)
+		if (cv.Cube_Vertex[0][0] < 0 || cv.Cube_Vertex[0][0] > width * 2 || cv.Cube_Vertex[0][1] < 0 || cv.Cube_Vertex[0][1] > height * 2 || cv.Cube_Vertex[0][2] < -1 ||
+			cv.Cube_Vertex[1][0] < 0 || cv.Cube_Vertex[1][0] > width * 2 || cv.Cube_Vertex[1][1] < 0 || cv.Cube_Vertex[1][1] > height * 2 || cv.Cube_Vertex[1][2] < -1 ||
+			cv.Cube_Vertex[2][0] < 0 || cv.Cube_Vertex[2][0] > width * 2 || cv.Cube_Vertex[2][1] < 0 || cv.Cube_Vertex[2][1] > height * 2 || cv.Cube_Vertex[2][2] < -1 ||
+			cv.Cube_Vertex[3][0] < 0 || cv.Cube_Vertex[3][0] > width * 2 || cv.Cube_Vertex[3][1] < 0 || cv.Cube_Vertex[3][1] > height * 2 || cv.Cube_Vertex[3][2] < -1 ||
+			cv.Cube_Vertex[4][0] < 0 || cv.Cube_Vertex[4][0] > width * 2 || cv.Cube_Vertex[4][1] < 0 || cv.Cube_Vertex[4][1] > height * 2 || cv.Cube_Vertex[4][2] < -1 ||
+			cv.Cube_Vertex[5][0] < 0 || cv.Cube_Vertex[5][0] > width * 2 || cv.Cube_Vertex[5][1] < 0 || cv.Cube_Vertex[5][1] > height * 2 || cv.Cube_Vertex[5][2] < -1 ||
+			cv.Cube_Vertex[6][0] < 0 || cv.Cube_Vertex[6][0] > width * 2 || cv.Cube_Vertex[6][1] < 0 || cv.Cube_Vertex[6][1] > height * 2 || cv.Cube_Vertex[6][2] < -1 ||
+			cv.Cube_Vertex[7][0] < 0 || cv.Cube_Vertex[7][0] > width * 2 || cv.Cube_Vertex[7][1] < 0 || cv.Cube_Vertex[7][1] > height * 2 || cv.Cube_Vertex[7][2] < -1)
+		{
+			continue;
+		}
 		
+		if(cv.Cube_Vertex[3][2] > 1200)
+			continue;
+
+
 		if (m_drawType)
 		{
-#pragma region 큐브그리는부분(채우기)
+	#pragma region 큐브그리는부분(채우기)
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			float Crossinput1[4][1];
+			float Crossinput2[4][1];
+			float Crossinput3[4][1];
+			float Dotinput[4][1];
+			CBrush lightbrush;
+			int RGBresult = 100;
+			//할당
+			float** NormalResultmat = new float*[9];
+			for (int i = 0; i < COL; i++) {
+				NormalResultmat[i] = new float[ROW];
+			}
+
+			//원본/////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[2][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);			
+			//원본/////////////////////////////////////////////////////////////////////////////////
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
@@ -1114,6 +1225,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
+
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
 
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
@@ -1123,6 +1253,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
 
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[2][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[3][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
+
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
@@ -1130,6 +1279,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
+
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[3][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[7][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
 
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
@@ -1139,6 +1307,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
 
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
+
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
@@ -1146,6 +1333,26 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
+
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[7][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+		
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);		
+			///////////////////////////////////////////////////////////////////////////////////
 
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
@@ -1155,6 +1362,24 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[2][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
@@ -1162,6 +1387,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
+
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
 
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
@@ -1171,6 +1415,26 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
 
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[2][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[3][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
+
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->LineTo(cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1]);
@@ -1179,6 +1443,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
 
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[3][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[7][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
+
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->LineTo(cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1]);
@@ -1186,6 +1469,26 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
+
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
 
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
@@ -1195,6 +1498,25 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
 
+			///////////////////////////////////////////////////////////////////////////////////
+			lightbrush.DeleteObject();
+			pDC->SelectObject(whitebrush);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[7][i];
+			}
+			NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Dotinput[i][0] = NormalResultmat[i][0];
+			}
+			RGBresult += matfun.Dot(Dotinput, lightpos);
+			lightbrush.CreateSolidBrush(RGB(RGBresult, RGBresult, RGBresult));
+			pDC->SelectObject(lightbrush);
+			///////////////////////////////////////////////////////////////////////////////////
+
 			pDC->BeginPath();
 			pDC->MoveTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
@@ -1202,11 +1524,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
 			pDC->EndPath();
 			pDC->StrokeAndFillPath();
-#pragma endregion
+	#pragma endregion
 		}
 		else
 		{
-#pragma region 큐브그리는부분
+	#pragma region 큐브그리는부분
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			pDC->MoveTo(cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1]);
 			pDC->LineTo(cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1]);
@@ -1266,8 +1588,22 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			pDC->LineTo(cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1]);
 			pDC->LineTo(cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1]);
 			pDC->LineTo(cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1]);
-#pragma endregion
+	#pragma endregion
+			
 		}
+			//m_CubeSize = 100;
+			//m_SphereRadius = 200;
+			//m_TorusRadius = 200;
+			//m_nCircleRadius = 70;
+
+			//rxvalue = 0;
+			//ryvalue = 0;
+			//rzvalue = 0;
+
+			//Figure_xMove = 0;
+			//Figure_yMove = 0;
+
+		
 
 	}//end for(auto cv : m_vCube)
 	for (int i = 0; i < COL; i++) {
@@ -1279,6 +1615,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	delete[] cubeviewresult;
 	delete[] cuberotateresult;
 	//}
+
 #pragma endregion
 
 #pragma region Sphere그리기
@@ -1306,7 +1643,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				vInputmat[i][0] = sphereviewresult[i][0];
 			}
-			sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+			sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -1329,7 +1666,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				vInputmat[i][0] = sphereviewresult[i][0];
 			}
-			sphereproresult = matfun.ProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+			sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -1348,6 +1685,16 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		int num = 10;
 		for (int i = num - 9; i < num; i++)
 		{
+			for (int j = 0; j < 4; j++)
+			{
+				Crossinput1[j][0] = sp.Sphere_Vertex[0][j];
+				Crossinput2[j][0] = sp.Sphere_Vertex[i][j];
+				Crossinput3[j][0] = sp.Sphere_Vertex[i + 1][j];
+			}
+			sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (sp.isClicked == TRUE)
+				break;
+
 			if (i == 9)
 			{
 				for (int j = 0; j < 4; j++)
@@ -1360,18 +1707,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				if (sp.isClicked == TRUE)
 					break;
 			}
-			else
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					Crossinput1[j][0] = sp.Sphere_Vertex[0][j];
-					Crossinput2[j][0] = sp.Sphere_Vertex[i][j];
-					Crossinput3[j][0] = sp.Sphere_Vertex[i + 1][j];
-				}
-				sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-				if (sp.isClicked == TRUE)
-					break;
-			}
+				
 		}
 
 		//10~18
@@ -1979,7 +2315,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				tvInputmat[i][0] = torusviewresult[i][0];
 			}
-			torusproresult = matfun.ProjectionMat(tvInputmat, inputratio, m_viewAngle, width, height);
+			torusproresult = matfun.PerProjectionMat(tvInputmat, inputratio, m_viewAngle, width, height);
 
 
 			for (int i = 0; i < 4; i++)

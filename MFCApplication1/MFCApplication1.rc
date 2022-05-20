@@ -142,7 +142,7 @@ BEGIN
     END
     POPUP "투영"
     BEGIN
-        MENUITEM "평행 투영",                       ID_PARALLEL
+        MENUITEM "직교 투영",                       ID_PARALLEL
         MENUITEM "원근 투영",                       ID_PERSPECTIVE
     END
     POPUP "도움말(&H)"
