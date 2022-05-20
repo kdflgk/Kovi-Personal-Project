@@ -320,7 +320,6 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	//float curPoint[4][1]{ { point.x },{ point.y },{ 0.38 },{ 1 } };
 	float curPoint[4][1]{ { point.x },{ point.y },{ 1 },{ 1 } };
-	//float curPoint[4][1]{ { 1000 },{ 500 },{ 0 },{ 1 } };
 	str1234.Format(_T("1번 스크린좌표 : %.1f, %.1f, %.1f, %.1f"), curPoint[0][0], curPoint[0][1], curPoint[0][2], curPoint[0][3]);
 
 	float **resultmat = new float*[COL];
@@ -359,14 +358,14 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		MyCube.Cube_zRotate = rzvalue;
 
 		//// 구조체에 값 집어넣고 pushback
-		float CubeVertex[8][4] = { { intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] + MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] - MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] + MyCube.Cube_Size, 1 },
-		{ intputmat[0][0] + MyCube.Cube_Size, intputmat[1][0] - MyCube.Cube_Size, intputmat[2][0] - MyCube.Cube_Size, 1 } };
+		float CubeVertex[8][4] = { { MyCube.Cube_Center[0][0] - MyCube.Cube_Size, MyCube.Cube_Center[1][0] + MyCube.Cube_Size, MyCube.Cube_Center[2][0] - MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] - MyCube.Cube_Size, MyCube.Cube_Center[1][0] + MyCube.Cube_Size, MyCube.Cube_Center[2][0] + MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] + MyCube.Cube_Size, MyCube.Cube_Center[1][0] + MyCube.Cube_Size, MyCube.Cube_Center[2][0] + MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] + MyCube.Cube_Size, MyCube.Cube_Center[1][0] + MyCube.Cube_Size, MyCube.Cube_Center[2][0] - MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] - MyCube.Cube_Size, MyCube.Cube_Center[1][0] - MyCube.Cube_Size, MyCube.Cube_Center[2][0] - MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] - MyCube.Cube_Size, MyCube.Cube_Center[1][0] - MyCube.Cube_Size, MyCube.Cube_Center[2][0] + MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] + MyCube.Cube_Size, MyCube.Cube_Center[1][0] - MyCube.Cube_Size, MyCube.Cube_Center[2][0] + MyCube.Cube_Size, 1 },
+		{ MyCube.Cube_Center[0][0] + MyCube.Cube_Size, MyCube.Cube_Center[1][0] - MyCube.Cube_Size, MyCube.Cube_Center[2][0] - MyCube.Cube_Size, 1 } };
 
 		//float CubeVertex[8][4] = { { OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
 		//{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
@@ -839,6 +838,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		cuberotateresult[i] = new float[1];//
 	}
 
+
+
 	//윤홍씨가 한 방법(for(auto a: vector))으로 돌리는게 아니라 벡터 사이즈만큼 돌리면서 인덱스활용
 	//for (int i = 0; i < m_vCube.size(); i++)
 	//{
@@ -848,9 +849,12 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 	for (auto cv : m_vCube)
 	{
+		//int CubeIndex[12][3] = { {0,1,2}, {0,2,3}, {0,5,4}, {0,1,5}, {0,3,7}, {0,7,4}, {6,2,1}, {6,1,5}, {6,3,2}, {6,7,3}, {6,5,4}, {6,4,7} };
 		bool screenout = FALSE;
+
 		//선택 안 돼 있을 때
-		if(cv.isClicked==FALSE)
+		if (cv.isClicked == FALSE)
+		{
 			for (int j = 0; j < 8; j++)
 			{
 				for (int i = 0; i < COL; i++)
@@ -859,11 +863,16 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 
 				cuberotateresult = matfun.Affinereturn(cv.Cube_Center, inputmat, cv.Cube_xRotate * 10, cv.Cube_yRotate * 10, cv.Cube_zRotate * 10, cv.Cube_Size, cv.Cube_xMove, cv.Cube_yMove);
+
 				for (int i = 0; i < COL; i++)
 				{
 					cv.Cube_Vertex[j][i] = cuberotateresult[i][0];
 				}
-
+				//for (int i = 0; i < COL; i++)
+				//{
+				//	inputmat[i][0] = cv.Cube_Vertex[j][i];
+				//}
+				
 				//뷰변환
 				cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
 
@@ -891,26 +900,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					cv.Cube_Vertex[j][i] = cubeproresult[i][0];
 				}
 			}
-
-		//str1234567.Format(_T("%.f,%.f,%.f"), inputmat[0][0], inputmat[0][1], inputmat[0][2]);
-		//pDC->TextOut(500, 10, str1234567);
-
-		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[0][0], cv.Cube_Vertex[0][1], cv.Cube_Vertex[0][2]);
-		//pDC->TextOut(500, 30, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[1][0], cv.Cube_Vertex[1][1], cv.Cube_Vertex[1][2]);
-		//pDC->TextOut(500, 50, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[2][0], cv.Cube_Vertex[2][1], cv.Cube_Vertex[2][2]);
-		//pDC->TextOut(500, 70, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.5f"), cv.Cube_Vertex[3][0], cv.Cube_Vertex[3][1], cv.Cube_Vertex[3][2]);
-		//pDC->TextOut(500, 90, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[4][0], cv.Cube_Vertex[4][1], cv.Cube_Vertex[4][2]);
-		//pDC->TextOut(500, 110, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[5][0], cv.Cube_Vertex[5][1], cv.Cube_Vertex[5][2]);
-		//pDC->TextOut(500, 130, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[6][0], cv.Cube_Vertex[6][1], cv.Cube_Vertex[6][2]);
-		//pDC->TextOut(500, 150, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), cv.Cube_Vertex[7][0], cv.Cube_Vertex[7][1], cv.Cube_Vertex[7][2]);
-		//pDC->TextOut(500, 170, str1234567);
+		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma region 도형선택(큐브)
 		float Crossinput1[4][1];
@@ -954,7 +944,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = 0; i < 4; i++)
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[0][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
 				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
@@ -987,8 +977,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = 0; i < 4; i++)
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[2][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[2][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[1][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
@@ -999,16 +989,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
 				Crossinput2[i][0] = cv.Cube_Vertex[1][i];
 				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
-			}
-			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-			if (cv.isClicked == TRUE)
-				break;
-
-			for (int i = 0; i < 4; i++)
-			{
-				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[2][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[3][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
@@ -1018,7 +998,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
 				Crossinput2[i][0] = cv.Cube_Vertex[3][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[7][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[2][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
@@ -1027,8 +1007,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = 0; i < 4; i++)
 			{
 				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
-				Crossinput2[i][0] = cv.Cube_Vertex[4][i];
-				Crossinput3[i][0] = cv.Cube_Vertex[5][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[7][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[3][i];
+			}
+			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (cv.isClicked == TRUE)
+				break;
+
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = cv.Cube_Vertex[6][i];
+				Crossinput2[i][0] = cv.Cube_Vertex[5][i];
+				Crossinput3[i][0] = cv.Cube_Vertex[4][i];
 			}
 			cv.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 			if (cv.isClicked == TRUE)
@@ -1071,16 +1061,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			cv.Cube_yRotate = ryvalue;
 			cv.Cube_zRotate = rzvalue;
 		
-			//str123456.Format(_T(" %.1f"), cv.Cube_Size);
+			//str123456.Format(_T("클릭된 : %.1f"), cv.Cube_Size);
+			//pDC->TextOut(1000, 30, str123456);
 		
-			float CubeVertex[8][4] = { { OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] + MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] - MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] + MyCube.Cube_Size, 1 },
-			{ OriginPoint[0][0] + MyCube.Cube_Size, OriginPoint[1][0] - MyCube.Cube_Size, OriginPoint[2][0] - MyCube.Cube_Size, 1 } };
+			float CubeVertex[8][4] = { { OriginPoint[0][0] - cv.Cube_Size, OriginPoint[1][0] + cv.Cube_Size, OriginPoint[2][0] - cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] - cv.Cube_Size, OriginPoint[1][0] + cv.Cube_Size, OriginPoint[2][0] + cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] + cv.Cube_Size, OriginPoint[1][0] + cv.Cube_Size, OriginPoint[2][0] + cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] + cv.Cube_Size, OriginPoint[1][0] + cv.Cube_Size, OriginPoint[2][0] - cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] - cv.Cube_Size, OriginPoint[1][0] - cv.Cube_Size, OriginPoint[2][0] - cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] - cv.Cube_Size, OriginPoint[1][0] - cv.Cube_Size, OriginPoint[2][0] + cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] + cv.Cube_Size, OriginPoint[1][0] - cv.Cube_Size, OriginPoint[2][0] + cv.Cube_Size, 1 },
+			{ OriginPoint[0][0] + cv.Cube_Size, OriginPoint[1][0] - cv.Cube_Size, OriginPoint[2][0] - cv.Cube_Size, 1 } };
+
 		
 			////AfxMessageBox(_T("들어옴?"));	
 
@@ -1110,12 +1102,31 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 			}
 
+
+
 			for (int j = 0; j < 8; j++)
 			{
 				for (int i = 0; i < COL; i++)
 				{
 					inputmat[i][0] = cv.Cube_Vertex[j][i];
 				}
+				//for (int i = 0; i < COL; i++)
+				//{
+				//	centerpoint[i][0] = cv.Cube_Center[i][0];
+				//}
+				////SRT
+				//cuberotateresult = matfun.Affinereturn(centerpoint, inputmat, cv.Cube_xRotate * 10, cv.Cube_yRotate * 10, cv.Cube_zRotate * 10, cv.Cube_Size, cv.Cube_xMove, cv.Cube_yMove);
+				//cuberotateresult = matfun.Affinereturn(cv.Cube_Center, inputmat, cv.Cube_xRotate * 10, cv.Cube_yRotate * 10, cv.Cube_zRotate * 10, cv.Cube_Size, cv.Cube_xMove, cv.Cube_yMove);
+				//for (int i = 0; i < COL; i++)
+				//{
+				//	cv.Cube_Vertex[j][i] = cuberotateresult[i][0];
+				//}
+				//for (int i = 0; i < COL; i++)
+				//{
+				//	inputmat[i][0] = cv.Cube_Vertex[j][i];
+				//}
+	
+				
 				//뷰변환
 				cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
 
@@ -1126,8 +1137,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				for (int i = 0; i < COL; i++)
 				{
 					inputmat[i][0] = cubeviewresult[i][0];
+
 				}
 
+
+				//투영변환
 				if (m_projection == 0)
 				{
 					cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
@@ -1136,8 +1150,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				{
 					cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
 				}
-				////투영변환
-				//cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
 
 				for (int i = 0; i < COL; i++)
 				{
@@ -1601,9 +1613,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			//rzvalue = 0;
 
 			//Figure_xMove = 0;
-			//Figure_yMove = 0;
-
-		
+			//Figure_yMove = 0;		
 
 	}//end for(auto cv : m_vCube)
 	for (int i = 0; i < COL; i++) {
@@ -1643,7 +1653,17 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				vInputmat[i][0] = sphereviewresult[i][0];
 			}
-			sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+
+			//투영
+			if (m_projection == 0)
+			{
+				sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+			}
+			else if (m_projection == 1)
+			{
+				sphereproresult = matfun.OrthoProjectionMat(vInputmat, width, height);
+			}			
+			//sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
 
 			for (int i = 0; i < 4; i++)
 			{

@@ -19,8 +19,8 @@ public:
 	float **result2;
 	float **result3;
 	float n = 10;
-	//float f = 318;
-	float f = 1000;
+	float f = 318;
+	//float f = 1000;
 	//const double PI = 3.141592;
 
 	float **MatrixAdd(float** mat1, float** mat2);

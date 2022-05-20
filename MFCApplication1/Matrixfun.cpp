@@ -245,7 +245,8 @@ float** Matrixfun::Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], f
 //float** Matrixfun::AffineScalereturn(CPoint cpoint, float resultmat1[][1], float scale)
 float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 {
-	float smat[4][4] = { { scale/100, 0, 0, 0 },{ 0, scale/100, 0, 0 },{ 0, 0, scale/100, 0 },{ 0, 0, 0, 1 } };
+	float smat[4][4] = { { scale / 100, 0, 0, 0 },{ 0, scale / 100, 0, 0 },{ 0, 0, scale / 100, 0 },{ 0, 0, 0, 1 } };
+	//float smat[4][4] = { { scale, 0, 0, 0 },{ 0, scale , 0, 0 },{ 0, 0, scale , 0 },{ 0, 0, 0, 1 } };
 	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
 		Resultmat[i] = new float[1];
@@ -1249,47 +1250,47 @@ float** Matrixfun::ViewMat(float Inputmat[][1], float xradian, float yradian, fl
 
 
 
-float** Matrixfun::PerProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle)
-{
-	float** Resultmat = new float* [COL];
-	for (int i = 0; i < COL; i++) {
-		Resultmat[i] = new float[1];
-	}
-	float n = 100, f = 500;
-	//int tanradian = 90 / 2;
-	float tanradian = ViewAngle / 2;
-	float l = (n + f) / (n - f);
-	float k = (2 * n * f) / (n - f);
-
-	double tanresult = tan(tanradian * PI / 180);
-	//float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 }, {0, 0, 0, 1 } };
-	//float Promat[4][4] = {
-	//	{ tanresult / inputratio, 0, 0, 0 },
-	//	{0, tanresult, 0, 0},
-	//	{ 0, 0, l, k},
-	//	{0, 0, -1, 0} };
-	float Promat[4][4] = {
-		{ tanresult / inputratio, 0, 0, 0 },
-		{ 0, tanresult, 0, 0 },
-		{ 0, 0, -1, 0 },
-		{ 0, 0, 0, 1 } };
-
-	for (int i = 0; i < COL; i++)
-	{
-		Resultmat[i][0] = (Promat[i][0] * Inputmat[0][0]) + (Promat[i][1] * Inputmat[1][0]) + (Promat[i][2] * Inputmat[2][0]) + (Promat[i][3] * Inputmat[3][0]);
-	}
-
-	float invZ = Resultmat[2][0];
-
-	//for (int i = 0; i < 4; i++) {
-	//	if (i == 3)
-	//		Resultmat[i][0] = 1;
-	//	else
-	//		Resultmat[i][0] = Resultmat[i][0] / invZ;
-	//}
-
-	return Resultmat;
-}
+//float** Matrixfun::PerProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle)
+//{
+//	float** Resultmat = new float* [COL];
+//	for (int i = 0; i < COL; i++) {
+//		Resultmat[i] = new float[1];
+//	}
+//	float n = 100, f = 500;
+//	//int tanradian = 90 / 2;
+//	float tanradian = ViewAngle / 2;
+//	float l = (n + f) / (n - f);
+//	float k = (2 * n * f) / (n - f);
+//
+//	double tanresult = tan(tanradian * PI / 180);
+//	//float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 }, {0, 0, 0, 1 } };
+//	//float Promat[4][4] = {
+//	//	{ tanresult / inputratio, 0, 0, 0 },
+//	//	{0, tanresult, 0, 0},
+//	//	{ 0, 0, l, k},
+//	//	{0, 0, -1, 0} };
+//	float Promat[4][4] = {
+//		{ tanresult / inputratio, 0, 0, 0 },
+//		{ 0, tanresult, 0, 0 },
+//		{ 0, 0, -1, 0 },
+//		{ 0, 0, 0, 1 } };
+//
+//	for (int i = 0; i < COL; i++)
+//	{
+//		Resultmat[i][0] = (Promat[i][0] * Inputmat[0][0]) + (Promat[i][1] * Inputmat[1][0]) + (Promat[i][2] * Inputmat[2][0]) + (Promat[i][3] * Inputmat[3][0]);
+//	}
+//
+//	float invZ = Resultmat[2][0];
+//
+//	//for (int i = 0; i < 4; i++) {
+//	//	if (i == 3)
+//	//		Resultmat[i][0] = 1;
+//	//	else
+//	//		Resultmat[i][0] = Resultmat[i][0] / invZ;
+//	//}
+//
+//	return Resultmat;
+//}
 
 float** Matrixfun::PerProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height)
 {
@@ -1310,8 +1311,6 @@ float** Matrixfun::PerProjectionMat(float Inputmat[][1], float inputratio, float
 	{
 		Resultmat[i][0] = (Promat[i][0] * Inputmat[0][0]) + (Promat[i][1] * Inputmat[1][0]) + (Promat[i][2] * Inputmat[2][0]) + (Promat[i][3] * Inputmat[3][0]);
 	}
-
-
 	float invW = Resultmat[3][0];
 	for (int i = 0; i < 4; i++) {
 		Resultmat[i][0] = Resultmat[i][0] / invW;
@@ -1335,12 +1334,6 @@ float** Matrixfun::OrthoProjectionMat(float Inputmat[][1], float width, float he
 	float h = height * 2;
 	//float n = 0;
 	//float f = 1;
-	
-	//float Promat[4][4] = {
-	//	{ 2/w, 0, 0, 0 },
-	//	{ 0, 2/h, 0, 0 },
-	//	{ 0, 0,  2 / (n - f), (n + f) / (n - f) },
-	//	{ 0, 0, 0, 1 } };
 
 	float Promat[4][4] = {
 		{ 2 / w, 0, 0, 0 },
@@ -1352,19 +1345,19 @@ float** Matrixfun::OrthoProjectionMat(float Inputmat[][1], float width, float he
 	{
 		Resultmat[i][0] = (Promat[i][0] * Inputmat[0][0]) + (Promat[i][1] * Inputmat[1][0]) + (Promat[i][2] * Inputmat[2][0]) + (Promat[i][3] * Inputmat[3][0]);
 	}
-
-
 	float invW = Resultmat[3][0];
 	for (int i = 0; i < 4; i++) {
 		Resultmat[i][0] = Resultmat[i][0] / invW;
 	}
 
 	float x = Resultmat[0][0], y = Resultmat[1][0];
-	Resultmat[0][0] = ((x/2.1 * width) + width);
-	Resultmat[1][0] = ((-y/2.1 * height) + height);
+	//Resultmat[0][0] = ((x/3 * width) + width);
+	//Resultmat[1][0] = ((-y/3 * height) + height);
 
-	//Resultmat[0][0] = ((x * width) + width);
-	//Resultmat[1][0] = ((-y * height) + height);
+	Resultmat[0][0] = ((x * width) + width);
+	Resultmat[1][0] = ((-y * height) + height);
+
+
 
 	return Resultmat;
 }
@@ -1491,7 +1484,7 @@ float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, f
 //bool Matrixfun::Cross(float Input[][1], float Vertex1[][1], float Vertex2[][1], float Vertex3[][1])
 bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
 {
-	BOOL ischeck;
+	bool ischeck;
 
 	float CrossResult1[4][1] = {
 		{ 0 },
@@ -1634,7 +1627,7 @@ int Matrixfun::Dot(float Inputmat[][1], float light[][1])
 
 bool Matrixfun::BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
 {
-	BOOL ischeck;
+	bool ischeck;
 
 	float CrossResult1[4][1] = {
 		{ 0 },
