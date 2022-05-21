@@ -65,6 +65,9 @@
     <ClCompile Include="Matrixfun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="save.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCApplication1.rc">

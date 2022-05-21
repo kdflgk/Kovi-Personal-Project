@@ -76,6 +76,6 @@ public:
 	float **NormalVector(float Inputmat1[][1], float Inputmat2[][1], float Inputmat3[][1]);
 	float **Normal(float Inputmat[][1]);
 	//float **Dot(float Inputmat1[][1], float light[][1]);
-	int Dot(float Inputmat[][1], float light[][1]);
+	float Dot(float Inputmat[][1], float light[][1]);
 	bool BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1]);
 };

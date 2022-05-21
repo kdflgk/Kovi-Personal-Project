@@ -93,15 +93,16 @@ public:
 	float intputmatc[8][4] = { 0 };
 	float campos[4][1];
 	float lightpos[4][1] = { { 1 },{ 1 },{ -1 },{ 1 } };
+	int OriginPoint[4][1] = { 0 };
 	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
 	float clickedPoint[4][1];
 	float centerpoint[4][1];
 
 	//도형 크기
-	float m_CubeSize = 100;
-	float m_SphereRadius = 100;
-	float m_TorusRadius = 200;
-	float m_nCircleRadius = 70;
+	float m_CubeSize = 50;
+	float m_SphereRadius = 50;
+	float m_TorusRadius = 50;
+	float m_nCircleRadius = 25;
 
 	//도형 회전
 	float rxvalue = 0;
@@ -131,7 +132,10 @@ public:
 
 	bool isback = FALSE;
 	int count = 0;
-
+	int cubecount = 0;
+	int spherecount = 0;
+	int toruscount = 0;
+	
 	// 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.

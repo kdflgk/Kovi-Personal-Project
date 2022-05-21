@@ -245,7 +245,8 @@ float** Matrixfun::Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], f
 //float** Matrixfun::AffineScalereturn(CPoint cpoint, float resultmat1[][1], float scale)
 float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 {
-	float smat[4][4] = { { scale / 100, 0, 0, 0 },{ 0, scale / 100, 0, 0 },{ 0, 0, scale / 100, 0 },{ 0, 0, 0, 1 } };
+	int ratio = 150;
+	float smat[4][4] = { { scale / ratio, 0, 0, 0 },{ 0, scale / ratio, 0, 0 },{ 0, 0, scale / ratio, 0 },{ 0, 0, 0, 1 } };
 	//float smat[4][4] = { { scale, 0, 0, 0 },{ 0, scale , 0, 0 },{ 0, 0, scale , 0 },{ 0, 0, 0, 1 } };
 	float** Resultmat = new float* [COL];
 	for (int i = 0; i < COL; i++) {
@@ -1526,7 +1527,7 @@ bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexma
 	{
 		ischeck = TRUE;
 	}
-	else if (result1[2][0] < 0 && result2[2][0] < 0 && result3[2][0] < 0)
+	else if (result1[2][0] <= 0 && result2[2][0] <= 0 && result3[2][0] <= 0)
 	{
 		ischeck = TRUE;
 	}
@@ -1602,7 +1603,7 @@ float** Matrixfun::Normal(float Inputmat[][1])
 	return Resultmat;
 }
 
-int Matrixfun::Dot(float Inputmat[][1], float light[][1])
+float Matrixfun::Dot(float Inputmat[][1], float light[][1])
 {
 	float Inputx = pow(Inputmat[0][0], 2), Inputy = pow(Inputmat[1][0], 2), Inputz = pow(Inputmat[2][0], 2);
 	float Inputsum = Inputx + Inputy + Inputz;
@@ -1615,9 +1616,11 @@ int Matrixfun::Dot(float Inputmat[][1], float light[][1])
 	float dot = Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0];
 
 	float cosresult = dot / (Inputsqrt * lightsqrt);
-	float RGB = cosresult * 255;
+	float RGBMul = 255;
+	float RGB = cosresult * RGBMul;
 
-	int result = (int)round(RGB);	
+	float result = round(RGB);
+
 	if (result < 0)
 		result = 0;
 
@@ -1669,7 +1672,7 @@ bool Matrixfun::BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vert
 	{
 		ischeck = TRUE;
 	}
-	else if (result1[2][0] < 0 && result2[2][0] < 0 && result3[2][0] < 0)
+	else if (result1[2][0] <= 0 && result2[2][0] <= 0 && result3[2][0] <= 0)
 	{
 		ischeck = TRUE;
 	}
@@ -1690,26 +1693,3 @@ bool Matrixfun::BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vert
 
 	return ischeck;
 }
-
-//float** Matrixfun::NormalVector(float Inputmat1[][1], float Inputmat2[][1], float Inputmat3[][1])
-//{
-//	BOOL ischeck;
-//	//วาด็
-//	float** result = new float*[COL];
-//	for (int i = 0; i < 1; i++) {
-//		result[i] = new float[1];
-//	}
-//
-//	float CrossResult1[4][1] = {
-//		{0},
-//		{0},
-//		{ round((Inputmat2[0][0] - Inputmat1[0][0])*(Inputmat3[1][0] - Inputmat1[1][0]) -
-//		(Inputmat2[1][0] - Inputmat1[1][0])*(Inputmat3[0][0] - Inputmat1[0][0])) },
-//		{ 1 } };
-//
-//	result = Normal(CrossResult1);
-//	if (result[2][0] > 0)
-//		ischeck = TRUE;
-//
-//	return result;
-//}
