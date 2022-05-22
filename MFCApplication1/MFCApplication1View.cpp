@@ -309,20 +309,6 @@ void CMFCApplication1View::OnLButtonDown(UINT nFlags, CPoint point)
 }
 void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	////도형 크기
-	//float m_CubeSize = 50;
-	//float m_SphereRadius = 50;
-	//float m_TorusRadius = 50;
-	//float m_nCircleRadius = 25;
-
-	////도형 회전
-	//float rxvalue = 0;
-	//float ryvalue = 0;
-	//float rzvalue = 0;
-
-	////도형 이동
-	//float Figure_xMove = 0;
-	//float Figure_yMove = 0;
 
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	//float curPoint[4][1]{ { point.x },{ point.y },{ 0.38 },{ 1 } };
@@ -363,7 +349,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		//MyCube.Cube_xRotate = rxvalue;
 		//MyCube.Cube_yRotate = ryvalue;
 		//MyCube.Cube_zRotate = rzvalue;
-		MyCube.Cube_Size = 30;
+		MyCube.Cube_Size = 50;
 		MyCube.Cube_xMove = 0;
 		MyCube.Cube_yMove = 0;
 		MyCube.Cube_xRotate = 0;
@@ -410,8 +396,10 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		for (int i = 0; i < 4; i++)
 		{
 			SphereInput[i][0] = intputmat[i][0];
+			MySphere.Sphere_Center[i][0] = intputmat[i][0];
 		}
 		str123456.Format(_T("구체의 중점 : %.1f, %.1f, %.1f, %.1f"), SphereInput[0][0], SphereInput[0][1], SphereInput[0][2], SphereInput[0][3]);
+
 		MySphere.isClicked = FALSE;
 		MySphere.Sphere_Size = m_SphereRadius;
 		MySphere.Sphere_xRotate = rxvalue;
@@ -426,13 +414,15 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 
 		SphereVertex[0][0] = Spherenode[0][0];
 		SphereVertex[0][1] = Spherenode[1][0];
-		SphereVertex[0][2] = Spherenode[2][0] + MySphere.Sphere_Size;
+		//SphereVertex[0][2] = Spherenode[2][0] + MySphere.Sphere_Size;
+		SphereVertex[0][2] = Spherenode[2][0] + 100;
 		//SphereVertex[0][2] = Spherenode[2][0] + m_SphereRadius;
 		SphereVertex[0][3] = 1;
 
 		SphereVertex[82][0] = Spherenode[0][0];
 		SphereVertex[82][1] = Spherenode[1][0];
-		SphereVertex[82][2] = Spherenode[2][0] - MySphere.Sphere_Size;
+		//SphereVertex[82][2] = Spherenode[2][0] - MySphere.Sphere_Size;
+		SphereVertex[82][2] = Spherenode[2][0] - 100;
 		//SphereVertex[82][2] = Spherenode[2][0] - m_SphereRadius;
 		SphereVertex[82][3] = 1;
 
@@ -449,14 +439,16 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 
 			zFocusDot[j][0] = { Spherenode[0][0] };
 			zFocusDot[j][1] = { Spherenode[1][0] + sqrtf((radiusPow - bottomPow)) };
-			zFocusDot[j][2] = { Spherenode[2][0] - (i * MySphere.Sphere_Size / cut) };
+			//zFocusDot[j][2] = { Spherenode[2][0] - (i * MySphere.Sphere_Size / cut) };
+			zFocusDot[j][2] = { Spherenode[2][0] - (i * 100 / cut) };
 			//zFocusDot[j][2] = { Spherenode[2][0] - (i * m_SphereRadius / cut) };
 			zFocusDot[j][3] = { Spherenode[3][0] };
 
 			if (i == 0)
 			{
 				zFocusDot[j][0] = { Spherenode[0][0] };
-				zFocusDot[j][1] = { Spherenode[1][0] + MySphere.Sphere_Size };
+				//zFocusDot[j][1] = { Spherenode[1][0] + MySphere.Sphere_Size };
+				zFocusDot[j][1] = { Spherenode[1][0] + 100 };
 				//zFocusDot[j][1] = { Spherenode[1][0] + m_SphereRadius };
 				zFocusDot[j][2] = { Spherenode[2][0] };
 				zFocusDot[j][3] = { Spherenode[3][0] };
@@ -492,22 +484,26 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 
 		count = 0;
-		for (int r = 0; r < 9; r++)
+		for (int r = 0; r < 2; r++)
 		{
 			for (int i = 0; i < 4; i++)
 			{
 				MySphereInputmat[i][0] = SphereVertex[count][i];
 			}
-			for (int ver = 0; ver < 9; ver++)
-			{
-				Resultmat = matfun.ZRotationreturn(Spherenode[0][0], Spherenode[1][0], MySphereInputmat, ver * 40);
+			//for (int ver = 0; ver < 9; ver++)
+			//{
+				Resultmat = matfun.ZRotationreturn(Spherenode[0][0], Spherenode[1][0], MySphereInputmat, 0);
 
 				MySphere.Sphere_Vertex[count][0] = Resultmat[0][0] + SphereInput[0][0];
 				MySphere.Sphere_Vertex[count][1] = Resultmat[1][0] + SphereInput[1][0];
 				MySphere.Sphere_Vertex[count][2] = Resultmat[2][0] + SphereInput[2][0];
 				MySphere.Sphere_Vertex[count][3] = Resultmat[3][0];
-				count = 82;
-			}
+
+				//MySphere.Sphere_Vertex[count][0] = SphereInput[0][0];
+				//MySphere.Sphere_Vertex[count][1] = SphereInput[1][0];
+				//MySphere.Sphere_Vertex[count][2] = SphereInput[2][0];
+			//}
+			count = 82;
 		}
 
 		for (int i = 0; i < COL; i++) {
@@ -533,7 +529,8 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 
 		MyTorus.Torus_Radius = m_TorusRadius;
-		MyTorus.Torus_nCirclSize = m_nCircleRadius;
+		//MyTorus.Torus_nCirclSize = m_nCircleRadius;
+		MyTorus.Torus_nCirclSize = m_TorusRadius/2;
 		MyTorus.Torus_xRotate = rxvalue;
 		MyTorus.Torus_xRotate = rxvalue;
 		MyTorus.Torus_xRotate = rxvalue;
@@ -553,7 +550,10 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 
 				MyTorus.Torus_Vertex[tcount][0] = (MyTorus.Torus_Radius + MyTorus.Torus_nCirclSize * (float)cos(theta))*(float)cos(gamma) + TorusInput[0][0];
 				MyTorus.Torus_Vertex[tcount][1] = (MyTorus.Torus_Radius + MyTorus.Torus_nCirclSize * (float)cos(theta))*(float)sin(gamma) + TorusInput[1][0];
-				MyTorus.Torus_Vertex[tcount][2] = MyTorus.Torus_nCirclSize * sin(theta) + TorusInput[2][0]; // 원래는 500을 더했었음(이유 기억안남)
+				MyTorus.Torus_Vertex[tcount][2] = MyTorus.Torus_nCirclSize * sin(theta) + TorusInput[2][0]; // 원래는 500을 더했었음(이유 기억안남)	
+				//MyTorus.Torus_Vertex[tcount][0] = (MyTorus.Torus_Radius + MyTorus.Torus_nCirclSize * (float)cos(theta))*(float)cos(gamma);
+				//MyTorus.Torus_Vertex[tcount][1] = (MyTorus.Torus_Radius + MyTorus.Torus_nCirclSize * (float)cos(theta))*(float)sin(gamma);
+				//MyTorus.Torus_Vertex[tcount][2] = MyTorus.Torus_nCirclSize * sin(theta); // 원래는 500을 더했었음(이유 기억안남)
 				MyTorus.Torus_Vertex[tcount][3] = 1;
 
 				tcount++;
@@ -663,18 +663,6 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	switch (nChar)
 	{
 		//도형 이동
-	case VK_LEFT:
-		xMove += 100;
-		break;
-	case VK_RIGHT:
-		xMove -= 100;
-		break;
-	case VK_UP:
-		yMove += 100;
-		break;
-	case VK_DOWN:
-		yMove -= 100;
-		break;
 	case 'Q':
 		rxvalue -= 1;
 		break;
@@ -696,10 +684,10 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		//도형 크기
 	case 'E':
 		if (m_CubeSize > 0)
-			m_CubeSize -= 10;
+			m_CubeSize -= 5;
 		break;
 	case 'R':
-		m_CubeSize += 10;
+		m_CubeSize += 5;
 		break;
 	case 'D':
 		if (m_SphereRadius > 0)
@@ -732,6 +720,18 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case 'H':
 		Figure_yMove -= 10;
 		break;
+		//도형 초기화
+	case 'O':
+		m_CubeSize = 50;
+		m_SphereRadius = 100;
+		m_TorusRadius = 50;
+		m_nCircleRadius = 25;
+		rxvalue = 0;
+		ryvalue = 0;
+		rzvalue = 0;
+		Figure_yMove = 0;
+		Figure_yMove = 0;
+		break;
 		//카메라 초기화
 	case 'P':
 		xvalue = 0;
@@ -751,6 +751,19 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	case VK_NUMPAD2:
 		xvalue -= 1;
+		break;
+		//카메라이동
+	case VK_LEFT:
+		xMove += 100;
+		break;
+	case VK_RIGHT:
+		xMove -= 100;
+		break;
+	case VK_UP:
+		yMove += 100;
+		break;
+	case VK_DOWN:
+		yMove -= 100;
 		break;
 
 		//그리기 타입
@@ -836,6 +849,9 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	{
 		clicked[i][0] = ClickProResult[i][0];
 	}
+	CString rbuttonpoint;
+	rbuttonpoint.Format(_T("%.f, %.f, %.f "), clicked[0][0], clicked[0][1], clicked[0][2]);
+	pDC->TextOut(100, 600, rbuttonpoint);
 #pragma endregion 우클릭 좌표값 월드->스크린
 
 
@@ -864,23 +880,17 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	{
 		str123456.Format(_T("%d"), cubecount);
 		pDC->TextOut(1000, 30, str123456);
-		//AfxMessageBox(str123456);
-
-		//int CubeIndex[12][3] = { {0,1,2}, {0,2,3}, {0,5,4}, {0,1,5}, {0,3,7}, {0,7,4}, {6,2,1}, {6,1,5}, {6,3,2}, {6,7,3}, {6,5,4}, {6,4,7} };
-		//bool screenout = FALSE;
 
 		//선택돼있을 때(정점을 새로 받아와서 도형을 새로 만들기)
 		if (m_vCube[cubecount].isClicked)
 		{
+			//AfxMessageBox(_T("큐브클릭"));
 			m_vCube[cubecount].Cube_Size = m_CubeSize;
 			m_vCube[cubecount].Cube_xMove = Figure_xMove;
 			m_vCube[cubecount].Cube_yMove = Figure_yMove;
 			m_vCube[cubecount].Cube_xRotate = rxvalue;
 			m_vCube[cubecount].Cube_yRotate = ryvalue;
 			m_vCube[cubecount].Cube_zRotate = rzvalue;
-
-			//str123456.Format(_T("클릭된 : %.1f"), m_vCube[cubecount].Cube_Size);
-			//pDC->TextOut(1000, 30, str123456);
 
 			float CubeVertex[8][4] = { { OriginPoint[0][0] - m_vCube[cubecount].Cube_Size, OriginPoint[1][0] + m_vCube[cubecount].Cube_Size, OriginPoint[2][0] - m_vCube[cubecount].Cube_Size, 1 },
 			{ OriginPoint[0][0] - m_vCube[cubecount].Cube_Size, OriginPoint[1][0] + m_vCube[cubecount].Cube_Size, OriginPoint[2][0] + m_vCube[cubecount].Cube_Size, 1 },
@@ -890,10 +900,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{ OriginPoint[0][0] - m_vCube[cubecount].Cube_Size, OriginPoint[1][0] - m_vCube[cubecount].Cube_Size, OriginPoint[2][0] + m_vCube[cubecount].Cube_Size, 1 },
 			{ OriginPoint[0][0] + m_vCube[cubecount].Cube_Size, OriginPoint[1][0] - m_vCube[cubecount].Cube_Size, OriginPoint[2][0] + m_vCube[cubecount].Cube_Size, 1 },
 			{ OriginPoint[0][0] + m_vCube[cubecount].Cube_Size, OriginPoint[1][0] - m_vCube[cubecount].Cube_Size, OriginPoint[2][0] - m_vCube[cubecount].Cube_Size, 1 } };
-
-			//AfxMessageBox(_T("들어옴?"));	
-			//str123456.Format(_T("%d"), cubecount);
-			//pDC->TextOut(1000, 30, str123456);
 
 			for (int i = 0; i < 8; i++)
 			{
@@ -914,99 +920,128 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					centerpoint[i][0] = m_vCube[cubecount].Cube_Center[i][0];
 				}
 				////SRT
-				cuberotateresult = matfun.Affinereturn(centerpoint, inputmat, m_vCube[cubecount].Cube_xRotate * 10, m_vCube[cubecount].Cube_yRotate * 10, m_vCube[cubecount].Cube_zRotate * 10, m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_xMove, m_vCube[cubecount].Cube_yMove);
+				cuberotateresult = matfun.Affinereturn(centerpoint, inputmat, m_vCube[cubecount].Cube_xRotate * 10, m_vCube[cubecount].Cube_yRotate * 10, m_vCube[cubecount].Cube_zRotate * 10, 
+					m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_xMove, m_vCube[cubecount].Cube_yMove);
 				for (int i = 0; i < COL; i++)
 				{
 					m_vCube[cubecount].Cube_Vertex[j][i] = cuberotateresult[i][0];
 				}
 			}
 
-			for (int j = 0; j < 8; j++)
-			{
-				for (int i = 0; i < COL; i++)
-				{
-					inputmat[i][0] = m_vCube[cubecount].Cube_Vertex[j][i];
-				}
-
-				//뷰변환
-				cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
-
-				////카메라가 보는방향이 마이너스, 0보다 커지면 뒤쪽으로 돌아간거라서 continue;
-				//if (inputmat[2][0] > 0)
-				//	continue;
-
-				for (int i = 0; i < COL; i++)
-				{
-					inputmat[i][0] = cubeviewresult[i][0];
-
-				}
-
-
-				//투영변환
-				if (m_projection == 0)
-				{
-					cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
-				}
-				else if (m_projection == 1)
-				{
-					cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
-				}
-
-				for (int i = 0; i < COL; i++)
-				{
-					m_vCube[cubecount].Cube_Vertex[j][i] = cubeproresult[i][0];
-				}
-
-			}
+			//for (int j = 0; j < 8; j++)
+			//{
+			//	for (int i = 0; i < COL; i++)
+			//	{
+			//		inputmat[i][0] = m_vCube[cubecount].Cube_Vertex[j][i];
+			//	}
+			//	//뷰변환
+			//	cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
+			//	for (int i = 0; i < COL; i++)
+			//	{
+			//		inputmat[i][0] = cubeviewresult[i][0];
+			//	}
+			//	//투영변환
+			//	if (m_projection == 0)
+			//	{
+			//		cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+			//	}
+			//	else if (m_projection == 1)
+			//	{
+			//		cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
+			//		//AfxMessageBox(_T("TRUE직교투영"));
+			//	}
+			//	for (int i = 0; i < COL; i++)
+			//	{
+			//		m_vCube[cubecount].Cube_Vertex[j][i] = cubeproresult[i][0];
+			//	}
+			//}
 		}
 		//선택 안 돼 있을 때
 		if (m_vCube[cubecount].isClicked == FALSE)
 		{
-			for (int j = 0; j < 8; j++)
+			//m_vCube[cubecount].Cube_Size = 50;
+			//m_vCube[cubecount].Cube_xMove = 0;
+			//m_vCube[cubecount].Cube_yMove = 0;
+			//m_vCube[cubecount].Cube_xRotate = 0;
+			//m_vCube[cubecount].Cube_yRotate = 0;
+			//m_vCube[cubecount].Cube_zRotate = 0;
+
+			//// 구조체에 값 집어넣고 pushback
+			float CubeVertex[8][4] = { { m_vCube[cubecount].Cube_Center[0][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] - m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] + m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] + m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] - m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] - m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] + m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] + m_vCube[cubecount].Cube_Size, 1 },
+			{ m_vCube[cubecount].Cube_Center[0][0] + m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[1][0] - m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_Center[2][0] - m_vCube[cubecount].Cube_Size, 1 } };
+
+			for (int i = 0; i < 8; i++)
 			{
-				for (int i = 0; i < COL; i++)
+				for (int j = 0; j < 4; j++)
 				{
-					inputmat[i][0] = m_vCube[cubecount].Cube_Vertex[j][i];
-				}
-
-				//cuberotateresult = matfun.Affinereturn(m_vCube[cubecount].Cube_Center, inputmat, m_vCube[cubecount].Cube_xRotate * 10, m_vCube[cubecount].Cube_yRotate * 10, m_vCube[cubecount].Cube_zRotate * 10, m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_xMove, m_vCube[cubecount].Cube_yMove);
-				//for (int i = 0; i < COL; i++)
-				//{
-				//	m_vCube[cubecount].Cube_Vertex[j][i] = cuberotateresult[i][0];
-				//}
-				//for (int i = 0; i < COL; i++)
-				//{
-				//	inputmat[i][0] = m_vCube[cubecount].Cube_Vertex[j][i];
-				//}
-				
-				//뷰변환
-				cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
-
-				for (int i = 0; i < COL; i++)
-				{
-					inputmat[i][0] = cubeviewresult[i][0];
-				}
-
-				//카메라가 보는방향이 마이너스, 0보다 커지면 뒤쪽으로 돌아간거라서 continue;
-				if (inputmat[2][0] > 0)
-					continue;
-
-				//투영변환
-				if (m_projection == 0)
-				{
-					cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
-				}
-				else if (m_projection == 1)
-				{
-					cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
-				}
-
-				for (int i = 0; i < COL; i++)
-				{
-					m_vCube[cubecount].Cube_Vertex[j][i] = cubeproresult[i][0];
+					m_vCube[cubecount].Cube_Vertex[i][j] = CubeVertex[i][j];
 				}
 			}
+
+			//for (int j = 0; j < 8; j++)
+			//{
+			//	for (int i = 0; i < COL; i++)
+			//	{
+			//		inputmat[i][0] = m_vCube[cubecount].Cube_Vertex[j][i];
+			//	}
+			//	for (int i = 0; i < COL; i++)
+			//	{
+			//		centerpoint[i][0] = m_vCube[cubecount].Cube_Center[i][0];
+			//	}
+			//	////SRT
+			//	//cuberotateresult = matfun.Affinereturn(centerpoint, inputmat, m_vCube[cubecount].Cube_xRotate * 10, m_vCube[cubecount].Cube_yRotate * 10, m_vCube[cubecount].Cube_zRotate * 10,
+			//	//	m_vCube[cubecount].Cube_Size, m_vCube[cubecount].Cube_xMove, m_vCube[cubecount].Cube_yMove);				
+			//	//cuberotateresult = matfun.Affinereturn(centerpoint, inputmat, 0, 0, 0, m_vCube[cubecount].Cube_Size, 0, 0);
+			//	for (int i = 0; i < COL; i++)
+			//	{
+			//		m_vCube[cubecount].Cube_Vertex[j][i] = cuberotateresult[i][0];
+			//	}
+			//}
+
 		}
+
+		for (int j = 0; j < 8; j++)
+		{
+			for (int i = 0; i < COL; i++)
+			{
+				inputmat[i][0] = m_vCube[cubecount].Cube_Vertex[j][i];
+			}
+
+			//뷰변환
+			cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
+
+			for (int i = 0; i < COL; i++)
+			{
+				inputmat[i][0] = cubeviewresult[i][0];
+			}
+
+			//카메라가 보는방향이 마이너스, 0보다 커지면 뒤쪽으로 돌아간거라서 continue;
+			if (inputmat[2][0] > 0)
+				continue;
+
+			//투영변환
+			if (m_projection == 0)
+			{
+				cubeproresult = matfun.PerProjectionMat(inputmat, inputratio, m_viewAngle, width, height);
+			}
+			else if (m_projection == 1)
+			{
+				cubeproresult = matfun.OrthoProjectionMat(inputmat, width, height);
+				//AfxMessageBox(_T("FALSE직교투영"));
+			}
+
+			for (int i = 0; i < COL; i++)
+			{
+				m_vCube[cubecount].Cube_Vertex[j][i] = cubeproresult[i][0];
+			}
+		}
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma region 도형선택(큐브)
 		float Crossinput1[4][1];
@@ -1632,68 +1667,280 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	float vInputmat[4][1];
 	float** sphereproresult = new float*[COL];
 	float** sphereviewresult = new float*[COL];
+	float** sphererotateresult = new float* [COL];//
 	for (int i = 0; i < COL; i++) {
 		sphereproresult[i] = new float[1];
 		sphereviewresult[i] = new float[1];
+		sphererotateresult[i] = new float[1];
 	}
 
-	for (auto sp : m_vSphere)
+	//for (auto sp : m_vSphere)
+	for (int spherecount = 0; spherecount < m_vSphere.size(); spherecount++)
 	{
-		int count = 1;
-		for (int r = 0; r < 81; r++)
+		//선택돼있을 때(정점을 새로 받아와서 도형을 새로 만들기)
+		//if (m_vSphere[spherecount].isClicked)
+		if (m_vSphere[spherecount].isClicked==FALSE)
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				Inputmat[i][0] = sp.Sphere_Vertex[count][i];
-			}
-			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
+			//AfxMessageBox(_T("구체클릭"));
+			m_vSphere[spherecount].Sphere_Size = m_SphereRadius;
+			m_vSphere[spherecount].Sphere_xMove = Figure_xMove;
+			m_vSphere[spherecount].Sphere_yMove = Figure_yMove;
+			m_vSphere[spherecount].Sphere_xRotate = rxvalue;
+			m_vSphere[spherecount].Sphere_yRotate = ryvalue;
+			m_vSphere[spherecount].Sphere_zRotate = rzvalue;
 
-			for (int i = 0; i < COL; i++)
+#pragma region 정점 새로받기
+			float Spherenode[4][1] = { { 0 },{ 0 },{ 0 },{ 1 } };
+			float zFocusDot[9][4] = {};
+			float SphereVertex[83][4];
+
+			SphereVertex[0][0] = Spherenode[0][0];
+			SphereVertex[0][1] = Spherenode[1][0];
+			SphereVertex[0][2] = Spherenode[2][0] + m_vSphere[spherecount].Sphere_Size;
+			SphereVertex[0][3] = 1;
+
+			SphereVertex[82][0] = Spherenode[0][0];
+			SphereVertex[82][1] = Spherenode[1][0];
+			SphereVertex[82][2] = Spherenode[2][0] - m_vSphere[spherecount].Sphere_Size;
+			SphereVertex[82][3] = 1;
+
+			float radiusPow = pow(m_vSphere[spherecount].Sphere_Size, 2);//제곱
+			float bottomPow;
+
+			int cut = 5;
+			int j = 0;
+			for (int i = (1 - cut); i < cut; i++)
 			{
-				vInputmat[i][0] = sphereviewresult[i][0];
+				bottomPow = pow((i * m_vSphere[spherecount].Sphere_Size / cut), 2);
+
+				zFocusDot[j][0] = { Spherenode[0][0] };
+				zFocusDot[j][1] = { Spherenode[1][0] + sqrtf((radiusPow - bottomPow)) };
+				zFocusDot[j][2] = { Spherenode[2][0] - (i * m_vSphere[spherecount].Sphere_Size / cut) };
+				zFocusDot[j][3] = { Spherenode[3][0] };
+
+				if (i == 0)
+				{
+					zFocusDot[j][0] = { Spherenode[0][0] };
+					zFocusDot[j][1] = { Spherenode[1][0] + m_vSphere[spherecount].Sphere_Size };
+					zFocusDot[j][2] = { Spherenode[2][0] };
+					zFocusDot[j][3] = { Spherenode[3][0] };
+				}
+				j++;
 			}
 
-			//투영
-			if (m_projection == 0)
+			float MySphereInputmat[4][1];
+			float** Resultmat = new float* [9];
+			for (int i = 0; i < COL; i++) {
+				Resultmat[i] = new float[ROW];
+			}
+
+			int spVertexCount = 1;
+			for (int r = 0; r < 9; r++)
 			{
+				for (int i = 0; i < 4; i++)
+				{
+					MySphereInputmat[i][0] = zFocusDot[r][i];
+				}
+				for (int ver = 0; ver < 9; ver++)
+				{
+					Resultmat = matfun.ZRotationreturn(MySphereInputmat, ver * 40);
+
+					SphereVertex[spVertexCount][0] = Resultmat[0][0];
+					SphereVertex[spVertexCount][1] = Resultmat[1][0];
+					SphereVertex[spVertexCount][2] = Resultmat[2][0];
+					SphereVertex[spVertexCount][3] = Resultmat[3][0];
+					spVertexCount++;
+				}
+			}
+
+			for (int i = 0; i < COL; i++) {
+				delete[] Resultmat[i];
+			}
+			delete[] Resultmat;
+
+
+			int count = 1;
+			for (int r = 0; r < 81; r++)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = SphereVertex[count][i];
+				}
+				for (int i = 0; i < 4; i++)
+				{
+					Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
+				}
+
+				for (int i = 0; i < 4; i++)
+				{
+					centerpoint[i][0] = m_vSphere[spherecount].Sphere_Center[i][0];
+				}
+
+				sphererotateresult = matfun.Affinereturn(centerpoint, Inputmat, m_vSphere[spherecount].Sphere_xRotate * 10, m_vSphere[spherecount].Sphere_yRotate * 10, m_vSphere[spherecount].Sphere_zRotate * 10,
+					m_vSphere[spherecount].Sphere_Size, m_vSphere[spherecount].Sphere_xMove, m_vSphere[spherecount].Sphere_yMove);
+
+				for (int i = 0; i < COL; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = sphererotateresult[i][0];
+				}
+
+				count++;
+			}
+
+			count = 0;
+			for (int j = 0; j < 2; j++)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = SphereVertex[count][i];
+				}
+				for (int i = 0; i < 4; i++)
+				{
+					Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
+				}
+
+				for (int i = 0; i < 4; i++)
+				{
+					centerpoint[i][0] = m_vSphere[spherecount].Sphere_Center[i][0];
+				}
+				sphererotateresult = matfun.Affinereturn(centerpoint, Inputmat, m_vSphere[spherecount].Sphere_xRotate * 10, m_vSphere[spherecount].Sphere_yRotate * 10, m_vSphere[spherecount].Sphere_zRotate * 10,
+					m_vSphere[spherecount].Sphere_Size, m_vSphere[spherecount].Sphere_xMove, m_vSphere[spherecount].Sphere_yMove);
+
+				for (int i = 0; i < COL; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = sphererotateresult[i][0];
+				}
+
+				count = 82;
+			}
+
+#pragma endregion 정점 새로받기
+
+#pragma region 구체 연산
+			count = 1;
+			for (int r = 0; r < 81; r++)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
+				}
+				//}
+
+				//뷰
+				sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
+
+				for (int i = 0; i < COL; i++)
+				{
+					vInputmat[i][0] = sphereviewresult[i][0];
+				}
+
+				//투영
+				if (m_projection == 0)
+				{
+					sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+				}
+				else if (m_projection == 1)
+				{
+					sphereproresult = matfun.OrthoProjectionMat(vInputmat, width, height);
+				}
+				//sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+
+				for (int i = 0; i < 4; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = sphereproresult[i][0];
+				}
+				count++;
+			}
+
+			count = 0;
+			for (int j = 0; j < 2; j++)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
+				}
+
+				sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
+
+				for (int i = 0; i < COL; i++)
+				{
+					vInputmat[i][0] = sphereviewresult[i][0];
+				}
 				sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
-			}
-			else if (m_projection == 1)
-			{
-				sphereproresult = matfun.OrthoProjectionMat(vInputmat, width, height);
-			}			
-			//sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
 
-			for (int i = 0; i < 4; i++)
-			{
-				sp.Sphere_Vertex[count][i] = sphereproresult[i][0];
+				for (int i = 0; i < 4; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = sphereproresult[i][0];
+				}
+				count = 82;
 			}
-			count++;
+
 		}
+#pragma endregion 구체 연산
 
-		count = 0;
-		for (int j = 0; j < 2; j++)
+		//선택이 안되있을때
+		//if (m_vSphere[spherecount].isClicked == FALSE)
+		if (m_vSphere[spherecount].isClicked)
 		{
-			for (int i = 0; i < 4; i++)
+			int count = 1;
+			for (int r = 0; r < 81; r++)
 			{
-				Inputmat[i][0] = sp.Sphere_Vertex[count][i];
+				for (int i = 0; i < 4; i++)
+				{
+					Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
+				}
+
+				//뷰
+				sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500);
+
+				for (int i = 0; i < 4; i++)
+				{
+					vInputmat[i][0] = sphereviewresult[i][0];
+				}
+
+				//투영
+				if (m_projection == 0)
+				{
+					sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+				}
+				else if (m_projection == 1)
+				{
+					sphereproresult = matfun.OrthoProjectionMat(vInputmat, width, height);
+				}
+				//sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+
+				for (int i = 0; i < 4; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = sphereproresult[i][0];
+				}
+				count++;
 			}
-
-			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
-
-			for (int i = 0; i < COL; i++)
+			
+			count = 0;
+			for (int j = 0; j < 2; j++)
 			{
-				vInputmat[i][0] = sphereviewresult[i][0];
-			}
-			sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+				for (int i = 0; i < 4; i++)
+				{
+					Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
+				}
 
-			for (int i = 0; i < 4; i++)
-			{
-				sp.Sphere_Vertex[count][i] = sphereproresult[i][0];
+				sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, xMove, yMove, 500); // 회전
+
+				for (int i = 0; i < COL; i++)
+				{
+					vInputmat[i][0] = sphereviewresult[i][0];
+				}
+				sphereproresult = matfun.PerProjectionMat(vInputmat, inputratio, m_viewAngle, width, height);
+
+				for (int i = 0; i < 4; i++)
+				{
+					m_vSphere[spherecount].Sphere_Vertex[count][i] = sphereproresult[i][0];
+				}
+				count = 82;
 			}
-			count = 82;
 		}
 
+		
 
 #pragma region 도형선택(구체)
 		float Crossinput1[4][1];
@@ -1706,24 +1953,24 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				Crossinput1[j][0] = sp.Sphere_Vertex[0][j];
-				Crossinput2[j][0] = sp.Sphere_Vertex[i][j];
-				Crossinput3[j][0] = sp.Sphere_Vertex[i + 1][j];
+				Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[0][j];
+				Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+				Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i + 1][j];
 			}
-			sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-			if (sp.isClicked == TRUE)
+			m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (m_vSphere[spherecount].isClicked == TRUE)
 				break;
 
 			if (i == 9)
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					Crossinput1[j][0] = sp.Sphere_Vertex[0][j];
-					Crossinput2[j][0] = sp.Sphere_Vertex[i][j];
-					Crossinput3[j][0] = sp.Sphere_Vertex[i - 8][j];
+					Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[0][j];
+					Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+					Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 8][j];
 				}
-				sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-				if (sp.isClicked == TRUE)
+				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+				if (m_vSphere[spherecount].isClicked == TRUE)
 					break;
 			}
 				
@@ -1736,256 +1983,80 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-					Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-					Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
+					Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+					Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 8][j];
+					Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 9][j];
 				}
-				sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-				if (sp.isClicked == TRUE)
+				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+				if (m_vSphere[spherecount].isClicked == TRUE)
 					break;
 
 				for (int j = 0; j < 4; j++)
 				{
-					Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-					Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-					Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
+					Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+					Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 1][j];
+					Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 9][j];
 				}
-				sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-				if (sp.isClicked == TRUE)
+				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+				if (m_vSphere[spherecount].isClicked == TRUE)
 					break;
 			}
 		}
-
-#pragma region 반복문으로 줄이기
-		////10~18
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-
-		////19~27
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-		////28~36
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-
-		////37~45
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-
-		////46~54
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-
-		////55~63
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-
-		////64~71
-		//num = num + 9;
-		//for (int i = num - 9; i < num; i++)
-		//{
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-
-		//	for (int j = 0; j < 4; j++)
-		//	{
-		//		Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-		//		Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-		//		Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
-		//	}
-		//	sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-		//	if (sp.isClicked == TRUE)
-		//		break;
-		//}
-
-#pragma endregion
 		//72~82
 		num = num + 9;
 		for (int i = num - 9; i < num; i++)
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				Crossinput1[j][0] = sp.Sphere_Vertex[82][j];
-				Crossinput2[j][0] = sp.Sphere_Vertex[i][j];
-				Crossinput3[j][0] = sp.Sphere_Vertex[i + 1][j];
+				Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[82][j];
+				Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+				Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i + 1][j];
 			}
-			sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-			if (sp.isClicked == TRUE)
+			m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (m_vSphere[spherecount].isClicked == TRUE)
 				break;
 			if (i == 81)
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					Crossinput1[j][0] = sp.Sphere_Vertex[82][j];
-					Crossinput2[j][0] = sp.Sphere_Vertex[i][j];
-					Crossinput3[j][0] = sp.Sphere_Vertex[i - 8][j];
+					Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[82][j];
+					Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+					Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 8][j];
 				}
-				sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-				if (sp.isClicked == TRUE)
+				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+				if (m_vSphere[spherecount].isClicked == TRUE)
 					break;
 			}
 
 			for (int j = 0; j < 4; j++)
 			{
-				Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-				Crossinput2[j][0] = sp.Sphere_Vertex[i - 8][j];
-				Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
+				Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+				Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 8][j];
+				Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 9][j];
 			}
-			sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-			if (sp.isClicked == TRUE)
+			m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (m_vSphere[spherecount].isClicked == TRUE)
 				break;
 
 			for (int j = 0; j < 4; j++)
 			{
-				Crossinput1[j][0] = sp.Sphere_Vertex[i][j];
-				Crossinput2[j][0] = sp.Sphere_Vertex[i - 1][j];
-				Crossinput3[j][0] = sp.Sphere_Vertex[i - 9][j];
+				Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[i][j];
+				Crossinput2[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 1][j];
+				Crossinput3[j][0] = m_vSphere[spherecount].Sphere_Vertex[i - 9][j];
 			}
-			sp.isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-			if (sp.isClicked == TRUE)
+			m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			if (m_vSphere[spherecount].isClicked == TRUE)
 				break;
 			i;
 		}
 
 
-		if (sp.isClicked)
+		if (m_vSphere[spherecount].isClicked)
 		{
 			pDC->SelectObject(checkPen);
+			//AfxMessageBox(_T("트루"));
 		}
-		else if (sp.isClicked == FALSE)
+		else if (m_vSphere[spherecount].isClicked == FALSE)
 		{
 			pDC->SelectObject(whitePen);
 		}
@@ -1999,18 +2070,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i + 1][0], m_vSphere[spherecount].Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
 				pDC->EndPath();
 				if (i == 9)
 				{
 					pDC->BeginPath();
-					pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-					pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
 					pDC->EndPath();
 				}
 				pDC->StrokeAndFillPath();
@@ -2022,18 +2093,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				for (int i = num - 9; i < num; i++)
 				{
 					pDC->BeginPath();
-					pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 					pDC->EndPath();
 					pDC->StrokeAndFillPath();
 
 					pDC->BeginPath();
-					pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 					pDC->EndPath();
 					pDC->StrokeAndFillPath();
 				}
@@ -2044,18 +2115,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
@@ -2063,18 +2134,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
@@ -2082,18 +2153,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
@@ -2101,18 +2172,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
@@ -2120,18 +2191,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
@@ -2139,18 +2210,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
@@ -2158,18 +2229,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}*/
@@ -2178,40 +2249,40 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			for (int i = num - 9; i < num; i++)
 			{
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i + 1][0], m_vSphere[spherecount].Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
 				pDC->EndPath();
 				if (i == 81)
 				{
 					pDC->BeginPath();
-					pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-					pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
 					pDC->EndPath();
 				}
 
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 
 				pDC->BeginPath();
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				pDC->EndPath();
 				pDC->StrokeAndFillPath();
 			}
-#pragma endregion
+#pragma endregion 구체그리기(채우기)
 		}
 		else
 		{
@@ -2219,16 +2290,16 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			int num = 10;
 			for (int i = num - 9; i < num; i++)
 			{
-				pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i + 1][0], m_vSphere[spherecount].Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
 				if (i == 9)
 				{
-					pDC->MoveTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-					pDC->LineTo(sp.Sphere_Vertex[0][0], sp.Sphere_Vertex[0][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1]);
 
 				}
 			}
@@ -2237,139 +2308,139 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				num = num + 9;
 				for (int i = num - 9; i < num; i++)
 				{
-					pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-					pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 				}
 			}
 #pragma region 반복문으로 줄이기
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 			// 
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 			//num = num + 9;
 			//for (int i = num - 9; i < num; i++)
 			//{
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-			//	pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-			//	pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+			//	pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+			//	pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			//}
 
 #pragma endregion
 			num = num + 9;
 			for (int i = num - 9; i < num; i++)
 			{
-				pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i + 1][0], sp.Sphere_Vertex[i + 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i + 1][0], m_vSphere[spherecount].Sphere_Vertex[i + 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
 				if (i == 81)
 				{
-					pDC->MoveTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-					pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-					pDC->LineTo(sp.Sphere_Vertex[82][0], sp.Sphere_Vertex[82][1]);
+					pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+					pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
 				}
 
 
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 8][0], sp.Sphere_Vertex[i - 8][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 8][0], m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 
-				pDC->MoveTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 1][0], sp.Sphere_Vertex[i - 1][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i - 9][0], sp.Sphere_Vertex[i - 9][1]);
-				pDC->LineTo(sp.Sphere_Vertex[i][0], sp.Sphere_Vertex[i][1]);
+				pDC->MoveTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 1][0], m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i - 9][0], m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
+				pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1]);
 			}
-#pragma endregion
+#pragma endregion 구체그리기
 		}
 
 		for (int i = 0; i < COL; i++) {
@@ -2386,15 +2457,46 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	float tvInputmat[4][1] = { 0 };
 	float** torusproresult = new float*[COL];
 	float** torusviewresult = new float*[COL];
+	float** torusrotateresult = new float*[COL];
 	for (int i = 0; i < COL; i++) {
 		torusproresult[i] = new float[1];
 		torusviewresult[i] = new float[1];
+		torusrotateresult[i] = new float[1];
 	}
 
 	for (auto tr : m_vTorus)
 	{
+		MyTorus.Torus_Radius = m_TorusRadius;
+		MyTorus.Torus_nCirclSize = m_TorusRadius / 2;
+		MyTorus.Torus_xRotate = rxvalue;
+		MyTorus.Torus_xRotate = rxvalue;
+		MyTorus.Torus_xRotate = rxvalue;
+		MyTorus.Torus_xMove = xMove;
+		MyTorus.Torus_yMove = yMove;
 
 		int count = 0;
+		//for (int j = 0; j < 64; j++)
+		//{
+		//	for (int i = 0; i < COL; i++)
+		//	{
+		//		inputmat[i][0] = tr.Torus_Vertex[count][i];
+		//	}
+		//	for (int i = 0; i < COL; i++)
+		//	{
+		//		centerpoint[i][0] = tr.Torus_Center[i][0];
+		//	}
+		//	////SRT
+		//	torusrotateresult = matfun.Affinereturn(centerpoint, inputmat, tr.Torus_xRotate * 10, tr.Torus_yRotate * 10, tr.Torus_zRotate * 10,
+		//		tr.Torus_Radius, tr.Torus_xMove, tr.Torus_yMove);
+
+		//	for (int i = 0; i < COL; i++)
+		//	{
+		//		tr.Torus_Vertex[count][i] = torusrotateresult[i][0];
+		//	}
+		//	count++;
+		//}
+
+		count = 0;
 		for (int j = 0; j < 64; j++)
 		{
 			for (int i = 0; i < 4; i++)
@@ -2418,6 +2520,23 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 			count++;
 		}
+
+		str1234567.Format(_T("%.f,%.f,%.5f"), tr.Torus_Vertex[0][0], tr.Torus_Vertex[0][1], tr.Torus_Vertex[0][2]);
+		pDC->TextOut(500, 30, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.5f"), tr.Torus_Vertex[1][0], tr.Torus_Vertex[1][1], tr.Torus_Vertex[1][2]);
+		pDC->TextOut(500, 50, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.5f"), tr.Torus_Vertex[2][0], tr.Torus_Vertex[2][1], tr.Torus_Vertex[2][2]);
+		pDC->TextOut(500, 70, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.5f"), tr.Torus_Vertex[3][0], tr.Torus_Vertex[3][1], tr.Torus_Vertex[3][2]);
+		pDC->TextOut(500, 90, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), tr.Torus_Vertex[4][0], tr.Torus_Vertex[4][1], tr.Torus_Vertex[4][2]);
+		pDC->TextOut(500, 110, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), tr.Torus_Vertex[5][0], tr.Torus_Vertex[5][1], tr.Torus_Vertex[5][2]);
+		pDC->TextOut(500, 130, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), tr.Torus_Vertex[6][0], tr.Torus_Vertex[6][1], tr.Torus_Vertex[6][2]);
+		pDC->TextOut(500, 150, str1234567);
+		str1234567.Format(_T("%.f,%.f,%.f"), tr.Torus_Vertex[7][0], tr.Torus_Vertex[7][1], tr.Torus_Vertex[7][2]);
+		pDC->TextOut(500, 170, str1234567);
 
 #pragma region 도형선택(원환면)
 		float Crossinput1[4][1];

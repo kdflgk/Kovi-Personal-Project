@@ -245,7 +245,7 @@ float** Matrixfun::Scalereturn(CDC* pDC, CPoint cpoint, float resultmat1[][1], f
 //float** Matrixfun::AffineScalereturn(CPoint cpoint, float resultmat1[][1], float scale)
 float** Matrixfun::AffineScalereturn(float resultmat1[][1], float scale)
 {
-	int ratio = 150;
+	int ratio = 50;
 	float smat[4][4] = { { scale / ratio, 0, 0, 0 },{ 0, scale / ratio, 0, 0 },{ 0, 0, scale / ratio, 0 },{ 0, 0, 0, 1 } };
 	//float smat[4][4] = { { scale, 0, 0, 0 },{ 0, scale , 0, 0 },{ 0, 0, scale , 0 },{ 0, 0, 0, 1 } };
 	float** Resultmat = new float* [COL];
