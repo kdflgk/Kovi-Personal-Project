@@ -100,7 +100,7 @@ public:
 
 	//도형 크기
 	float m_CubeSize = 50;
-	float m_SphereRadius = 100;
+	float m_SphereRadius = 50;
 	float m_TorusRadius = 50;
 	float m_nCircleRadius = 25;
 
