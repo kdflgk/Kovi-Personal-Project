@@ -1487,25 +1487,46 @@ bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexma
 {
 	bool ischeck;
 
+	//float CrossResult1[4][1] = {
+	//	{ 0 },
+	//	{ 0 },
+	//	{ round((Vertexmat1[0][0] - Inputmat[0][0])*(Vertexmat1[1][0] - Vertexmat2[1][0]) -
+	//	(Vertexmat1[0][0] - Vertexmat2[0][0])*(Vertexmat1[1][0] - Inputmat[1][0])) },
+	//	{ 1 } };
+
+	//float CrossResult2[4][1]{
+	//	{ 0 },
+	//	{ 0 },
+	//	{ round((Vertexmat2[0][0] - Inputmat[0][0])*(Vertexmat2[1][0] - Vertexmat3[1][0]) -
+	//	(Vertexmat2[0][0] - Vertexmat3[0][0])*(Vertexmat2[1][0] - Inputmat[1][0])) },
+	//	{ 1 } };
+
+	//float CrossResult3[4][1]{
+	//	{ 0 },
+	//	{ 0 },
+	//	{ round((Vertexmat3[0][0] - Inputmat[0][0])*(Vertexmat3[1][0] - Vertexmat1[1][0]) -
+	//	(Vertexmat3[0][0] - Vertexmat1[0][0])*(Vertexmat3[1][0] - Inputmat[1][0])) },
+	//	{ 1 } };
+
 	float CrossResult1[4][1] = {
 		{ 0 },
 		{ 0 },
-		{ round((Vertexmat1[0][0] - Inputmat[0][0])*(Vertexmat1[1][0] - Vertexmat2[1][0]) -
-		(Vertexmat1[0][0] - Vertexmat2[0][0])*(Vertexmat1[1][0] - Inputmat[1][0])) },
+		{ round((Inputmat[0][0] - Vertexmat1[0][0]) * (Vertexmat2[1][0] - Vertexmat1[1][0]) -
+		(Vertexmat2[0][0] - Vertexmat1[0][0]) * (Inputmat[1][0] - Vertexmat1[1][0])) },
 		{ 1 } };
 
 	float CrossResult2[4][1]{
 		{ 0 },
 		{ 0 },
-		{ round((Vertexmat2[0][0] - Inputmat[0][0])*(Vertexmat2[1][0] - Vertexmat3[1][0]) -
-		(Vertexmat2[0][0] - Vertexmat3[0][0])*(Vertexmat2[1][0] - Inputmat[1][0])) },
+		{ round((Inputmat[0][0] - Vertexmat2[0][0]) * (Vertexmat3[1][0] - Vertexmat2[1][0]) -
+		(Vertexmat3[0][0] - Vertexmat2[0][0]) * (Inputmat[1][0] - Vertexmat2[1][0])) },
 		{ 1 } };
 
 	float CrossResult3[4][1]{
 		{ 0 },
 		{ 0 },
-		{ round((Vertexmat3[0][0] - Inputmat[0][0])*(Vertexmat3[1][0] - Vertexmat1[1][0]) -
-		(Vertexmat3[0][0] - Vertexmat1[0][0])*(Vertexmat3[1][0] - Inputmat[1][0])) },
+		{ round((Inputmat[0][0] - Vertexmat3[0][0]) * (Vertexmat1[1][0] - Vertexmat3[1][0]) -
+		(Vertexmat1[0][0] - Vertexmat3[0][0]) * (Inputmat[1][0] - Vertexmat3[1][0])) },
 		{ 1 } };
 
 	//วาด็
@@ -1522,12 +1543,13 @@ bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexma
 	result2 = Normal(CrossResult2);
 	result3 = Normal(CrossResult3);
 
-
-	if (result1[2][0] >= 0 && result2[2][0] >= 0 && result3[2][0] >= 0)
+	//if (result1[2][0] >= 0 && result2[2][0] >= 0 && result3[2][0] >= 0)
+	if (CrossResult1[2][0] >= 0 && CrossResult2[2][0] >= 0 && CrossResult3[2][0] >= 0)
 	{
 		ischeck = TRUE;
 	}
-	else if (result1[2][0] <= 0 && result2[2][0] <= 0 && result3[2][0] <= 0)
+	//else if (result1[2][0] <= 0 && result2[2][0] <= 0 && result3[2][0] <= 0)
+	else if (CrossResult1[2][0] <= 0 && CrossResult2[2][0] <= 0 && CrossResult3[2][0] <= 0)
 	{
 		ischeck = TRUE;
 	}

@@ -14,7 +14,8 @@ struct Cube
 	float Cube_Center[4][1]; //도형의 원점(월드좌표)
 	float Cube_Vertex[8][4]; // 정점의 배열
 	float Cube_ViewVertex[8][4]; // 뷰좌표에서의 정점의 배열
-	bool isClicked=FALSE;
+	//bool isClicked=FALSE;
+	bool isClicked;
 	float Cube_Size;	// 크기
 	float Cube_xRotate;	// 회전
 	float Cube_yRotate;	// 회전
@@ -28,7 +29,8 @@ struct Sphere
 	float Sphere_Center[4][1]; //도형의 원점(월드좌표)
 	float Sphere_Vertex[83][4]; // 정점의 배열
 	float Sphere_ViewVertex[8][4]; // 뷰좌표에서의 정점의 배열
-	bool isClicked = FALSE;
+	//bool isClicked = FALSE;
+	bool isClicked;
 	float Sphere_Size;	// 크기
 	float Sphere_xRotate;	// 회전
 	float Sphere_yRotate;	// 회전
@@ -41,7 +43,8 @@ struct Torus
 {
 	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
-	bool isClicked = FALSE;
+	//bool isClicked = FALSE;
+	bool isClicked;
 	float Torus_Radius;	// 크기
 	float Torus_nCirclSize;	// 크기
 	float Torus_xRotate;	// 회전
@@ -126,7 +129,7 @@ public:
 	float m_viewAngle = 90; //시야각
 	//float m_viewAngle = 5; //시야각
 
-	int m_shape = 2; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	int m_shape = 1; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	bool m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
