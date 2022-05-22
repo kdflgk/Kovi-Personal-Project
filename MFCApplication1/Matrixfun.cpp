@@ -1523,7 +1523,7 @@ bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexma
 	result3 = Normal(CrossResult3);
 
 
-	if (result1[2][0] > 0 && result2[2][0] > 0 && result3[2][0] > 0)
+	if (result1[2][0] >= 0 && result2[2][0] >= 0 && result3[2][0] >= 0)
 	{
 		ischeck = TRUE;
 	}

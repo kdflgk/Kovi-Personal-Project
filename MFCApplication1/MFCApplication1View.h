@@ -92,7 +92,7 @@ public:
 	float intputmat[4][1] = { 0 };
 	float intputmatc[8][4] = { 0 };
 	float campos[4][1];
-	float lightpos[4][1] = { { 0 },{ 1 },{ 1 },{ 1 } };
+	float lightpos[4][1] = { { 1 },{ 1 },{ -1 },{ 1 } };
 	int OriginPoint[4][1] = { 0 };
 	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
 	float clickedPoint[4][1];
@@ -126,7 +126,7 @@ public:
 	float m_viewAngle = 90; //시야각
 	//float m_viewAngle = 5; //시야각
 
-	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	int m_shape = 2; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	bool m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
