@@ -10,11 +10,12 @@
 using namespace std;
 struct Cube
 {
-	int VertexIndex[12][3];
+	//int VertexIndex[12][3];
 	float Cube_Center[4][1]; //도형의 원점(월드좌표)
-	float Cube_Vertex[8][4]; // 정점의 배열
+	float Cube_Vertex[8][4]; // 스크린좌표에서의 정점의 배열
+	float Cube_WorldVertex[8][4]; // 월드좌표에서의 정점의 배열
 	float Cube_ViewVertex[8][4]; // 뷰좌표에서의 정점의 배열
-	//bool isClicked=FALSE;
+								 //bool isClicked=FALSE;
 	bool isClicked;
 	float Cube_Size;	// 크기
 	float Cube_xRotate;	// 회전
@@ -28,8 +29,9 @@ struct Sphere
 {
 	float Sphere_Center[4][1]; //도형의 원점(월드좌표)
 	float Sphere_Vertex[83][4]; // 정점의 배열
-	float Sphere_ViewVertex[8][4]; // 뷰좌표에서의 정점의 배열
-	//bool isClicked = FALSE;
+	float Sphere_WroldVertex[83][4]; // 월드좌표에서의 정점의 배열
+	float Sphere_ViewVertex[83][4]; // 뷰좌표에서의 정점의 배열
+									//bool isClicked = FALSE;
 	bool isClicked;
 	float Sphere_Size;	// 크기
 	float Sphere_xRotate;	// 회전
@@ -43,7 +45,7 @@ struct Torus
 {
 	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
-	//bool isClicked = FALSE;
+							   //bool isClicked = FALSE;
 	bool isClicked;
 	float Torus_Radius;	// 크기
 	float Torus_nCirclSize;	// 크기
@@ -67,7 +69,7 @@ public:
 
 	// 작업입니다.
 public:
-	BOOL m_bDrag=FALSE;
+	BOOL m_bDrag = FALSE;
 	BOOL m_IsClicked;
 	CPoint m_DrawPoint;
 	CPoint start;
@@ -82,7 +84,7 @@ public:
 	CRect winrect;
 	CPoint prevpoint = (0, 0); //Move에서 사용
 
-	//여러개의 도형을 찍기위해
+							   //여러개의 도형을 찍기위해
 	Cube MyCube;
 	vector<Cube> m_vCube;
 	Sphere MySphere;
@@ -95,6 +97,7 @@ public:
 	float intputmat[4][1] = { 0 };
 	float intputmatc[8][4] = { 0 };
 	float campos[4][1];
+	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
 	float lightpos[4][1] = { { 1 },{ 1 },{ -1 },{ 1 } };
 	int OriginPoint[4][1] = { 0 };
 	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
@@ -124,12 +127,12 @@ public:
 	//카메라 이동
 	float xMove = 0;
 	float yMove = 0;
-	
+
 	float inputratio; //종횡비
 	float m_viewAngle = 90; //시야각
-	//float m_viewAngle = 5; //시야각
+							//float m_viewAngle = 5; //시야각
 
-	int m_shape = 1; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	bool m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
@@ -138,7 +141,7 @@ public:
 	int cubecount = 0;
 	int spherecount = 0;
 	int toruscount = 0;
-	
+
 	// 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -171,7 +174,7 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void Mydraw(CDC* pDC);
-	
+
 	afx_msg void OnPerspective();
 	afx_msg void OnOrthographic();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

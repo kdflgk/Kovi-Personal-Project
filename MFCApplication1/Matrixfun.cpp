@@ -1486,28 +1486,6 @@ float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, f
 bool Matrixfun::Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
 {
 	bool ischeck;
-
-	//float CrossResult1[4][1] = {
-	//	{ 0 },
-	//	{ 0 },
-	//	{ round((Vertexmat1[0][0] - Inputmat[0][0])*(Vertexmat1[1][0] - Vertexmat2[1][0]) -
-	//	(Vertexmat1[0][0] - Vertexmat2[0][0])*(Vertexmat1[1][0] - Inputmat[1][0])) },
-	//	{ 1 } };
-
-	//float CrossResult2[4][1]{
-	//	{ 0 },
-	//	{ 0 },
-	//	{ round((Vertexmat2[0][0] - Inputmat[0][0])*(Vertexmat2[1][0] - Vertexmat3[1][0]) -
-	//	(Vertexmat2[0][0] - Vertexmat3[0][0])*(Vertexmat2[1][0] - Inputmat[1][0])) },
-	//	{ 1 } };
-
-	//float CrossResult3[4][1]{
-	//	{ 0 },
-	//	{ 0 },
-	//	{ round((Vertexmat3[0][0] - Inputmat[0][0])*(Vertexmat3[1][0] - Vertexmat1[1][0]) -
-	//	(Vertexmat3[0][0] - Vertexmat1[0][0])*(Vertexmat3[1][0] - Inputmat[1][0])) },
-	//	{ 1 } };
-
 	float CrossResult1[4][1] = {
 		{ 0 },
 		{ 0 },
@@ -1637,81 +1615,112 @@ float Matrixfun::Dot(float Inputmat[][1], float light[][1])
 
 	float dot = Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0];
 
-	float cosresult = dot / (Inputsqrt * lightsqrt);
+	float cosresult = -dot / (Inputsqrt * lightsqrt);
 	float RGBMul = 255;
 	float RGB = cosresult * RGBMul;
 
 	float result = round(RGB);
 
-	if (result < 0)
+	if (result <= 0)
 		result = 0;
 
-
+	//return cosresult;
 	return result;
 }
 
-bool Matrixfun::BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
+int Matrixfun::Dotint(float Inputmat[][1], float light[][1])
+{
+	float Inputx = pow(Inputmat[0][0], 2), Inputy = pow(Inputmat[1][0], 2), Inputz = pow(Inputmat[2][0], 2);
+	float Inputsum = Inputx + Inputy + Inputz;
+	float Inputsqrt = sqrtf(Inputsum);
+
+	float lightx = pow(light[0][0], 2), lighty = pow(light[1][0], 2), lightz = pow(light[2][0], 2);
+	float lightsum = lightx + lighty + lightz;
+	float lightsqrt = sqrtf(lightsum);
+
+	float dot = Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0];
+
+	float cosresult = -dot / (Inputsqrt * lightsqrt);
+	float RGBMul = 255;
+	float RGB = cosresult * RGBMul;
+
+	int result = round(RGB);
+
+	if (result <= 0)
+		result = 0;
+
+	//return cosresult;
+	return result;
+}
+
+float Matrixfun::BackDot(float Inputmat[][1], float light[][1])
+{
+	float Inputx = pow(Inputmat[0][0], 2), Inputy = pow(Inputmat[1][0], 2), Inputz = pow(Inputmat[2][0], 2);
+	float Inputsum = Inputx + Inputy + Inputz;
+	float Inputsqrt = sqrtf(Inputsum);
+
+	float lightx = pow(light[0][0], 2), lighty = pow(light[1][0], 2), lightz = pow(light[2][0], 2);
+	float lightsum = lightx + lighty + lightz;
+	float lightsqrt = sqrtf(lightsum);
+
+	float dot = Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0];
+
+	float cosresult = round(dot / (Inputsqrt * lightsqrt));
+
+	return cosresult;
+}
+
+int Matrixfun::BackDotint(float Inputmat[][1], float light[][1])
+{
+	float Inputx = pow(Inputmat[0][0], 2), Inputy = pow(Inputmat[1][0], 2), Inputz = pow(Inputmat[2][0], 2);
+	float Inputsum = Inputx + Inputy + Inputz;
+	float Inputsqrt = sqrtf(Inputsum);
+
+	float lightx = pow(light[0][0], 2), lighty = pow(light[1][0], 2), lightz = pow(light[2][0], 2);
+	float lightsum = lightx + lighty + lightz;
+	float lightsqrt = sqrtf(lightsum);
+
+	int dot = -(Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0]);
+
+	//int cosresult = (dot / (Inputsqrt * lightsqrt));
+
+	//return cosresult;
+	return dot;
+}
+
+//bool Matrixfun::BackCross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
+bool Matrixfun::BackCross(float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1])
 {
 	bool ischeck;
+	float Inputmat[4][1] = { {0},{0},{-1},{1} };
 
 	float CrossResult1[4][1] = {
 		{ 0 },
 		{ 0 },
-		{ round((Vertexmat1[0][0] - Inputmat[0][0])*(Vertexmat1[1][0] - Vertexmat2[1][0]) -
-		(Vertexmat1[0][0] - Vertexmat2[0][0])*(Vertexmat1[1][0] - Inputmat[1][0])) },
+		{ round((Vertexmat3[0][0] - Vertexmat2[0][0]) * (Vertexmat1[1][0] - Vertexmat2[1][0]) -
+		(Vertexmat1[0][0] - Vertexmat2[0][0]) * (Vertexmat3[1][0] - Vertexmat2[1][0])) },
 		{ 1 } };
 
-	float CrossResult2[4][1]{
-		{ 0 },
-		{ 0 },
-		{ round((Vertexmat2[0][0] - Inputmat[0][0])*(Vertexmat2[1][0] - Vertexmat3[1][0]) -
-		(Vertexmat2[0][0] - Vertexmat3[0][0])*(Vertexmat2[1][0] - Inputmat[1][0])) },
-		{ 1 } };
 
-	float CrossResult3[4][1]{
-		{ 0 },
-		{ 0 },
-		{ round((Vertexmat3[0][0] - Inputmat[0][0])*(Vertexmat3[1][0] - Vertexmat1[1][0]) -
-		(Vertexmat3[0][0] - Vertexmat1[0][0])*(Vertexmat3[1][0] - Inputmat[1][0])) },
-		{ 1 } };
+	////할당
+	//float** result1 = new float*[COL];
+	//for (int i = 0; i < 1; i++) {
+	//	result1[i] = new float[1];
+	//}
+	//result1 = Normal(CrossResult1);
+	//float DotResult = BackDot(Inputmat, CrossResult1);
+	////해제
+	//for (int i = 0; i < COL; i++) {
+	//	delete[] result1[i];
+	//}
+	//delete[] result1;
 
-	//할당
-	float** result1 = new float*[COL];
-	float** result2 = new float*[COL];
-	float** result3 = new float*[COL];
-	for (int i = 0; i < 1; i++) {
-		result1[i] = new float[1];
-		result2[i] = new float[1];
-		result3[i] = new float[1];
-	}
+	int DotResult = BackDotint(Inputmat, CrossResult1);
 
-	result1 = Normal(CrossResult1);
-	result2 = Normal(CrossResult2);
-	result3 = Normal(CrossResult3);
-
-
-	if (result1[2][0] > 0 && result2[2][0] > 0 && result3[2][0] > 0)
-	{
-		ischeck = TRUE;
-	}
-	else if (result1[2][0] <= 0 && result2[2][0] <= 0 && result3[2][0] <= 0)
-	{
-		ischeck = TRUE;
-	}
+	if (DotResult > 0)
+		ischeck = false;
 	else
-	{
-		ischeck = FALSE;
-	}
-
-	//해제
-	for (int i = 0; i < COL; i++) {
-		delete[] result1[i];
-		delete[] result2[i];
-		delete[] result3[i];
-	}
-	delete[] result1;
-	delete[] result2;
-	delete[] result3;
+		ischeck = true;
 
 	return ischeck;
 }
