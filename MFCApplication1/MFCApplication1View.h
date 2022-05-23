@@ -29,9 +29,8 @@ struct Sphere
 {
 	float Sphere_Center[4][1]; //도형의 원점(월드좌표)
 	float Sphere_Vertex[83][4]; // 정점의 배열
-	float Sphere_WroldVertex[83][4]; // 월드좌표에서의 정점의 배열
+	float Sphere_WorldVertex[83][4]; // 월드좌표에서의 정점의 배열
 	float Sphere_ViewVertex[83][4]; // 뷰좌표에서의 정점의 배열
-									//bool isClicked = FALSE;
 	bool isClicked;
 	float Sphere_Size;	// 크기
 	float Sphere_xRotate;	// 회전
@@ -45,7 +44,7 @@ struct Torus
 {
 	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
-							   //bool isClicked = FALSE;
+	float Torus_WorldVertex[64][4]; // 월드좌표에서의 정점의 배열
 	bool isClicked;
 	float Torus_Radius;	// 크기
 	float Torus_nCirclSize;	// 크기
@@ -84,7 +83,7 @@ public:
 	CRect winrect;
 	CPoint prevpoint = (0, 0); //Move에서 사용
 
-							   //여러개의 도형을 찍기위해
+	//여러개의 도형을 찍기위해
 	Cube MyCube;
 	vector<Cube> m_vCube;
 	Sphere MySphere;
@@ -92,15 +91,13 @@ public:
 	Torus MyTorus;
 	vector<Torus> m_vTorus;
 
-	float **Matrix; //2차원 배열
-	float **resultmat1; //테스트용
+	//float **Matrix; //2차원 배열
+	//float **resultmat1; //테스트용
 	float intputmat[4][1] = { 0 };
-	float intputmatc[8][4] = { 0 };
+	//float intputmatc[8][4] = { 0 };
 	float campos[4][1];
-	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
-	float lightpos[4][1] = { { 1 },{ 1 },{ -1 },{ 1 } };
+	float lightpos[4][1] = { { 1 },{ 1 },{ 1 },{ 1 } };
 	int OriginPoint[4][1] = { 0 };
-	//float lightpos[4][1] = { { 0 },{ 0 },{ -1 },{ 1 } };
 	float clickedPoint[4][1];
 	float centerpoint[4][1];
 
@@ -130,14 +127,13 @@ public:
 
 	float inputratio; //종횡비
 	float m_viewAngle = 90; //시야각
-							//float m_viewAngle = 5; //시야각
 
-	int m_shape = 0; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	int m_shape = 1; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	bool m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
 	bool isback = FALSE;
-	int count = 0;
+	//int count = 0;
 	int cubecount = 0;
 	int spherecount = 0;
 	int toruscount = 0;

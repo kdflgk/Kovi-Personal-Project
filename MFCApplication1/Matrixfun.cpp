@@ -1717,7 +1717,7 @@ bool Matrixfun::BackCross(float Vertexmat1[][1], float Vertexmat2[][1], float Ve
 
 	int DotResult = BackDotint(Inputmat, CrossResult1);
 
-	if (DotResult > 0)
+	if (DotResult >= 0)
 		ischeck = false;
 	else
 		ischeck = true;
