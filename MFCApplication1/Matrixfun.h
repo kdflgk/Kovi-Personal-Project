@@ -21,7 +21,6 @@ public:
 	float n = 10;
 	float f = 318;
 	//float f = 1000;
-	//const double PI = 3.141592;
 
 	float **MatrixAdd(float** mat1, float** mat2);
 	float **MatrixSub(float** mat1, float** mat2);
@@ -75,7 +74,6 @@ public:
 	bool Cross(float Inputmat[][1], float Vertexmat1[][1], float Vertexmat2[][1], float Vertexmat3[][1]);
 	float **NormalVector(float Inputmat1[][1], float Inputmat2[][1], float Inputmat3[][1]);
 	float **Normal(float Inputmat[][1]);
-	//float **Dot(float Inputmat1[][1], float light[][1]);
 	float Dot(float Inputmat[][1], float light[][1]);
 	int Dotint(float Inputmat[][1], float light[][1]);
 	float BackDot(float Inputmat[][1], float light[][1]);

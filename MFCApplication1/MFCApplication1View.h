@@ -15,8 +15,7 @@ struct Cube
 	float Cube_Vertex[8][4]; // 스크린좌표에서의 정점의 배열
 	float Cube_WorldVertex[8][4]; // 월드좌표에서의 정점의 배열
 	float Cube_ViewVertex[8][4]; // 뷰좌표에서의 정점의 배열
-								 //bool isClicked=FALSE;
-	bool isClicked;
+	bool  isClicked;
 	float Cube_Size;	// 크기
 	float Cube_xRotate;	// 회전
 	float Cube_yRotate;	// 회전
@@ -31,7 +30,7 @@ struct Sphere
 	float Sphere_Vertex[83][4]; // 정점의 배열
 	float Sphere_WorldVertex[83][4]; // 월드좌표에서의 정점의 배열
 	float Sphere_ViewVertex[83][4]; // 뷰좌표에서의 정점의 배열
-	bool isClicked;
+	bool  isClicked;
 	float Sphere_Size;	// 크기
 	float Sphere_xRotate;	// 회전
 	float Sphere_yRotate;	// 회전
@@ -45,7 +44,7 @@ struct Torus
 	float Torus_Center[4][1];
 	float Torus_Vertex[64][4]; // 정점의 배열
 	float Torus_WorldVertex[64][4]; // 월드좌표에서의 정점의 배열
-	bool isClicked;
+	bool  isClicked;
 	float Torus_Radius;	// 크기
 	float Torus_nCirclSize;	// 크기
 	float Torus_xRotate;	// 회전
@@ -74,11 +73,11 @@ public:
 	CPoint start;
 
 	CString str;
-	CString str123;
-	CString str1234;
-	CString str12345;
-	CString str123456;
-	CString str1234567;
+	//CString str123;
+	//CString str1234;
+	//CString str12345;
+	//CString str123456;
+	//CString str1234567;
 
 	CRect winrect;
 	CPoint prevpoint = (0, 0); //Move에서 사용
@@ -93,8 +92,8 @@ public:
 
 	//float **Matrix; //2차원 배열
 	//float **resultmat1; //테스트용
-	float intputmat[4][1] = { 0 };
 	//float intputmatc[8][4] = { 0 };
+	float intputmat[4][1] = { 0 };
 	float campos[4][1];
 	float lightpos[4][1] = { { 1 },{ 1 },{ 1 },{ 1 } };
 	int OriginPoint[4][1] = { 0 };
@@ -105,7 +104,7 @@ public:
 	float m_CubeSize = 50;
 	float m_SphereRadius = 50;
 	float m_TorusRadius = 50;
-	float m_nCircleRadius = 25;
+	//float m_nCircleRadius = 25;
 
 	//도형 회전
 	float rxvalue = 0;
@@ -128,7 +127,7 @@ public:
 	float inputratio; //종횡비
 	float m_viewAngle = 90; //시야각
 
-	int m_shape = 1; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
+	int m_shape = 2; // 0,1,2 값에따라 그려질 도형선택(툴바선택할때마다 값 변경)
 	bool m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
@@ -183,6 +182,7 @@ public:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	void GetpointDrawFigure(CDC* pDC, float Inputmat[][1]);
 	//void GetpointDrawCube(float Inputmat[][1]);
+	int GetRGBvalue(float Inputmat1[][1], float Inputmat2[][1], float Inputmat3[][1]);
 };
 
 #ifndef _DEBUG  // MFCApplication1View.cpp의 디버그 버전
