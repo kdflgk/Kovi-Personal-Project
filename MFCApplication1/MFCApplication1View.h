@@ -115,6 +115,7 @@ public:
 	//카메라 이동
 	float xMove = 0;
 	float yMove = 0;
+	float zMove = 0;
 
 	float inputratio; //종횡비
 	float m_viewAngle = 90; //시야각

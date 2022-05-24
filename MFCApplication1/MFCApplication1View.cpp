@@ -209,7 +209,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	pDC->TextOut(winrect.right - 230, 90, str);
 	str.Format(_T("원환면 반지름 : %.1f"), m_TorusRadius);
 	pDC->TextOut(winrect.right - 230, 110, str);
-	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0]);
+	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove);
 	pDC->TextOut(10, 10, str);
 	str.Format(_T("카메라 회전 : %.1f, %.1f, %.1f"), xvalue * 10, yvalue * 10, zvalue * 10);
 	pDC->TextOut(10, 30, str);
@@ -280,7 +280,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 
 	float width = (float)winrect.Width() / 2;
 	float height = (float)winrect.Height() / 2;
-	resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0], inputratio, m_viewAngle, width, height);
+	resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove, inputratio, m_viewAngle, width, height);
 
 	for (int i = 0; i < COL; i++) {
 		intputmat[i][0] = resultmat[i][0];
@@ -386,7 +386,7 @@ void CMFCApplication1View::OnRButtonDown(UINT nFlags, CPoint point)
 	float width = (float)winrect.Width() / 2;
 	float height = (float)winrect.Height() / 2;
 
-	resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0], inputratio, m_viewAngle, width, height); // 가장 마지막으로 한거
+	resultmat = matfun.GetPoint(curPoint, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove, inputratio, m_viewAngle, width, height); // 가장 마지막으로 한거
 
 	for (int i = 0; i < COL; i++) {
 		clickedPoint[i][0] = resultmat[i][0];
@@ -517,6 +517,7 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		yvalue = 0;
 		xMove = 0;
 		yMove = 0;
+		zMove = 0;
 		break;
 
 		//카메라회전
@@ -545,6 +546,12 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	case VK_DOWN:
 		yMove -= 100;
+		break;
+	case VK_HOME:
+		zMove += 100;
+		break;
+	case VK_END:
+		zMove -= 100;
 		break;
 
 		//그리기 타입
@@ -617,7 +624,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		clicked[i][0] = clickedPoint[i][0];
 	}
 
-	ClickViewResult = matfun.ViewMat(clicked, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0]);
+	ClickViewResult = matfun.ViewMat(clicked, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove);
 
 	for (int i = 0; i < COL; i++)
 	{
@@ -768,7 +775,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 
 			//뷰변환
-			cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0]);
+			cubeviewresult = matfun.ViewMat(inputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove);
 
 			for (int i = 0; i < COL; i++)
 			{
@@ -1250,7 +1257,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 
 			//뷰
-			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0]); // 회전
+			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove); // 회전
 
 			for (int i = 0; i < COL; i++)
 			{
@@ -1282,7 +1289,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				Inputmat[i][0] = m_vSphere[spherecount].Sphere_Vertex[count][i];
 			}
 
-			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0]); // 회전
+			sphereviewresult = matfun.ViewMat(Inputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove); // 회전
 
 			for (int i = 0; i < COL; i++)
 			{
@@ -2102,7 +2109,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 
 			//뷰변환
-			torusviewresult = matfun.ViewMat(TrInputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0]);
+			torusviewresult = matfun.ViewMat(TrInputmat, xvalue * 10, yvalue * 10, zvalue * 10, campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] + zMove);
 
 			for (int i = 0; i < COL; i++)
 			{
