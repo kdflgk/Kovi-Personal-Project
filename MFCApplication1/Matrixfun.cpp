@@ -227,16 +227,12 @@ float** Matrixfun::ZRotationreturn(float resultmat1[][1], float zradian)
 		zresult1[i] = new float[1];
 	}
 
-	//float xValue = resultmat1[0][0], yValue = resultmat1[1][0];
-	//resultmat1[0][0] -= xValue, resultmat1[1][0] -= yValue;
 	//Zรเ
 	float rmatz[4][4] = { { (float)cosz, (float)-sinz, 0, 0 },{ (float)sinz, (float)cosz, 0, 0 },{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } }; //Z
 	for (int i = 0; i < COL; i++)
 	{
 		zresult1[i][0] = (rmatz[i][0] * resultmat1[0][0]) + (rmatz[i][1] * resultmat1[1][0]) + (rmatz[i][2] * resultmat1[2][0]) + (rmatz[i][3] * resultmat1[3][0]);
 	}
-
-	//zresult1[0][0] += xValue; zresult1[1][0] += yValue;
 
 	for (int i = 0; i < ROW; i++)
 	{
@@ -503,7 +499,7 @@ float** Matrixfun::PerProjectionMat(float Inputmat[][1], float inputratio, float
 
 	double tanresult = tan(tanradian * PI / 180);
 	//float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, -1, 0 }, {0, 0, 0, 1 } };
-	float Promat[4][4] = { { tanresult / inputratio, 0, 0, 0 },	{0, tanresult, 0, 0},{ 0, 0, l, k},	{0, 0, -1, 0} };
+	float Promat[4][4] = { { (float)tanresult / inputratio, 0, 0, 0 },	{0, (float)tanresult, 0, 0},{ 0, 0, l, k},	{0, 0, -1, 0} };
 
 	for (int i = 0; i < COL; i++)
 	{
@@ -617,7 +613,7 @@ float** Matrixfun::GetPoint(float Inputmat[][1], float xradian, float yradian, f
 
 	double tanresult = tan(tanradian * PI / 180);
 	//float InputPromat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },	{ 0, 0, -1, 0 },{ 0, 0, 0, 1 } };
-	float InputPromat[4][4] = { { tanresult / inputratio, 0, 0, 0 },{ 0, tanresult, 0, 0 },{ 0, 0, l, k },{ 0, 0, -1, 0 } };
+	float InputPromat[4][4] = { { (float)tanresult / inputratio, 0, 0, 0 },{ 0, (float)tanresult, 0, 0 },{ 0, 0, l, k },{ 0, 0, -1, 0 } };
 
 	for (int i = 0; i < COL; i++) {
 		for (int j = 0; j < ROW; j++) {
@@ -854,7 +850,7 @@ int Matrixfun::BackDotint(float Inputmat[][1], float light[][1])
 	float lightsum = lightx + lighty + lightz;
 	float lightsqrt = sqrtf(lightsum);
 
-	int dot = -(Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0]);
+	int dot = (int)(-(Inputmat[0][0] * light[0][0] + Inputmat[1][0] * light[1][0] + Inputmat[2][0] * light[2][0]));
 
 	return dot;
 }
