@@ -209,7 +209,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	pDC->TextOut(winrect.right - 230, 90, str);
 	str.Format(_T("원환면 반지름 : %.1f"), m_TorusRadius);
 	pDC->TextOut(winrect.right - 230, 110, str);
-	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0] + xMove, campos[1][0] + yMove, campos[2][0] - zMove);
+	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0] - xMove, campos[1][0] + yMove, campos[2][0] - zMove);
 	pDC->TextOut(10, 10, str);
 	str.Format(_T("카메라 회전 : %.1f, %.1f, %.1f"), xvalue * 10, yvalue * 10, zvalue * 10);
 	pDC->TextOut(10, 30, str);
