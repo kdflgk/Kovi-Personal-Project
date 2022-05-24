@@ -752,7 +752,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	//CDC* pDC;
 	CBrush whitebrush(RGB(255, 255, 255));
 	CPen checkPen(PS_SOLID, 2, RGB(0, 0, 0));
-	CPen whitePen(PS_SOLID, 2, RGB(255, 255, 255));
+	CPen whitePen(PS_SOLID, 1, RGB(255, 255, 255));
 	pDC->SelectObject(whitePen);
 
 	float width = (float)winrect.Width() / 2;
@@ -798,8 +798,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 	}
 	CString rbuttonpoint;
-	//rbuttonpoint.Format(_T("우클릭좌표%.f, %.f, %.f "), clicked[0][0], clicked[0][1], clicked[0][2]);
-	//pDC->TextOut(100, 600, rbuttonpoint);
 #pragma endregion 우클릭 좌표값 월드->스크린
 
 
@@ -966,16 +964,16 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 		for (int index = 0; index < 12; index++)
 		{
-				for (int i = 0; i < 4; i++)
-				{
-					Crossinput1[i][0] = m_vCube[cubecount].Cube_Vertex[VertexIndex[index][0]][i];
-					Crossinput2[i][0] = m_vCube[cubecount].Cube_Vertex[VertexIndex[index][1]][i];
-					Crossinput3[i][0] = m_vCube[cubecount].Cube_Vertex[VertexIndex[index][2]][i];
-				}
-				m_vCube[cubecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+			for (int i = 0; i < 4; i++)
+			{
+				Crossinput1[i][0] = m_vCube[cubecount].Cube_Vertex[VertexIndex[index][0]][i];
+				Crossinput2[i][0] = m_vCube[cubecount].Cube_Vertex[VertexIndex[index][1]][i];
+				Crossinput3[i][0] = m_vCube[cubecount].Cube_Vertex[VertexIndex[index][2]][i];
+			}
+			m_vCube[cubecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 
-				if (m_vCube[cubecount].isClicked == TRUE)
-					break;
+			if (m_vCube[cubecount].isClicked == TRUE)
+				break;
 		}
 
 		if (m_vCube[cubecount].isClicked)
@@ -1033,11 +1031,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			float Dotinput[4][1];
 			CBrush lightbrush;
 			int RGBresult;
-			//할당
-			float** NormalResultmat = new float*[9];
-			for (int i = 0; i < COL; i++) {
-				NormalResultmat[i] = new float[ROW];
-			}
+			////할당
+			//float** NormalResultmat = new float*[9];
+			//for (int i = 0; i < COL; i++) {
+			//	NormalResultmat[i] = new float[ROW];
+			//}
 
 			for (int index = 0; index < 12; index++)
 			{
@@ -1059,12 +1057,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					Crossinput2[i][0] = m_vCube[cubecount].Cube_WorldVertex[VertexIndex[index][1]][i];
 					Crossinput3[i][0] = m_vCube[cubecount].Cube_WorldVertex[VertexIndex[index][2]][i];
 				}
-				NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-				for (int i = 0; i < 4; i++)
-				{
-					Dotinput[i][0] = NormalResultmat[i][0];
-				}
-				RGBresult = matfun.Dot(Dotinput, lightpos);
+				//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+				//for (int i = 0; i < 4; i++)
+				//{
+				//	Dotinput[i][0] = NormalResultmat[i][0];
+				//}
+				//RGBresult = matfun.Dot(Dotinput, lightpos);
+				RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 
 				lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
@@ -1080,11 +1079,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					pDC->StrokeAndFillPath();
 				}
 			}
-			//해제
-			for (int i = 0; i < COL; i++) {
-				delete[] NormalResultmat[i];
-			}
-			delete[] NormalResultmat;
+			////해제
+			//for (int i = 0; i < COL; i++) {
+			//	delete[] NormalResultmat[i];
+			//}
+			//delete[] NormalResultmat;
 #pragma endregion
 		}
 		else
@@ -1491,7 +1490,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		float Crossinput1[4][1];
 		float Crossinput2[4][1];
 		float Crossinput3[4][1];
-		//m_vSphere[spherecount].isClicked = TRUE;
 
 		for (int vercount = 0; vercount < 83; vercount++)
 		{
@@ -1509,11 +1507,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//str1234567.Format(_T("123 : %d"), vercount);
-						//pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 				}
 				else
 				{
@@ -1525,11 +1519,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//str1234567.Format(_T("123 : %d"), vercount);
-						//pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 				}
 			}
 			//
@@ -1546,11 +1536,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//str1234567.Format(_T("123 : %d"), vercount);
-						//pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 				}
 				else if (vercount == 80)
 				{
@@ -1563,11 +1549,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//	str1234567.Format(_T("123 : %d"), vercount);
-						//	pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 				}
 				else if (vercount == 81)
 				{
@@ -1580,11 +1562,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//	str1234567.Format(_T("123 : %d"), vercount);
-						//	pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 				}
 				else
 				{
@@ -1597,11 +1575,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//	str1234567.Format(_T("123 : %d"), vercount);
-						//	pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 
 					//반시계
 					for (int j = 0; j < 4; j++)
@@ -1612,11 +1586,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//	str1234567.Format(_T("123 : %d"), vercount);
-						//	pDC->TextOut(1000, 30, str1234567);
 						break;
-					}
 
 					//반시계
 					for (int j = 0; j < 4; j++)
@@ -1627,11 +1597,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 					m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vSphere[spherecount].isClicked == TRUE)
-					{
-						//	str1234567.Format(_T("123 : %d"), vercount);
-						//	pDC->TextOut(1000, 30, str1234567);
-						break;
-					}
+						break;					
 				}
 			}
 			//
@@ -1645,11 +1611,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 				if (m_vSphere[spherecount].isClicked == TRUE)
-				{
-					//	str1234567.Format(_T("123 : %d"), vercount);
-					//	pDC->TextOut(1000, 30, str1234567);
 					break;
-				}
 				//반시계
 				for (int j = 0; j < 4; j++)
 				{
@@ -1659,18 +1621,9 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 				if (m_vSphere[spherecount].isClicked == TRUE)
-				{
-					//	str1234567.Format(_T("123 : %d"), vercount);
-					//	pDC->TextOut(1000, 30, str1234567);
 					break;
-				}
 			}
 		}
-
-
-
-		//str1234567.Format(_T("%d"), num);
-		//pDC->TextOut(1000, 30, str1234567);
 
 		if (m_vSphere[spherecount].isClicked)
 		{
@@ -1685,24 +1638,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 #pragma endregion
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//str1234567.Format(_T("%.f,%.f,%.5f"), m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1], m_vSphere[spherecount].Sphere_Vertex[0][2]);
-		//pDC->TextOut(500, 30, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.5f"), m_vSphere[spherecount].Sphere_Vertex[1][0], m_vSphere[spherecount].Sphere_Vertex[1][1], m_vSphere[spherecount].Sphere_Vertex[1][2]);
-		//pDC->TextOut(500, 50, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.5f"), m_vSphere[spherecount].Sphere_Vertex[2][0], m_vSphere[spherecount].Sphere_Vertex[2][1], m_vSphere[spherecount].Sphere_Vertex[2][2]);
-		//pDC->TextOut(500, 70, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.5f"), m_vSphere[spherecount].Sphere_Vertex[3][0], m_vSphere[spherecount].Sphere_Vertex[3][1], m_vSphere[spherecount].Sphere_Vertex[3][2]);
-		//pDC->TextOut(500, 90, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), m_vSphere[spherecount].Sphere_Vertex[4][0], m_vSphere[spherecount].Sphere_Vertex[4][1], m_vSphere[spherecount].Sphere_Vertex[4][2]);
-		//pDC->TextOut(500, 110, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), m_vSphere[spherecount].Sphere_Vertex[5][0], m_vSphere[spherecount].Sphere_Vertex[5][1], m_vSphere[spherecount].Sphere_Vertex[5][2]);
-		//pDC->TextOut(500, 130, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), m_vSphere[spherecount].Sphere_Vertex[6][0], m_vSphere[spherecount].Sphere_Vertex[6][1], m_vSphere[spherecount].Sphere_Vertex[6][2]);
-		//pDC->TextOut(500, 150, str1234567);
-		//str1234567.Format(_T("%.f,%.f,%.f"), m_vSphere[spherecount].Sphere_Vertex[7][0], m_vSphere[spherecount].Sphere_Vertex[7][1], m_vSphere[spherecount].Sphere_Vertex[7][2]);
-		//pDC->TextOut(500, 170, str1234567);
-
-		////////if (m_vSphere[spherecount].Sphere_Vertex[0][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][0] > width * 2)
 		if (m_projection == 0)
 		{
 			if (m_vSphere[spherecount].Sphere_Vertex[0][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][0] > width * 2 || m_vSphere[spherecount].Sphere_Vertex[0][1] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][1] > height * 2 || m_vSphere[spherecount].Sphere_Vertex[0][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2] > 10 ||
@@ -1746,11 +1681,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			float Dotinput[4][1];
 			CBrush lightbrush;
 			float RGBresult;
-			//할당
-			float** NormalResultmat = new float*[9];
-			for (int i = 0; i < COL; i++) {
-				NormalResultmat[i] = new float[ROW];
-			}
+			////할당
+			//float** NormalResultmat = new float*[9];
+			//for (int i = 0; i < COL; i++) {
+			//	NormalResultmat[i] = new float[ROW];
+			//}
 
 			int num = 10;
 			for (int i = num - 9; i < num; i++)
@@ -1775,12 +1710,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 8][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -1795,8 +1731,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->EndPath();
 						pDC->StrokeAndFillPath();
 
-						CString str = _T("A");
-						pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1], str);
+						//CString str = _T("A");
+						//pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[0][0], m_vSphere[spherecount].Sphere_Vertex[0][1], str);
 					}
 				}
 				else
@@ -1819,12 +1755,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i + 1][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -1839,8 +1776,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->EndPath();
 						pDC->StrokeAndFillPath();
 
-						CString str = _T("B");
-						pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("B");
+						//pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 				}
 
@@ -1868,12 +1805,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 8][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 9][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -1888,8 +1826,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->EndPath();
 						pDC->StrokeAndFillPath();
 
-						CString str = _T("C");
-						pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("C");
+						//pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 					//////////////////////////////////////////////////////////////////////////////////////////////////////
 					//백스페이스컬링
@@ -1909,12 +1847,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 9][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 1][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -1929,8 +1868,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->EndPath();
 						pDC->StrokeAndFillPath();
 
-						CString str = _T("D");
-						pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("D");
+						//pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 				}
 			}
@@ -1958,12 +1897,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 9][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 1][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -1977,8 +1917,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
 						pDC->EndPath();
 						pDC->StrokeAndFillPath();
-						CString str = _T("E");
-						pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1], str);
+						//CString str = _T("E");
+						//pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1], str);
 					}
 				}
 				else
@@ -2001,12 +1941,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i + 1][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -2020,8 +1961,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo(m_vSphere[spherecount].Sphere_Vertex[82][0], m_vSphere[spherecount].Sphere_Vertex[82][1]);
 						pDC->EndPath();
 						pDC->StrokeAndFillPath();
-						CString str = _T("F");
-						pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("F");
+						//pDC->TextOut(m_vSphere[spherecount].Sphere_Vertex[i][0], m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 
 					//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2042,12 +1983,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 8][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 9][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -2080,12 +2022,13 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						Crossinput2[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 9][idx];
 						Crossinput3[idx][0] = m_vSphere[spherecount].Sphere_WorldVertex[i - 1][idx];
 					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
+					//NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
+					//for (int i = 0; i < 4; i++)
+					//{
+					//	Dotinput[i][0] = NormalResultmat[i][0];
+					//}
+					//RGBresult = matfun.Dot(Dotinput, lightpos);
+					RGBresult = GetRGBvalue(Crossinput1, Crossinput2, Crossinput3);
 
 					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
 					pDC->SelectObject(lightbrush);
@@ -2102,11 +2045,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					}
 				}
 			}
-			//해제
-			for (int i = 0; i < COL; i++) {
-				delete[] NormalResultmat[i];
-			}
-			delete[] NormalResultmat;
+			////해제
+			//for (int i = 0; i < COL; i++) {
+			//	delete[] NormalResultmat[i];
+			//}
+			//delete[] NormalResultmat;
 #pragma endregion 구체그리기(채우기)
 		}
 		else
@@ -2494,74 +2437,15 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 		for (int i = 0; i < 64; i++)
 		{
-			if (i < 8)
+			if (i < 56)
 			{
 				if (i % 8 == 7)
 				{
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
-					}
-					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-					if (m_vTorus[toruscount].isClicked == TRUE)
-						break;
-				}
-				else
-				{
-					for (int j = 0; j < 4; j++)
-					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
-					}
-					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-					if (m_vTorus[toruscount].isClicked == TRUE)
-						break;
-
-					for (int j = 0; j < 4; j++)
-					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 57][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
-					}
-					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-					if (m_vTorus[toruscount].isClicked == TRUE)
-						break;
-				}
-			}
-			else if (i > 55)
-			{
-				if (i % 8 == 7)
-				{
-					for (int j = 0; j < 4; j++)
-					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
-					}
-					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-					if (m_vTorus[toruscount].isClicked == TRUE)
-						break;
-
-					for (int j = 0; j < 4; j++)
-					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 15][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
-					}
-					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
-					if (m_vTorus[toruscount].isClicked == TRUE)
-						break;
-				}
-				else
-				{
-					for (int j = 0; j < 4; j++)
-					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
 					}
 					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vTorus[toruscount].isClicked == TRUE)
@@ -2577,17 +2461,38 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					if (m_vTorus[toruscount].isClicked == TRUE)
 						break;
 				}
-			}
+				else
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 9][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
+					}
+					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+					if (m_vTorus[toruscount].isClicked == TRUE)
+						break;
 
+					for (int j = 0; j < 4; j++)
+					{
+						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 9][j];
+					}
+					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
+					if (m_vTorus[toruscount].isClicked == TRUE)
+						break;
+				}
+			}
 			else
 			{
-				if (i % 8 == 7)
+				if (i == 63)
 				{
 					for (int j = 0; j < 4; j++)
 					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
+						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[63][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[0][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[7][j];
 					}
 					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vTorus[toruscount].isClicked == TRUE)
@@ -2595,9 +2500,9 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 					for (int j = 0; j < 4; j++)
 					{
-						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 15][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
+						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[63][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[56][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[0][j];
 					}
 					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vTorus[toruscount].isClicked == TRUE)
@@ -2608,8 +2513,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 55][j];
 					}
 					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vTorus[toruscount].isClicked == TRUE)
@@ -2618,8 +2523,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
-						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
-						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 55][j];
+						Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][j];
 					}
 					m_vTorus[toruscount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 					if (m_vTorus[toruscount].isClicked == TRUE)
@@ -2627,6 +2532,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 			}
 		}
+
 		if (m_vTorus[toruscount].isClicked)
 		{
 			pDC->SelectObject(checkPen);
@@ -2647,176 +2553,281 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			float Dotinput[4][1];
 			CBrush lightbrush;
 			int RGBresult;
-			float** NormalResultmat = new float*[9];
-			for (int i = 0; i < COL; i++) {
-				NormalResultmat[i] = new float[ROW];
-			}
 
 			for (int i = 0; i < 64; i++)
 			{
-				if (i < 8)
-				{
-					//백스페이스 컬링
-					for (int i = 0; i < 4; i++)
-					{
-						Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[VertexIndex[i][0]][i];
-						Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[VertexIndex[i + 8][1]][i];
-						Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[VertexIndex[i + 1][2]][i];
-					}
-					isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
-
-					//조명
-					lightbrush.DeleteObject();
-					pDC->SelectObject(whitebrush);
-					for (int i = 0; i < 4; i++)
-					{
-						Crossinput1[i][0] = m_vTorus[toruscount].Torus_WorldVertex[VertexIndex[i][0]][i];
-						Crossinput2[i][0] = m_vTorus[toruscount].Torus_WorldVertex[VertexIndex[i + 8][1]][i];
-						Crossinput3[i][0] = m_vTorus[toruscount].Torus_WorldVertex[VertexIndex[i + 1][2]][i];
-					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
-
-					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
-					pDC->SelectObject(lightbrush);
-					if (isback)
-					{
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
-					}
-					//////////////////////////////////////////////////////////////////////////////////////////////////
-					//백스페이스 컬링
-					for (int i = 0; i < 4; i++)
-					{
-						Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[VertexIndex[i][0]][i];
-						Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[VertexIndex[i + 57][1]][i];
-						Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[VertexIndex[i + 1][2]][i];
-					}
-					isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
-
-					//조명
-					lightbrush.DeleteObject();
-					pDC->SelectObject(whitebrush);
-					for (int i = 0; i < 4; i++)
-					{
-						Crossinput1[i][0] = m_vTorus[toruscount].Torus_WorldVertex[VertexIndex[i][0]][i];
-						Crossinput2[i][0] = m_vTorus[toruscount].Torus_WorldVertex[VertexIndex[i + 57][1]][i];
-						Crossinput3[i][0] = m_vTorus[toruscount].Torus_WorldVertex[VertexIndex[i + 1][2]][i];
-					}
-					NormalResultmat = matfun.NormalVector(Crossinput1, Crossinput2, Crossinput3);
-					for (int i = 0; i < 4; i++)
-					{
-						Dotinput[i][0] = NormalResultmat[i][0];
-					}
-					RGBresult = matfun.Dot(Dotinput, lightpos);
-					lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
-					pDC->SelectObject(lightbrush);
-
-					if (isback)
-					{
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 57][0], m_vTorus[toruscount].Torus_Vertex[i + 57][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
-					}
-				}
-				else if (i > 55)
+				if (i < 56)
 				{
 					if (i % 8 == 7)
 					{
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 56][0], m_vTorus[toruscount].Torus_Vertex[i - 56][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 8][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
 
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 15][0], m_vTorus[toruscount].Torus_Vertex[i - 15][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
+						////////////////////////////////////////////////////////////////////////////////////////////////
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i - 7][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 1][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
+
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
 					}
 					else
 					{
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 56][0], m_vTorus[toruscount].Torus_Vertex[i - 56][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 9][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 9][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 8][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
 
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 9][0], m_vTorus[toruscount].Torus_Vertex[i + 9][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
+						////////////////////////////////////////////////////////////////////////////////////////////////
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 9][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 9][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
+
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 9][0], m_vTorus[toruscount].Torus_Vertex[i + 9][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
 					}
 				}
-
 				else
 				{
-					if (i % 8 == 7)
+					if (i == 63)
 					{
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[63][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[0][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[7][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[63][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[0][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[7][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
 
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 15][0], m_vTorus[toruscount].Torus_Vertex[i - 15][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[0][0], m_vTorus[toruscount].Torus_Vertex[0][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[7][0], m_vTorus[toruscount].Torus_Vertex[7][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
+						////////////////////////////////////////////////////////////////////////////////////////////////
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[63][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[56][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[0][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[63][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[56][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[0][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
+
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[56][0], m_vTorus[toruscount].Torus_Vertex[56][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[0][0], m_vTorus[toruscount].Torus_Vertex[0][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
 					}
 					else
 					{
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 55][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i - 55][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
 
-						pDC->BeginPath();
-						pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-						pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						pDC->EndPath();
-						pDC->StrokeAndFillPath();
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 55][0], m_vTorus[toruscount].Torus_Vertex[i - 55][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
+						////////////////////////////////////////////////////////////////////////////////////////////////
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 55][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						//조명
+						lightbrush.DeleteObject();
+						pDC->SelectObject(whitebrush);
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i - 55][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_WorldVertex[i - 56][j];
+						}
+						RGBresult = GetRGBvalue(Crossinput3, Crossinput2, Crossinput1);
+
+						lightbrush.CreateSolidBrush(RGB(RGBresult, 0, 0));
+						pDC->SelectObject(lightbrush);
+						if (isback)
+						{
+							pDC->BeginPath();
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 55][0], m_vTorus[toruscount].Torus_Vertex[i - 55][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 56][0], m_vTorus[toruscount].Torus_Vertex[i - 56][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->EndPath();
+							pDC->StrokeAndFillPath();
+						}
 					}
 				}
 			}
 
-			for (int i = 0; i < COL; i++) {
-				delete[] NormalResultmat[i];
-			}
-			delete[] NormalResultmat;
 #pragma endregion
 		}
 		else
@@ -2824,210 +2835,146 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 #pragma region 원환면그리기
 			for (int i = 0; i < 64; i++)
 			{
-				if (i < 8)
+				if (i < 56)
 				{
 					if (i % 8 == 7)
 					{
-							//pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							//pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 49][0], m_vTorus[toruscount].Torus_Vertex[i - 49][1]);
-							//pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							//pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-
-							//pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							//pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
-							//pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							//pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-					}
-					else
-					{
 						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
 							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+						}
+						//백스페이스 컬링
+						for (int j = 0; j < 4; j++)
+						{
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+						}
+						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
+						if (isback)
+						{
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
 						}
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
-						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 57][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][1];
-						}
-						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
-						if (isback)
-						{
-							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 57][0], m_vTorus[toruscount].Torus_Vertex[i + 57][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->EndPath();
-							pDC->StrokeAndFillPath();
-						}
-					}
-				}
-				else if (i > 55)
-				{
-					if (i % 8 == 7)
-					{
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
-						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][1];
-						}
-						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
-						if (isback)
-						{
-							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 56][0], m_vTorus[toruscount].Torus_Vertex[i - 56][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						}
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
-						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 15][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][1];
-						}
-						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
-						if (isback)
-						{
-							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 15][0], m_vTorus[toruscount].Torus_Vertex[i - 15][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-						}
-
 					}
 					else
 					{
-						/////////////////////////////////////////////////
 						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 9][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
 							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 56][0], m_vTorus[toruscount].Torus_Vertex[i - 56][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 9][0], m_vTorus[toruscount].Torus_Vertex[i + 9][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
 						}
-						/////////////////////////////////////////////////
 						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 9][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
 							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 9][0], m_vTorus[toruscount].Torus_Vertex[i + 9][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
 						}
 					}
 				}
-
 				else
 				{
-					if (i % 8 == 7)
+					if (i == 63)
 					{
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[63][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[0][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[7][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
-							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[0][0], m_vTorus[toruscount].Torus_Vertex[0][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[7][0], m_vTorus[toruscount].Torus_Vertex[7][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
 						}
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 15][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[63][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[56][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[0][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
-							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 15][0], m_vTorus[toruscount].Torus_Vertex[i - 15][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
+							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[56][0], m_vTorus[toruscount].Torus_Vertex[56][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[0][0], m_vTorus[toruscount].Torus_Vertex[0][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[63][0], m_vTorus[toruscount].Torus_Vertex[63][1]);
 						}
 					}
 					else
 					{
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 8][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 55][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
 							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 8][0], m_vTorus[toruscount].Torus_Vertex[i + 8][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 55][0], m_vTorus[toruscount].Torus_Vertex[i - 55][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
 						}
-						/////////////////////////////////////////////////
-						//백스페이스 컬링
-						for (int i = 0; i < 4; i++)
+						for (int j = 0; j < 4; j++)
 						{
-							Crossinput1[i][0] = m_vTorus[toruscount].Torus_Vertex[i][1];
-							Crossinput2[i][0] = m_vTorus[toruscount].Torus_Vertex[i - 7][1];
-							Crossinput3[i][0] = m_vTorus[toruscount].Torus_Vertex[i + 1][1];
+							Crossinput1[j][0] = m_vTorus[toruscount].Torus_Vertex[i][j];
+							Crossinput2[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 55][j];
+							Crossinput3[j][0] = m_vTorus[toruscount].Torus_Vertex[i - 56][j];
 						}
 						isback = matfun.BackCross(Crossinput1, Crossinput2, Crossinput3);
 						if (isback)
 						{
 							pDC->MoveTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 7][0], m_vTorus[toruscount].Torus_Vertex[i - 7][1]);
-							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i + 1][0], m_vTorus[toruscount].Torus_Vertex[i + 1][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 55][0], m_vTorus[toruscount].Torus_Vertex[i - 55][1]);
+							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i - 56][0], m_vTorus[toruscount].Torus_Vertex[i - 56][1]);
 							pDC->LineTo(m_vTorus[toruscount].Torus_Vertex[i][0], m_vTorus[toruscount].Torus_Vertex[i][1]);
 						}
 					}
 				}
-			}
+			}//for
 
 
 #pragma endregion
 		}
+
 
 	}// for (auto tr : m_vTorus)
 
@@ -3059,7 +3006,10 @@ int CMFCApplication1View::GetRGBvalue(float Inputmat1[][1], float Inputmat2[][1]
 		Dotinput[i][0] = NormalResultmat[i][0];
 	}
 
-	RGBValue = matfun.Dot(Dotinput, lightpos);
+	RGBValue = matfun.Dot(Dotinput, lightpos) + 50;
+
+	if (RGBValue > 255)
+		RGBValue = 255;
 
 	for (int i = 0; i < COL; i++) {
 		delete[] NormalResultmat[i];
