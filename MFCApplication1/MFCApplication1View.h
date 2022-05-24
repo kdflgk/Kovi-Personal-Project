@@ -70,17 +70,12 @@ public:
 	BOOL m_bDrag = FALSE;
 	BOOL m_IsClicked;
 	CPoint m_DrawPoint;
-	CPoint start;
+	//CPoint start;
 
 	CString str;
-	//CString str123;
-	//CString str1234;
-	//CString str12345;
-	//CString str123456;
-	//CString str1234567;
 
 	CRect winrect;
-	CPoint prevpoint = (0, 0); //Move에서 사용
+	//CPoint prevpoint = (0, 0); //Move에서 사용
 
 	//여러개의 도형을 찍기위해
 	Cube MyCube;
@@ -90,9 +85,6 @@ public:
 	Torus MyTorus;
 	vector<Torus> m_vTorus;
 
-	//float **Matrix; //2차원 배열
-	//float **resultmat1; //테스트용
-	//float intputmatc[8][4] = { 0 };
 	float intputmat[4][1] = { 0 };
 	float campos[4][1];
 	float lightpos[4][1] = { { 1 },{ 1 },{ 1 },{ 1 } };
@@ -132,7 +124,6 @@ public:
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
 	bool isback = FALSE;
-	//int count = 0;
 	int cubecount = 0;
 	int spherecount = 0;
 	int toruscount = 0;
@@ -173,10 +164,6 @@ public:
 	afx_msg void OnPerspective();
 	afx_msg void OnOrthographic();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	//void DrawFigure(CDC* pDC);
-	//void DrawCube(CDC* pDC);
-	//void DrawSphere(CDC* pDC);
-	//void DrawTorus(CDC* pDC);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
