@@ -229,6 +229,7 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 		break;
 	}
 	pDC->TextOut(10, 50, str);
+
 	switch (m_drawType)
 	{
 	case TRUE:
@@ -270,7 +271,6 @@ void CMFCApplication1View::OnLButtonDown(UINT nFlags, CPoint point)
 }
 void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 {
-
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	float curPoint[4][1]{ { point.x },{ point.y },{ 1 },{ 1 } };
 
@@ -440,7 +440,6 @@ void CMFCApplication1View::OnOrthographic()
 	Invalidate();
 }
 
-
 //키보드 이벤트
 void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -594,9 +593,7 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 
 void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
-//void CMFCApplication1View::GetpointDrawFigure(float Inputmat[][1])
 {
-	//CDC* pDC;
 	CBrush whitebrush(RGB(255, 255, 255));
 	CPen checkPen(PS_SOLID, 2, RGB(0, 0, 0));
 	CPen whitePen(PS_SOLID, 1, RGB(255, 255, 255));

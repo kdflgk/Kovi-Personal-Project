@@ -26,8 +26,6 @@ public:
 	float **MatrixMul(float** mat1, float** mat2);	
 	float **MatrixInverse(float** mat1);
 
-
-
 	float **ZRotationreturn(float resultmat1[][1], float zradian); //
 
 	float **AffineScalereturn(float resultmat1[][1], float scale);//
@@ -39,7 +37,6 @@ public:
 	float **ViewTranslatereturn(float xtrans, float ytrans, float ztrans);//
 	float **ViewMat(float Inputmat[][1], float xradian, float yradian, float zradian, float xtrans, float ytrans, float ztrans);//
 	
-
 	float **PerProjectionMat(float Inputmat[][1], float inputratio, float ViewAngle, float width, float height);//
 	float **OrthoProjectionMat(float Inputmat[][1], float width, float height);//
 
