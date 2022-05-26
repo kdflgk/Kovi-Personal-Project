@@ -93,9 +93,9 @@ public:
 	float centerpoint[4][1];
 
 	//도형 크기
-	float m_CubeSize = 50;
-	float m_SphereRadius = 50;
-	float m_TorusRadius = 50;
+	float m_CubeSize = 30;
+	float m_SphereRadius = 30;
+	float m_TorusRadius = 30;
 	//float m_nCircleRadius = 25;
 
 	//도형 회전

@@ -295,7 +295,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 			MyCube.Cube_Center[i][0] = intputmat[i][0];
 		}
 		MyCube.isClicked = FALSE;
-		MyCube.Cube_Size = 50;
+		MyCube.Cube_Size = 30;
 		MyCube.Cube_xMove = 0;
 		MyCube.Cube_yMove = 0;
 		MyCube.Cube_xRotate = 0;
@@ -316,7 +316,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 
 		MySphere.isClicked = FALSE;
-		MySphere.Sphere_Size = 50;
+		MySphere.Sphere_Size = 30;
 		MySphere.Sphere_xRotate = 0;
 		MySphere.Sphere_yRotate = 0;
 		MySphere.Sphere_zRotate = 0;
@@ -338,8 +338,8 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 		MyTorus.isClicked = FALSE;
 
-		MyTorus.Torus_Radius = 50;
-		MyTorus.Torus_nCirclSize = 50 / 2;
+		MyTorus.Torus_Radius = 30;
+		MyTorus.Torus_nCirclSize = 30 / 2;
 		MyTorus.Torus_xRotate = 0;
 		MyTorus.Torus_xRotate = 0;
 		MyTorus.Torus_xRotate = 0;
@@ -501,9 +501,9 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 		//도형 초기화
 	case 'O':
-		m_CubeSize = 50;
-		m_SphereRadius = 50;
-		m_TorusRadius = 50;
+		m_CubeSize = 30;
+		m_SphereRadius = 30;
+		m_TorusRadius = 30;
 		rxvalue = 0;
 		ryvalue = 0;
 		rzvalue = 0;
@@ -1820,8 +1820,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 8][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[0][0], (int)m_vSphere[spherecount].Sphere_Vertex[0][1]);
-						CString str = _T("A");
-						pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[0][0], (int)m_vSphere[spherecount].Sphere_Vertex[0][1], str);
+						//CString str = _T("A");
+						//pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[0][0], (int)m_vSphere[spherecount].Sphere_Vertex[0][1], str);
 					}
 				}
 				else
@@ -1840,8 +1840,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i + 1][0], (int)m_vSphere[spherecount].Sphere_Vertex[i + 1][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[0][0], (int)m_vSphere[spherecount].Sphere_Vertex[0][1]);
-						CString str = _T("B");
-						pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("B");
+						//pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 				}
 
@@ -1864,8 +1864,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 8][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 8][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 9][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1]);
-						CString str = _T("C");
-						pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("C");
+						//pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 
 					for (int idx = 0; idx < 4; idx++)
@@ -1881,8 +1881,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 9][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 1][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1]);
-						CString str = _T("D");
-						pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1], str);
+						//CString str = _T("D");
+						//pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1], str);
 					}
 				}
 			}
@@ -1906,8 +1906,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 9][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 9][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i - 1][0], (int)m_vSphere[spherecount].Sphere_Vertex[i - 1][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[82][0], (int)m_vSphere[spherecount].Sphere_Vertex[82][1]);
-						CString str = _T("E");
-						pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[82][0], (int)m_vSphere[spherecount].Sphere_Vertex[82][1], str);
+						//CString str = _T("E");
+						//pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[82][0], (int)m_vSphere[spherecount].Sphere_Vertex[82][1], str);
 					}
 				}
 
@@ -1927,8 +1927,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i + 1][0], (int)m_vSphere[spherecount].Sphere_Vertex[i + 1][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[i][0], (int)m_vSphere[spherecount].Sphere_Vertex[i][1]);
 						pDC->LineTo((int)m_vSphere[spherecount].Sphere_Vertex[82][0], (int)m_vSphere[spherecount].Sphere_Vertex[82][1]);
-						CString str = _T("F");
-						pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[82][0], (int)m_vSphere[spherecount].Sphere_Vertex[82][1], str);
+						//CString str = _T("F");
+						//pDC->TextOut((int)m_vSphere[spherecount].Sphere_Vertex[82][0], (int)m_vSphere[spherecount].Sphere_Vertex[82][1], str);
 					}
 					for (int idx = 0; idx < 4; idx++)
 					{
