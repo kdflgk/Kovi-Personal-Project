@@ -51,9 +51,13 @@ Matrixfun matfun = Matrixfun();
 
 CMFCApplication1View::CMFCApplication1View()
 {
+	//카메라 위치
 	campos[0][0] = 0;
 	campos[1][0] = 0;
 	campos[2][0] = 500;
+
+	////기본도형크기
+	//m_DefaultSize = 40;
 }
 
 CMFCApplication1View::~CMFCApplication1View()
@@ -295,7 +299,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 			MyCube.Cube_Center[i][0] = intputmat[i][0];
 		}
 		MyCube.isClicked = FALSE;
-		MyCube.Cube_Size = 30;
+		MyCube.Cube_Size = m_DefaultSize;
 		MyCube.Cube_xMove = 0;
 		MyCube.Cube_yMove = 0;
 		MyCube.Cube_xRotate = 0;
@@ -316,7 +320,7 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 
 		MySphere.isClicked = FALSE;
-		MySphere.Sphere_Size = 30;
+		MySphere.Sphere_Size = m_DefaultSize;
 		MySphere.Sphere_xRotate = 0;
 		MySphere.Sphere_yRotate = 0;
 		MySphere.Sphere_zRotate = 0;
@@ -338,8 +342,8 @@ void CMFCApplication1View::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 		MyTorus.isClicked = FALSE;
 
-		MyTorus.Torus_Radius = 30;
-		MyTorus.Torus_nCirclSize = 30 / 2;
+		MyTorus.Torus_Radius = m_DefaultSize;
+		MyTorus.Torus_nCirclSize = m_DefaultSize / 2;
 		MyTorus.Torus_xRotate = 0;
 		MyTorus.Torus_xRotate = 0;
 		MyTorus.Torus_xRotate = 0;
@@ -501,9 +505,9 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 		//도형 초기화
 	case 'O':
-		m_CubeSize = 30;
-		m_SphereRadius = 30;
-		m_TorusRadius = 30;
+		m_CubeSize = m_DefaultSize;
+		m_SphereRadius = m_DefaultSize;
+		m_TorusRadius = m_DefaultSize;
 		rxvalue = 0;
 		ryvalue = 0;
 		rzvalue = 0;
@@ -528,10 +532,10 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		yvalue -= 1;
 		break;
 	case VK_NUMPAD8:
-		xvalue += 1;
+		xvalue -= 1;
 		break;
 	case VK_NUMPAD2:
-		xvalue -= 1;
+		xvalue += 1;
 		break;
 
 		//카메라이동
@@ -566,7 +570,7 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	}
 
-				//초기화
+		//초기화
 	case VK_ESCAPE:
 		m_vCube.clear();
 		m_vSphere.clear();
@@ -574,7 +578,6 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	default:
 		break;
 	}
-
 
 	if (rxvalue > 35)	rxvalue = 0;
 	else if (rxvalue < -35)	rxvalue = 0;
@@ -607,7 +610,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	float width = (float)winrect.Width() / 2;
 	float height = (float)winrect.Height() / 2;
 	inputratio = (float)(winrect.right / (float)winrect.bottom);
-
 
 #pragma region 우클릭 좌표값 월드->스크린
 	float clicked[4][1];
@@ -642,6 +644,17 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		else
 			clicked[i][0] = ClickProResult[i][0];
 	}
+
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	if (i == 0)
+	//		clicked[i][0] = clickedPoint[i][0] - Figure_xMove;
+	//	else if (i == 1)
+	//		clicked[i][0] = clickedPoint[i][0] - Figure_yMove;
+	//	else
+	//		clicked[i][0] = clickedPoint[i][0];
+	//}
 
 	//해제
 	for (int i = 0; i < COL; i++) {
@@ -836,28 +849,28 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (m_projection == 0)
 		{
-			if (m_vCube[cubecount].Cube_Vertex[0][0] < 0 || m_vCube[cubecount].Cube_Vertex[0][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[0][1] < 0 || m_vCube[cubecount].Cube_Vertex[0][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[0][2] < -10 || m_vCube[cubecount].Cube_Vertex[0][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[1][0] < 0 || m_vCube[cubecount].Cube_Vertex[1][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[1][1] < 0 || m_vCube[cubecount].Cube_Vertex[1][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[1][2] < -10 || m_vCube[cubecount].Cube_Vertex[1][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[2][0] < 0 || m_vCube[cubecount].Cube_Vertex[2][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[2][1] < 0 || m_vCube[cubecount].Cube_Vertex[2][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[2][2] < -10 || m_vCube[cubecount].Cube_Vertex[2][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[3][0] < 0 || m_vCube[cubecount].Cube_Vertex[3][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[3][1] < 0 || m_vCube[cubecount].Cube_Vertex[3][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[3][2] < -10 || m_vCube[cubecount].Cube_Vertex[3][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[4][0] < 0 || m_vCube[cubecount].Cube_Vertex[4][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[4][1] < 0 || m_vCube[cubecount].Cube_Vertex[4][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[4][2] < -10 || m_vCube[cubecount].Cube_Vertex[4][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[5][0] < 0 || m_vCube[cubecount].Cube_Vertex[5][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[5][1] < 0 || m_vCube[cubecount].Cube_Vertex[5][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[5][2] < -10 || m_vCube[cubecount].Cube_Vertex[5][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[6][0] < 0 || m_vCube[cubecount].Cube_Vertex[6][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[6][1] < 0 || m_vCube[cubecount].Cube_Vertex[6][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[6][2] < -10 || m_vCube[cubecount].Cube_Vertex[6][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[7][0] < 0 || m_vCube[cubecount].Cube_Vertex[7][0] > width * 2 || m_vCube[cubecount].Cube_Vertex[7][1] < 0 || m_vCube[cubecount].Cube_Vertex[7][1] > height * 2 || m_vCube[cubecount].Cube_Vertex[7][2] < -10 || m_vCube[cubecount].Cube_Vertex[7][2] > 10)
+			if (m_vCube[cubecount].Cube_Vertex[0][0] < -160 || m_vCube[cubecount].Cube_Vertex[0][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[0][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[0][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[0][2] < -10 || m_vCube[cubecount].Cube_Vertex[0][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[1][0] < -160 || m_vCube[cubecount].Cube_Vertex[1][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[1][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[1][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[1][2] < -10 || m_vCube[cubecount].Cube_Vertex[1][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[2][0] < -160 || m_vCube[cubecount].Cube_Vertex[2][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[2][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[2][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[2][2] < -10 || m_vCube[cubecount].Cube_Vertex[2][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[3][0] < -160 || m_vCube[cubecount].Cube_Vertex[3][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[3][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[3][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[3][2] < -10 || m_vCube[cubecount].Cube_Vertex[3][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[4][0] < -160 || m_vCube[cubecount].Cube_Vertex[4][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[4][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[4][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[4][2] < -10 || m_vCube[cubecount].Cube_Vertex[4][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[5][0] < -160 || m_vCube[cubecount].Cube_Vertex[5][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[5][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[5][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[5][2] < -10 || m_vCube[cubecount].Cube_Vertex[5][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[6][0] < -160 || m_vCube[cubecount].Cube_Vertex[6][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[6][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[6][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[6][2] < -10 || m_vCube[cubecount].Cube_Vertex[6][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[7][0] < -160 || m_vCube[cubecount].Cube_Vertex[7][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[7][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[7][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[7][2] < -10 || m_vCube[cubecount].Cube_Vertex[7][2] > 10)
 			{
 				continue;
 			}
 		}
 		else if (m_projection == 1)
 		{
-			if (m_vCube[cubecount].Cube_Vertex[0][2] < -10 || m_vCube[cubecount].Cube_Vertex[0][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[1][2] < -10 || m_vCube[cubecount].Cube_Vertex[1][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[2][2] < -10 || m_vCube[cubecount].Cube_Vertex[2][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[3][2] < -10 || m_vCube[cubecount].Cube_Vertex[3][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[4][2] < -10 || m_vCube[cubecount].Cube_Vertex[4][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[5][2] < -10 || m_vCube[cubecount].Cube_Vertex[5][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[6][2] < -10 || m_vCube[cubecount].Cube_Vertex[6][2] > 20 ||
-				m_vCube[cubecount].Cube_Vertex[7][2] < -10 || m_vCube[cubecount].Cube_Vertex[7][2] > 20)
+			if (m_vCube[cubecount].Cube_Vertex[0][2] < -20 || m_vCube[cubecount].Cube_Vertex[0][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[1][2] < -20 || m_vCube[cubecount].Cube_Vertex[1][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[2][2] < -20 || m_vCube[cubecount].Cube_Vertex[2][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[3][2] < -20 || m_vCube[cubecount].Cube_Vertex[3][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[4][2] < -20 || m_vCube[cubecount].Cube_Vertex[4][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[5][2] < -20 || m_vCube[cubecount].Cube_Vertex[5][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[6][2] < -20 || m_vCube[cubecount].Cube_Vertex[6][2] > 20 ||
+				m_vCube[cubecount].Cube_Vertex[7][2] < -20 || m_vCube[cubecount].Cube_Vertex[7][2] > 20)
 			{
 				continue;
 			}
@@ -1469,15 +1482,15 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (m_projection == 0)
 		{
-			if (m_vSphere[spherecount].Sphere_Vertex[0][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][0] > width * 2 || m_vSphere[spherecount].Sphere_Vertex[0][1] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][1] > height * 2 || m_vSphere[spherecount].Sphere_Vertex[0][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2] > 20 ||
-				m_vSphere[spherecount].Sphere_Vertex[82][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[82][0] > width * 2 || m_vSphere[spherecount].Sphere_Vertex[82][1] < 0 || m_vSphere[spherecount].Sphere_Vertex[82][1] > height * 2 || m_vSphere[spherecount].Sphere_Vertex[82][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[82][2] > 20)
+			if (m_vSphere[spherecount].Sphere_Vertex[0][0]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[0][0]  > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[0][1]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[0][1]  > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[0][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2]  > 20 ||
+				m_vSphere[spherecount].Sphere_Vertex[82][0] < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[82][0] > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[82][1] < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[82][1] > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[82][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[82][2] > 20)
 			{
 				continue;
 			}
 		}
 		else if (m_projection == 1)
 		{
-			if (m_vSphere[spherecount].Sphere_Vertex[0][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][0] > width * 2 || m_vSphere[spherecount].Sphere_Vertex[0][1] < 0 || m_vSphere[spherecount].Sphere_Vertex[0][1] > height * 2 || m_vSphere[spherecount].Sphere_Vertex[0][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2] > 20 ||
+			if (m_vSphere[spherecount].Sphere_Vertex[0][0]  < 0 || m_vSphere[spherecount].Sphere_Vertex[0][0]  > width * 2 || m_vSphere[spherecount].Sphere_Vertex[0][1]  < 0 || m_vSphere[spherecount].Sphere_Vertex[0][1]  > height * 2 || m_vSphere[spherecount].Sphere_Vertex[0][2]  < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2]  > 20 ||
 				m_vSphere[spherecount].Sphere_Vertex[82][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[82][0] > width * 2 || m_vSphere[spherecount].Sphere_Vertex[82][1] < 0 || m_vSphere[spherecount].Sphere_Vertex[82][1] > height * 2 || m_vSphere[spherecount].Sphere_Vertex[82][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[82][2] > 20)
 			{
 				continue;
@@ -2288,18 +2301,18 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (m_projection == 0)
 		{
-			if (m_vTorus[toruscount].Torus_Vertex[0][0] < 0 || m_vTorus[toruscount].Torus_Vertex[0][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[0][1] < 0 || m_vTorus[toruscount].Torus_Vertex[0][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[0][2] < -10 || m_vTorus[toruscount].Torus_Vertex[0][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 || m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[32][1] < 0 || m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 )
+			if (m_vTorus[toruscount].Torus_Vertex[0][0]  < 0 -160|| m_vTorus[toruscount].Torus_Vertex[0][0]  > width * 2 +160|| m_vTorus[toruscount].Torus_Vertex[0][1]  < 0 -160|| m_vTorus[toruscount].Torus_Vertex[0][1]  > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[0][2]  < -10 || m_vTorus[toruscount].Torus_Vertex[0][2]  > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 +160|| m_vTorus[toruscount].Torus_Vertex[32][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 )
 			{
 				continue;
 			}
 		}
 		else if (m_projection == 1)
 		{
-			if (m_vTorus[toruscount].Torus_Vertex[0][0] < 0 || m_vTorus[toruscount].Torus_Vertex[0][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[0][1] < 0 || m_vTorus[toruscount].Torus_Vertex[0][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[0][2] < -10 || m_vTorus[toruscount].Torus_Vertex[0][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[16][0] < 0 || m_vTorus[toruscount].Torus_Vertex[16][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[16][1] < 0 || m_vTorus[toruscount].Torus_Vertex[16][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[16][2] < -10 || m_vTorus[toruscount].Torus_Vertex[16][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 || m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[32][1] < 0 || m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[63][0] < 0 || m_vTorus[toruscount].Torus_Vertex[63][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[63][1] < 0 || m_vTorus[toruscount].Torus_Vertex[63][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[63][2] < -10 || m_vTorus[toruscount].Torus_Vertex[63][2] > 10 )
+			if (m_vTorus[toruscount].Torus_Vertex[0][0]  < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[0][0]  > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[0][1]  < 0 -160|| m_vTorus[toruscount].Torus_Vertex[0][1]  > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[0][2]  < -10 || m_vTorus[toruscount].Torus_Vertex[0][2]  > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[16][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[16][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[16][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[16][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[16][2] < -10 || m_vTorus[toruscount].Torus_Vertex[16][2] > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[32][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[63][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[63][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[63][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[63][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[63][2] < -10 || m_vTorus[toruscount].Torus_Vertex[63][2] > 10 )
 			{
 				continue;
 			}
