@@ -138,7 +138,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "WIREFRAME",                   ID_LINE
         MENUITEM "SOLID",                       ID_SOLID
-        MENUITEM "색선택",                         ID_COLORSELECT
     END
     POPUP "투영"
     BEGIN
@@ -148,12 +147,6 @@ BEGIN
     POPUP "도움말(&H)"
     BEGIN
         MENUITEM "MFCApplication1 정보(&A)...",   ID_APP_ABOUT
-    END
-    POPUP "도형선택"
-    BEGIN
-        MENUITEM "큐브",                          ID_cube
-        MENUITEM "구",                           ID_SPHERE
-        MENUITEM "원환면",                         ID_TORUS
     END
 END
 
