@@ -68,12 +68,10 @@ public:
 	// 작업입니다.
 public:
 	BOOL m_bDrag = FALSE;
-	BOOL m_IsClicked;
-	CPoint m_DrawPoint;
-	//CPoint start;
+	//BOOL m_IsClicked;
+	//CPoint m_DrawPoint;
 
 	CString str;
-
 	CRect winrect;
 	//CPoint prevpoint = (0, 0); //Move에서 사용
 
@@ -87,13 +85,13 @@ public:
 
 	float intputmat[4][1] = { 0 };
 	float campos[4][1];
-	float lightpos[4][1] = { { 1 },{ 1 },{ 1 },{ 1 } };
+	float lightpos[4][1] = { { 1 },{ 1 },{ 1 },{ 1 } }; //조명 방향
 	int OriginPoint[4][1] = { 0 };
 	float clickedPoint[4][1];
 	float centerpoint[4][1];
 
 	//도형 크기
-	float m_DefaultSize=40;
+	float m_DefaultSize=40; //기본도형크기
 	float m_CubeSize = m_DefaultSize;
 	float m_SphereRadius = m_DefaultSize;
 	float m_TorusRadius = m_DefaultSize;
@@ -124,7 +122,7 @@ public:
 	bool m_drawType = FALSE; // TRUE =>  솔리드표현, FALSE => 와이어프레임표현
 	int m_projection = 0; // 0 => 원근, 1 => 직교
 
-	bool isback = FALSE;
+	bool isback = FALSE; //백스페이스 컬링
 	int cubecount = 0;
 	int spherecount = 0;
 	int toruscount = 0;

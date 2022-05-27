@@ -55,9 +55,6 @@ CMFCApplication1View::CMFCApplication1View()
 	campos[0][0] = 0;
 	campos[1][0] = 0;
 	campos[2][0] = 500;
-
-	////기본도형크기
-	//m_DefaultSize = 40;
 }
 
 CMFCApplication1View::~CMFCApplication1View()
@@ -92,7 +89,6 @@ void CMFCApplication1View::OnPaint()
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CView::OnPaint()을(를) 호출하지 마십시오.	
 					   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	//더블버퍼링
 	CDC mDC;
 	CBitmap* pOldBitmap, m_bitmap;
@@ -121,7 +117,6 @@ void CMFCApplication1View::OnPaint()
 	mDC.DeleteDC();
 }
 
-
 // CMFCApplication1View 인쇄
 BOOL CMFCApplication1View::OnPreparePrinting(CPrintInfo* pInfo)
 {
@@ -140,9 +135,7 @@ void CMFCApplication1View::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 }
 
-
 // CMFCApplication1View 진단
-
 #ifdef _DEBUG
 void CMFCApplication1View::AssertValid() const
 {
@@ -191,7 +184,6 @@ BOOL CMFCApplication1View::OnEraseBkgnd(CDC* pDC)
 {
 	return TRUE;	// TRUE 로 해주어야 한다. 기존것(return CView::OnEraseBkgnd(pDC);)
 }
-
 
 void CMFCApplication1View::Mydraw(CDC* pDC)
 {
@@ -259,9 +251,6 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	pDC->TextOut(10, 90, str);
 
 #pragma endregion
-
-
-
 }//Mydraw
 
 #pragma region MouseEvent
@@ -369,17 +358,12 @@ void CMFCApplication1View::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.	
 
-	if (m_bDrag)
-	{
-	}
 	CView::OnMouseMove(nFlags, point);
 }
 
 void CMFCApplication1View::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	m_bDrag = TRUE;
-
 	float curPoint[4][1]{ { (float)point.x },{ (float)point.y },{ 1 },{ 1 } };
 
 	//할당
@@ -410,9 +394,9 @@ void CMFCApplication1View::OnRButtonDown(UINT nFlags, CPoint point)
 void CMFCApplication1View::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	m_bDrag = FALSE;
 	Figure_xMove = 0;
 	Figure_yMove = 0;
+
 	Invalidate();
 	CView::OnRButtonUp(nFlags, point);
 }
@@ -511,7 +495,7 @@ void CMFCApplication1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		rxvalue = 0;
 		ryvalue = 0;
 		rzvalue = 0;
-		Figure_yMove = 0;
+		Figure_xMove = 0;
 		Figure_yMove = 0;
 		break;
 
@@ -645,17 +629,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			clicked[i][0] = ClickProResult[i][0];
 	}
 
-
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	if (i == 0)
-	//		clicked[i][0] = clickedPoint[i][0] - Figure_xMove;
-	//	else if (i == 1)
-	//		clicked[i][0] = clickedPoint[i][0] - Figure_yMove;
-	//	else
-	//		clicked[i][0] = clickedPoint[i][0];
-	//}
-
 	//해제
 	for (int i = 0; i < COL; i++) {
 		delete[] ClickViewResult[i];
@@ -678,27 +651,14 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		cuberotateresult[i] = new float[1];//
 	}
 
-	int VertexIndex[12][3] = {
-		{0, 1, 2},
-		{0, 2, 3},
-		{4, 6, 5},
-		{4, 7, 6},
-		{0, 3, 7},
-		{0, 7, 4},
-		{1, 5, 6},
-		{1, 6, 2},
-		{3, 2, 6},
-		{3, 6, 7},
-		{0, 4, 5},
-		{0, 5, 1}
-	};
+	int VertexIndex[12][3] = { {0, 1, 2}, {0, 2, 3}, {4, 6, 5}, {4, 7, 6}, {0, 3, 7}, {0, 7, 4},
+							   {1, 5, 6}, {1, 6, 2}, {3, 2, 6}, {3, 6, 7}, {0, 4, 5}, {0, 5, 1} };
 
 	for (int cubecount = 0; cubecount < m_vCube.size(); cubecount++)
 	{
 		//선택돼있을 때(정점을 새로 받아와서 도형을 새로 만들기)
 		if (m_vCube[cubecount].isClicked)
 		{
-			//AfxMessageBox(_T("큐브클릭"));
 			m_vCube[cubecount].Cube_Size = m_CubeSize;
 			m_vCube[cubecount].Cube_xMove = Figure_xMove;
 			m_vCube[cubecount].Cube_yMove = Figure_yMove;
@@ -743,7 +703,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					m_vCube[cubecount].Cube_WorldVertex[j][i] = cuberotateresult[i][0];
 				}
 			}
-		}
+		}//if (m_vCube[cubecount].isClicked)
 		//선택 안 돼 있을 때
 		if (m_vCube[cubecount].isClicked == FALSE)
 		{
@@ -776,9 +736,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					m_vCube[cubecount].Cube_Vertex[j][i] = cuberotateresult[i][0];
 					m_vCube[cubecount].Cube_WorldVertex[j][i] = cuberotateresult[i][0];
 				}
-
 			}
-		}
+		}//if (m_vCube[cubecount].isClicked == FALSE)
 
 		for (int j = 0; j < 8; j++)
 		{
@@ -1124,12 +1083,11 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 
 #pragma endregion 정점 새로받기
-		}
+		}//if (m_vSphere[spherecount].isClicked)
 
 		//선택이 안되있을때
 		if (m_vSphere[spherecount].isClicked == FALSE)
 		{
-
 			float Spherenode[4][1] = { { 0 },{ 0 },{ 0 },{ 1 } };
 			float zFocusDot[9][4] = {};
 			float SphereVertex[83][4];
@@ -1200,7 +1158,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 			delete[] Resultmat;
 
-
 			int count = 1;
 			for (int r = 0; r < 81; r++)
 			{
@@ -1257,7 +1214,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 				count = 82;
 			}
-		}
+		}//if (m_vSphere[spherecount].isClicked == FALSE)
 
 #pragma region 구체 연산
 		int count = 1;
@@ -1276,6 +1233,9 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				vInputmat[i][0] = sphereviewresult[i][0];
 			}
+
+			if (vInputmat[2][0] > 0)
+				continue;
 
 			//투영
 			if (m_projection == 0)
@@ -1339,7 +1299,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			//
 			if (vercount < 10)
 			{
-				//시계
 				if (vercount == 9)
 				{
 					for (int j = 0; j < 4; j++)
@@ -1370,7 +1329,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			{
 				if (vercount == 73)
 				{
-					//반시계
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[vercount][j];
@@ -1383,7 +1341,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 				else if (vercount == 80)
 				{
-					//반시계
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[vercount][j];
@@ -1396,7 +1353,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 				else if (vercount == 81)
 				{
-					//시계
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[82][j];
@@ -1409,7 +1365,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 				else
 				{
-					//시계
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[82][j];
@@ -1420,7 +1375,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					if (m_vSphere[spherecount].isClicked == TRUE)
 						break;
 
-					//반시계
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[vercount][j];
@@ -1431,7 +1385,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 					if (m_vSphere[spherecount].isClicked == TRUE)
 						break;
 
-					//반시계
 					for (int j = 0; j < 4; j++)
 					{
 						Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[vercount][j];
@@ -1455,7 +1408,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				m_vSphere[spherecount].isClicked = matfun.Cross(clicked, Crossinput1, Crossinput2, Crossinput3);
 				if (m_vSphere[spherecount].isClicked == TRUE)
 					break;
-				//반시계
+
 				for (int j = 0; j < 4; j++)
 				{
 					Crossinput1[j][0] = m_vSphere[spherecount].Sphere_Vertex[vercount][j];
