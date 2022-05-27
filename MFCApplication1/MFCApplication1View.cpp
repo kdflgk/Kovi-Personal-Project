@@ -195,15 +195,26 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	str.Format(_T("%d x %d"), winrect.bottom, winrect.right); //창의 크기
 	pDC->TextOut(winrect.right - 90, winrect.bottom - 30, str);
 
+	//조작법////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	str.Format(_T("카메라 회전 - NUM8, NUM2, NUM4,NUM6")); 
+	pDC->TextOut(300, 10, str);
+	str.Format(_T("카메라 이동 - X축 : ←→, Y축 : ↑↓, Z축 : Home, End"));
+	pDC->TextOut(300, 30, str);
+	str.Format(_T("도형 회전 - X축 : (Q, W), Y축 : (A, S), Z축 : (Z, X)"));
+	pDC->TextOut(680, 10, str);
+	str.Format(_T("도형 이동 - X축 : (G, J), Y축 : (Y, H)"));
+	pDC->TextOut(680, 30, str);
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	str.Format(_T("도형 회전 : %.1f, %.1f, %.1f"), rxvalue * 10, ryvalue * 10, rzvalue * 10);
 	pDC->TextOut(winrect.right - 230, 30, str);
 	str.Format(_T("도형이동 : X : %.f, Y : %.f"), Figure_xMove, Figure_yMove);
 	pDC->TextOut(winrect.right - 230, 50, str);
-	str.Format(_T("큐브 크기     : %.1f"), m_CubeSize);
+	str.Format(_T("큐브 크기(E, R)   : %.1f"), m_CubeSize);
 	pDC->TextOut(winrect.right - 230, 70, str);
-	str.Format(_T("구체 반지름   : %.1f"), m_SphereRadius);
+	str.Format(_T("구체 반지름(D, F)  : %.1f"), m_SphereRadius);
 	pDC->TextOut(winrect.right - 230, 90, str);
-	str.Format(_T("원환면 반지름 : %.1f"), m_TorusRadius);
+	str.Format(_T("원환면 반지름(C, V) : %.1f"), m_TorusRadius);
 	pDC->TextOut(winrect.right - 230, 110, str);
 	str.Format(_T("카메라 위치 : %.1f, %.1f, %.1f"), campos[0][0] - xMove, campos[1][0] + yMove, campos[2][0] - zMove);
 	pDC->TextOut(10, 10, str);
@@ -229,10 +240,10 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	switch (m_drawType)
 	{
 	case TRUE:
-		str.Format(_T("뷰어모드 : 솔리드"));
+		str.Format(_T("뷰어모드(F2) : 솔리드"));
 		break;
 	case FALSE:
-		str.Format(_T("뷰어모드 : 와이어프레임"));
+		str.Format(_T("뷰어모드(F2) : 와이어프레임"));
 		break;
 	}
 	pDC->TextOut(10, 70, str);
@@ -240,10 +251,10 @@ void CMFCApplication1View::Mydraw(CDC* pDC)
 	switch (m_projection)
 	{
 	case 0:
-		str.Format(_T("적용투영 : 원근"));
+		str.Format(_T("적용투영(F4) : 원근"));
 		break;
 	case 1:
-		str.Format(_T("적용투영 : 직교"));
+		str.Format(_T("적용투영(F4) : 직교"));
 		break;
 	default:
 		break;
