@@ -714,6 +714,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 			}
 		}//if (m_vCube[cubecount].isClicked)
+
 		//선택 안 돼 있을 때
 		if (m_vCube[cubecount].isClicked == FALSE)
 		{
@@ -748,7 +749,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				}
 			}
 		}//if (m_vCube[cubecount].isClicked == FALSE)
-
+		 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma region 큐브 연산
 		for (int j = 0; j < 8; j++)
 		{
 			for (int i = 0; i < COL; i++)
@@ -783,7 +785,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 				m_vCube[cubecount].Cube_Vertex[j][i] = cubeproresult[i][0];
 			}
 		}
-
+#pragma endregion
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma region 도형선택(큐브)
 		float Crossinput1[4][1];
@@ -816,16 +818,17 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 #pragma endregion
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma region 예외처리
 		if (m_projection == 0)
 		{
-			if (m_vCube[cubecount].Cube_Vertex[0][0] < -160 || m_vCube[cubecount].Cube_Vertex[0][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[0][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[0][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[0][2] < -10 || m_vCube[cubecount].Cube_Vertex[0][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[1][0] < -160 || m_vCube[cubecount].Cube_Vertex[1][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[1][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[1][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[1][2] < -10 || m_vCube[cubecount].Cube_Vertex[1][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[2][0] < -160 || m_vCube[cubecount].Cube_Vertex[2][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[2][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[2][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[2][2] < -10 || m_vCube[cubecount].Cube_Vertex[2][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[3][0] < -160 || m_vCube[cubecount].Cube_Vertex[3][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[3][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[3][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[3][2] < -10 || m_vCube[cubecount].Cube_Vertex[3][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[4][0] < -160 || m_vCube[cubecount].Cube_Vertex[4][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[4][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[4][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[4][2] < -10 || m_vCube[cubecount].Cube_Vertex[4][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[5][0] < -160 || m_vCube[cubecount].Cube_Vertex[5][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[5][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[5][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[5][2] < -10 || m_vCube[cubecount].Cube_Vertex[5][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[6][0] < -160 || m_vCube[cubecount].Cube_Vertex[6][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[6][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[6][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[6][2] < -10 || m_vCube[cubecount].Cube_Vertex[6][2] > 10 ||
-				m_vCube[cubecount].Cube_Vertex[7][0] < -160 || m_vCube[cubecount].Cube_Vertex[7][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[7][1] < 0 -160 || m_vCube[cubecount].Cube_Vertex[7][1] > height * 2 +160 || m_vCube[cubecount].Cube_Vertex[7][2] < -10 || m_vCube[cubecount].Cube_Vertex[7][2] > 10)
+			if (m_vCube[cubecount].Cube_Vertex[0][0] < -160 || m_vCube[cubecount].Cube_Vertex[0][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[0][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[0][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[0][2] < -10 || m_vCube[cubecount].Cube_Vertex[0][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[1][0] < -160 || m_vCube[cubecount].Cube_Vertex[1][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[1][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[1][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[1][2] < -10 || m_vCube[cubecount].Cube_Vertex[1][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[2][0] < -160 || m_vCube[cubecount].Cube_Vertex[2][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[2][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[2][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[2][2] < -10 || m_vCube[cubecount].Cube_Vertex[2][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[3][0] < -160 || m_vCube[cubecount].Cube_Vertex[3][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[3][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[3][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[3][2] < -10 || m_vCube[cubecount].Cube_Vertex[3][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[4][0] < -160 || m_vCube[cubecount].Cube_Vertex[4][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[4][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[4][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[4][2] < -10 || m_vCube[cubecount].Cube_Vertex[4][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[5][0] < -160 || m_vCube[cubecount].Cube_Vertex[5][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[5][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[5][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[5][2] < -10 || m_vCube[cubecount].Cube_Vertex[5][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[6][0] < -160 || m_vCube[cubecount].Cube_Vertex[6][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[6][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[6][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[6][2] < -10 || m_vCube[cubecount].Cube_Vertex[6][2] > 10 ||
+				m_vCube[cubecount].Cube_Vertex[7][0] < -160 || m_vCube[cubecount].Cube_Vertex[7][0] > width * 2 + 160 || m_vCube[cubecount].Cube_Vertex[7][1] < 0 - 160 || m_vCube[cubecount].Cube_Vertex[7][1] > height * 2 + 160 || m_vCube[cubecount].Cube_Vertex[7][2] < -10 || m_vCube[cubecount].Cube_Vertex[7][2] > 10)
 			{
 				continue;
 			}
@@ -847,8 +850,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 		if (m_vCube[cubecount].Cube_Vertex[3][2] > 1200)
 			continue;
+#pragma endregion
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 		if (m_drawType)
 		{
 #pragma region 큐브그리는부분(채우기)
@@ -920,9 +923,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 
 #pragma endregion
-
 		}
-
 	}//end for(auto m_vCube[cubecount] : m_vCube)
 
 	//해제
@@ -934,7 +935,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 	delete[] cubeproresult;
 	delete[] cubeviewresult;
 	delete[] cuberotateresult;
-
 
 #pragma endregion
 
@@ -1443,6 +1443,7 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 #pragma endregion
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma region 예외처리
 		if (m_projection == 0)
 		{
 			if (m_vSphere[spherecount].Sphere_Vertex[0][0]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[0][0]  > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[0][1]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[0][1]  > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[0][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2]  > 20 ||
@@ -1462,9 +1463,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 
 		if (m_vSphere[spherecount].Sphere_Vertex[3][2] > 1200)
 			continue;
+#pragma endregion
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 		if (m_drawType)
 		{
 #pragma region 구체그리기(채우기)
@@ -2073,8 +2073,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			}
 		}
 
-
-
 #pragma region 환원체 연산
 		int count = 0;
 		for (int j = 0; j < 64; j++)
@@ -2114,38 +2112,6 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 			count++;
 		}
 #pragma endregion 환원체 연산
-
-		if (m_projection == 0)
-		{
-			if (m_vTorus[toruscount].Torus_Vertex[0][0] < 0 || m_vTorus[toruscount].Torus_Vertex[0][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[0][1] < 0 || m_vTorus[toruscount].Torus_Vertex[0][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[0][2] < -10 || m_vTorus[toruscount].Torus_Vertex[0][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[1][0] < 0 || m_vTorus[toruscount].Torus_Vertex[1][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[1][1] < 0 || m_vTorus[toruscount].Torus_Vertex[1][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[1][2] < -10 || m_vTorus[toruscount].Torus_Vertex[1][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[2][0] < 0 || m_vTorus[toruscount].Torus_Vertex[2][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[2][1] < 0 || m_vTorus[toruscount].Torus_Vertex[2][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[2][2] < -10 || m_vTorus[toruscount].Torus_Vertex[2][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[3][0] < 0 || m_vTorus[toruscount].Torus_Vertex[3][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[3][1] < 0 || m_vTorus[toruscount].Torus_Vertex[3][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[3][2] < -10 || m_vTorus[toruscount].Torus_Vertex[3][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[4][0] < 0 || m_vTorus[toruscount].Torus_Vertex[4][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[4][1] < 0 || m_vTorus[toruscount].Torus_Vertex[4][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[4][2] < -10 || m_vTorus[toruscount].Torus_Vertex[4][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[5][0] < 0 || m_vTorus[toruscount].Torus_Vertex[5][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[5][1] < 0 || m_vTorus[toruscount].Torus_Vertex[5][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[5][2] < -10 || m_vTorus[toruscount].Torus_Vertex[5][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[6][0] < 0 || m_vTorus[toruscount].Torus_Vertex[6][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[6][1] < 0 || m_vTorus[toruscount].Torus_Vertex[6][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[6][2] < -10 || m_vTorus[toruscount].Torus_Vertex[6][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[7][0] < 0 || m_vTorus[toruscount].Torus_Vertex[7][0] > width * 2 || m_vTorus[toruscount].Torus_Vertex[7][1] < 0 || m_vTorus[toruscount].Torus_Vertex[7][1] > height * 2 || m_vTorus[toruscount].Torus_Vertex[7][2] < -10 || m_vTorus[toruscount].Torus_Vertex[7][2] > 10)
-			{
-				continue;
-			}
-		}
-		else if (m_projection == 1)
-		{
-			if (m_vTorus[toruscount].Torus_Vertex[0][2] < -10 || m_vTorus[toruscount].Torus_Vertex[0][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[1][2] < -10 || m_vTorus[toruscount].Torus_Vertex[1][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[2][2] < -10 || m_vTorus[toruscount].Torus_Vertex[2][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[3][2] < -10 || m_vTorus[toruscount].Torus_Vertex[3][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[4][2] < -10 || m_vTorus[toruscount].Torus_Vertex[4][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[5][2] < -10 || m_vTorus[toruscount].Torus_Vertex[5][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[6][2] < -10 || m_vTorus[toruscount].Torus_Vertex[6][2] > 20 ||
-				m_vTorus[toruscount].Torus_Vertex[7][2] < -10 || m_vTorus[toruscount].Torus_Vertex[7][2] > 20)
-			{
-				continue;
-			}
-		}
-
-		if (m_vTorus[toruscount].Torus_Vertex[3][2] > 1200)
-			continue;
 
 #pragma region 도형선택(원환면)
 		float Crossinput1[4][1];
@@ -2258,34 +2224,32 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		{
 			pDC->SelectObject(whitePen);
 		}
-
 #pragma endregion
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma region 예외처리
 		if (m_projection == 0)
 		{
-			if (m_vTorus[toruscount].Torus_Vertex[0][0]  < 0 -160|| m_vTorus[toruscount].Torus_Vertex[0][0]  > width * 2 +160|| m_vTorus[toruscount].Torus_Vertex[0][1]  < 0 -160|| m_vTorus[toruscount].Torus_Vertex[0][1]  > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[0][2]  < -10 || m_vTorus[toruscount].Torus_Vertex[0][2]  > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 +160|| m_vTorus[toruscount].Torus_Vertex[32][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 )
+			if (m_vTorus[toruscount].Torus_Vertex[0][0]  < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[0][0]  > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[0][1]  < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[0][1]  > height * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[0][2]  < -10 || m_vTorus[toruscount].Torus_Vertex[0][2]  > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[32][1] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10)
 			{
 				continue;
 			}
 		}
 		else if (m_projection == 1)
 		{
-			if (m_vTorus[toruscount].Torus_Vertex[0][0]  < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[0][0]  > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[0][1]  < 0 -160|| m_vTorus[toruscount].Torus_Vertex[0][1]  > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[0][2]  < -10 || m_vTorus[toruscount].Torus_Vertex[0][2]  > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[16][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[16][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[16][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[16][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[16][2] < -10 || m_vTorus[toruscount].Torus_Vertex[16][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[32][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 ||
-				m_vTorus[toruscount].Torus_Vertex[63][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[63][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[63][1] < 0 -160|| m_vTorus[toruscount].Torus_Vertex[63][1] > height * 2 +160|| m_vTorus[toruscount].Torus_Vertex[63][2] < -10 || m_vTorus[toruscount].Torus_Vertex[63][2] > 10 )
+			if (m_vTorus[toruscount].Torus_Vertex[0][0]  < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[0][0]  > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[0][1]  < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[0][1]  > height * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[0][2]  < -10 || m_vTorus[toruscount].Torus_Vertex[0][2]  > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[16][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[16][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[16][1] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[16][1] > height * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[16][2] < -10 || m_vTorus[toruscount].Torus_Vertex[16][2] > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[32][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[32][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[32][1] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[32][1] > height * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[32][2] < -10 || m_vTorus[toruscount].Torus_Vertex[32][2] > 10 ||
+				m_vTorus[toruscount].Torus_Vertex[63][0] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[63][0] > width * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[63][1] < 0 - 160 || m_vTorus[toruscount].Torus_Vertex[63][1] > height * 2 + 160 || m_vTorus[toruscount].Torus_Vertex[63][2] < -10 || m_vTorus[toruscount].Torus_Vertex[63][2] > 10)
 			{
 				continue;
 			}
 		}
 
-		//if (m_vTorus[toruscount].Torus_Vertex[0][2] > 1200)
-		//	continue;
+		if (m_vTorus[toruscount].Torus_Vertex[0][2] > 1200)
+			continue;
+#pragma endregion
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 		if (m_drawType)
 		{
 #pragma region 원환면그리기(채우기)

@@ -10,11 +10,9 @@
 using namespace std;
 struct Cube
 {
-	//int VertexIndex[12][3];
 	float Cube_Center[4][1]; //도형의 원점(월드좌표)
 	float Cube_Vertex[8][4]; // 스크린좌표에서의 정점의 배열
 	float Cube_WorldVertex[8][4]; // 월드좌표에서의 정점의 배열
-	float Cube_ViewVertex[8][4]; // 뷰좌표에서의 정점의 배열
 	bool  isClicked;
 	float Cube_Size;	// 크기
 	float Cube_xRotate;	// 회전
@@ -29,7 +27,6 @@ struct Sphere
 	float Sphere_Center[4][1]; //도형의 원점(월드좌표)
 	float Sphere_Vertex[83][4]; // 정점의 배열
 	float Sphere_WorldVertex[83][4]; // 월드좌표에서의 정점의 배열
-	float Sphere_ViewVertex[83][4]; // 뷰좌표에서의 정점의 배열
 	bool  isClicked;
 	float Sphere_Size;	// 크기
 	float Sphere_xRotate;	// 회전
