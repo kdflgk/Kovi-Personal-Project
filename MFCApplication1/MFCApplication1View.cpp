@@ -1447,6 +1447,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		if (m_projection == 0)
 		{
 			if (m_vSphere[spherecount].Sphere_Vertex[0][0]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[0][0]  > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[0][1]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[0][1]  > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[0][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2]  > 20 ||
+				m_vSphere[spherecount].Sphere_Vertex[30][0]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[30][0]  > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[30][1]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[30][1]  > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[30][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[30][2]  > 20 ||
+				m_vSphere[spherecount].Sphere_Vertex[60][0]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[60][0]  > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[60][1]  < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[60][1]  > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[60][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[60][2]  > 20 ||
 				m_vSphere[spherecount].Sphere_Vertex[82][0] < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[82][0] > width * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[82][1] < 0 - 160 || m_vSphere[spherecount].Sphere_Vertex[82][1] > height * 2 + 160 || m_vSphere[spherecount].Sphere_Vertex[82][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[82][2] > 20)
 			{
 				continue;
@@ -1455,6 +1457,8 @@ void CMFCApplication1View::GetpointDrawFigure(CDC* pDC, float Intputmat[][1])
 		else if (m_projection == 1)
 		{
 			if (m_vSphere[spherecount].Sphere_Vertex[0][0]  < 0 || m_vSphere[spherecount].Sphere_Vertex[0][0]  > width * 2 || m_vSphere[spherecount].Sphere_Vertex[0][1]  < 0 || m_vSphere[spherecount].Sphere_Vertex[0][1]  > height * 2 || m_vSphere[spherecount].Sphere_Vertex[0][2]  < -10 || m_vSphere[spherecount].Sphere_Vertex[0][2]  > 20 ||
+				m_vSphere[spherecount].Sphere_Vertex[30][0]  < 0 || m_vSphere[spherecount].Sphere_Vertex[30][0]  > width * 2 || m_vSphere[spherecount].Sphere_Vertex[30][1]  < 0 || m_vSphere[spherecount].Sphere_Vertex[30][1]  > height * 2 || m_vSphere[spherecount].Sphere_Vertex[30][2]  < -10 || m_vSphere[spherecount].Sphere_Vertex[30][2]  > 20 ||
+				m_vSphere[spherecount].Sphere_Vertex[60][0]  < 0 || m_vSphere[spherecount].Sphere_Vertex[60][0]  > width * 2 || m_vSphere[spherecount].Sphere_Vertex[60][1]  < 0 || m_vSphere[spherecount].Sphere_Vertex[60][1]  > height * 2 || m_vSphere[spherecount].Sphere_Vertex[60][2]  < -10 || m_vSphere[spherecount].Sphere_Vertex[60][2]  > 20 ||
 				m_vSphere[spherecount].Sphere_Vertex[82][0] < 0 || m_vSphere[spherecount].Sphere_Vertex[82][0] > width * 2 || m_vSphere[spherecount].Sphere_Vertex[82][1] < 0 || m_vSphere[spherecount].Sphere_Vertex[82][1] > height * 2 || m_vSphere[spherecount].Sphere_Vertex[82][2] < -10 || m_vSphere[spherecount].Sphere_Vertex[82][2] > 20)
 			{
 				continue;

@@ -14,7 +14,7 @@ public:
 
 	//기능함수
 public:
-	float **Matrix; //2차원 배열
+	float **Matrix;
 	float **result1;
 	float **result2;
 	float **result3;
